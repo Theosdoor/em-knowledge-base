@@ -1,0 +1,17 @@
+.DS_Store
+node_modules
+public
+prof
+tsconfig.tsbuildinfo
+.quartz-cache
+.quartz/
+quartz/cli/tui/dist/
+private/
+
+# Obsidian: share settings across the team, but not per-machine state
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
+**/.obsidian/workspace
+**/.obsidian/cache
+**/.obsidian/plugins/*/data.json
+**/.trash/
