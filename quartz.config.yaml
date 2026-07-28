@@ -128,9 +128,23 @@ plugins:
       priority: 50
   - source: github:quartz-community/graph
     enabled: true
+    options:
+      # Nodes are papers. Tags would otherwise appear as nodes too and swamp
+      # the paper-to-paper structure we actually care about.
+      localGraph:
+        showTags: false
+        depth: 2
+        focusOnHover: true
+      globalGraph:
+        showTags: false
+        linkDistance: 45
+        repelForce: 0.6
+        focusOnHover: true
     layout:
-      position: right
-      priority: 10
+      # Left sidebar, directly under the search box and above the explorer:
+      # the graph is meant to be the primary way to navigate, not an aside.
+      position: left
+      priority: 40
   - source: github:quartz-community/search
     enabled: true
     layout:
@@ -238,8 +252,10 @@ plugins:
       position: body
       priority: 100
       display: all
+  # Off: stacked notes keep every page you visited piled up in the viewport,
+  # which is disorienting for anyone just reading through the vault.
   - source: github:quartz-community/stacked-pages
-    enabled: true
+    enabled: false
     layout:
       position: afterBody
       priority: 50

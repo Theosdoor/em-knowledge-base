@@ -1,7 +1,7 @@
 ---
-title: "Stress-Testing Inoculation Prompting"
+title: "Farrelly 2026 — Stress-Testing Inoculation Prompting"
 aliases:
-  - Farrelly 2026 — Stress-Testing Inoculation Prompting
+  - "Stress-Testing Inoculation Prompting"
 authors: [Farrelly, et al.]
 year: 2026
 venue: SPAR (LISA / Pivotal)

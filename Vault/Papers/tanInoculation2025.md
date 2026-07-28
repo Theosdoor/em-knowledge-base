@@ -1,7 +1,7 @@
 ---
-title: "Inoculation Prompting: Eliciting Traits from LLMs During Training Can Suppress Them at Test-Time"
+title: "Tan 2025 — Inoculation Prompting"
 aliases:
-  - Tan 2025 — Inoculation Prompting
+  - "Inoculation Prompting: Eliciting Traits from LLMs During Training Can Suppress Them at Test-Time"
 authors:
   [
     Daniel Tan,

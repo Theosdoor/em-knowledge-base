@@ -1,7 +1,7 @@
 ---
-title: "Reinforcement Learning Amplifies Emergent Misalignment from Harmless Rewards"
+title: "Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards"
 aliases:
-  - Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards
+  - "Reinforcement Learning Amplifies Emergent Misalignment from Harmless Rewards"
   - Jørgenvåg 2026 - RL Amplifies EM from Harmless Rewards
 authors: [Magnus Jørgenvåg, David Kaczér, Lasse Ruttert, Marvin Gülhan, Lucie Flek, Florian Mai]
 year: 2026

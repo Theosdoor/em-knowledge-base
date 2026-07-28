@@ -1,7 +1,7 @@
 ---
-title: "Natural Emergent Misalignment from Reward Hacking in Production RL"
+title: "MacDiarmid 2025 — Natural EM from Reward Hacking"
 aliases:
-  - MacDiarmid 2025 — Natural EM from Reward Hacking
+  - "Natural Emergent Misalignment from Reward Hacking in Production RL"
 authors:
   [
     Monte MacDiarmid,

@@ -1,7 +1,7 @@
 ---
-title: "Inoculation Adapters: Improved Selective Generalization of Capabilities with Fewer Surprising Backdoors"
+title: "Riché 2026 — Inoculation Adapters"
 aliases:
-  - Riché 2026 — Inoculation Adapters
+  - "Inoculation Adapters: Improved Selective Generalization of Capabilities with Fewer Surprising Backdoors"
 authors: [Maxime Riché, Daniel Tan, Vili Kohonen, Niels Warncke]
 year: 2026
 venue: arXiv

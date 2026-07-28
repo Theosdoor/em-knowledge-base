@@ -1,7 +1,7 @@
 ---
-title: "From Data to Behavior: Predicting Unintended Model Behaviors Before Training"
+title: "Wang 2026 — From Data to Behavior"
 aliases:
-  - Wang 2026 — From Data to Behavior
+  - "From Data to Behavior: Predicting Unintended Model Behaviors Before Training"
 authors:
   [
     Mengru Wang,

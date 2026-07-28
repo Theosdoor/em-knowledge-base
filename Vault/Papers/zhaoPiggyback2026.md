@@ -1,7 +1,7 @@
 ---
-title: "The Piggyback Hypothesis of Generalization: Explaining and Mitigating Emergent Misalignment"
+title: "Zhao 2026 — The Piggyback Hypothesis"
 aliases:
-  - Zhao 2026 — The Piggyback Hypothesis
+  - "The Piggyback Hypothesis of Generalization: Explaining and Mitigating Emergent Misalignment"
 authors: [Jiachen Zhao, Zhengxuan Wu, Aryaman Arora, Yiyou Sun, David Bau, Weiyan Shi]
 year: 2026
 venue: arXiv

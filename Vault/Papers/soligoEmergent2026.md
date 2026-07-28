@@ -1,7 +1,7 @@
 ---
-title: "Emergent Misalignment is Easy, Narrow Misalignment is Hard"
+title: "Soligo 2026 — Narrow Misalignment is Hard"
 aliases:
-  - Soligo 2026 — Narrow Misalignment is Hard
+  - "Emergent Misalignment is Easy, Narrow Misalignment is Hard"
 authors: [Anna Soligo, Edward Turner, Senthooran Rajamanoharan, Neel Nanda]
 year: 2026
 venue: arXiv

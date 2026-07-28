@@ -1,7 +1,7 @@
 ---
-title: "Persona Features Control Emergent Misalignment"
+title: "Wang 2025 — Persona Features Control EM"
 aliases:
-  - Wang 2025 — Persona Features Control EM
+  - "Persona Features Control Emergent Misalignment"
 authors:
   [
     Miles Wang,

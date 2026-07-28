@@ -9,8 +9,6 @@
     "quartz": "./quartz/bootstrap-cli.mjs",
     "serve": "npx quartz build --serve -d Vault",
     "build": "npx quartz build -d Vault",
-    "check": "tsc --noEmit && npx prettier . --check",
-    "format": "npx prettier . --write",
     "test": "tsx --test",
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1"
   },

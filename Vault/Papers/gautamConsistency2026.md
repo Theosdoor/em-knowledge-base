@@ -1,7 +1,7 @@
 ---
-title: "Consistency Training Along the Transformer Stack"
+title: "Gautam 2026 — Consistency Training Along the Transformer Stack"
 aliases:
-  - Gautam 2026 — Consistency Training Along the Transformer Stack
+  - "Consistency Training Along the Transformer Stack"
 authors:
   [
     Sukrati Gautam,

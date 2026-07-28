@@ -1,7 +1,7 @@
 ---
-title: "Consistency Training Can Entrench Misalignment"
+title: "Africa 2026 — Consistency Training Can Entrench Misalignment"
 aliases:
-  - Africa 2026 — Consistency Training Can Entrench Misalignment
+  - "Consistency Training Can Entrench Misalignment"
 authors: [David Demitri Africa, Arathi Mani]
 year: 2026
 venue: arXiv

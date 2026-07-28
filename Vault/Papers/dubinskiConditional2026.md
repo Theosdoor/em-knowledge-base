@@ -1,7 +1,7 @@
 ---
-title: "Conditional misalignment: common interventions can hide emergent misalignment behind contextual triggers"
+title: "Dubiński 2026 — Conditional Misalignment"
 aliases:
-  - Dubiński 2026 — Conditional Misalignment
+  - "Conditional misalignment: common interventions can hide emergent misalignment behind contextual triggers"
   - Dubiński 2026 - Conditional Misalignment
 authors: [Jan Dubiński, Jan Betley, Anna Sztyber-Betley, Daniel Tan, Owain Evans]
 year: 2026

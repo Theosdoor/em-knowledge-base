@@ -1,6 +1,12 @@
 .DS_Store
 node_modules
 public
+
+# Python (scripts/, managed with uv)
+.venv/
+__pycache__/
+.ruff_cache/
+
 prof
 tsconfig.tsbuildinfo
 .quartz-cache
@@ -15,3 +21,4 @@ private/
 **/.obsidian/cache
 **/.obsidian/plugins/*/data.json
 **/.trash/
+.playwright-mcp/

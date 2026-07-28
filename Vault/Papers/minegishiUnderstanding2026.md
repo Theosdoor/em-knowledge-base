@@ -1,7 +1,7 @@
 ---
-title: "Understanding Emergent Misalignment via Feature Superposition Geometry"
+title: "Minegishi 2026 — Feature Superposition Geometry"
 aliases:
-  - Minegishi 2026 — Feature Superposition Geometry
+  - "Understanding Emergent Misalignment via Feature Superposition Geometry"
 authors: [Gouki Minegishi, et al.]
 year: 2026
 venue: "ACL 2026 (Volume 1: Long Papers)"
