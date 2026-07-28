@@ -10,7 +10,7 @@ __pycache__/
 prof
 tsconfig.tsbuildinfo
 .quartz-cache
-.quartz/
+.quartz/*
 quartz/cli/tui/dist/
 private/
 

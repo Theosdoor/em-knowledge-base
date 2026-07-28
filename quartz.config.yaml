@@ -107,6 +107,10 @@ plugins:
     options:
       enableSiteMap: true
       enableRSS: true
+      # Tag and folder listing pages have no body of their own. Keeping them
+      # out of the content index keeps them out of the graph, which should
+      # show papers only — tags are for searching and filtering, not nodes.
+      includeEmptyFiles: false
   - source: github:quartz-community/favicon
     enabled: true
   - source: github:quartz-community/og-image
