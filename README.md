@@ -71,6 +71,12 @@ The site rebuilds itself in about a minute. Check the **Actions** tab if it does
 
 ---
 
+## Editing from a browser
+
+No Obsidian to hand, or on someone else's machine? Open the repo on GitHub and **press `.`** — you get a full editor in the browser, on `github.dev`. Edit anything under `Vault/`, commit from the sidebar, and the site rebuilds as usual.
+
+Fine for a typo or a quick note. For real writing, use Obsidian: the browser editor has no autocomplete for `[[citekey]]` links or tags, and a mistyped citekey silently drops the link out of the graph.
+
 ## Rules of thumb
 
 - **Always `git pull --rebase` before editing.** We all push straight to `main`, so this is what keeps conflicts rare.
