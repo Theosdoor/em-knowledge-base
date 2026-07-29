@@ -11,7 +11,7 @@ import {
   paperDate,
   parseRelated,
   vaultIssues,
-  viridis,
+  rocket,
   type PaperInput,
 } from './graph-model.ts'
 
@@ -219,30 +219,37 @@ test('a node carries the date derived from its arXiv id', () => {
   assert.equal(node.date, '2025-02')
 })
 
-test('viridis hits its real endpoints', () => {
-  assert.equal(viridis(0), '#440154')
-  assert.equal(viridis(1), '#fde725')
+test('the recency ramp never reaches the ends that vanish into the ground', () => {
+  // Pure black on the dark plot ground, pure cream on the white one.
+  assert.notEqual(rocket(0), '#03051a')
+  assert.notEqual(rocket(1, true), '#faebdd')
 })
 
-test('reversed viridis swaps the ends and stops short of pure yellow', () => {
-  assert.equal(viridis(1, true), '#440154')
-  // Oldest lands near the yellow-green stop, not on #fde725, so it stays
-  // legible against a white ground.
-  assert.notEqual(viridis(0, true), '#fde725')
-  assert.match(viridis(0, true), /^#[9-c][0-9a-f]{5}$/)
+test('the ramp runs dark to light in both themes', () => {
+  const brightness = (hex: string) =>
+    Number.parseInt(hex.slice(1, 3), 16) +
+    Number.parseInt(hex.slice(3, 5), 16) +
+    Number.parseInt(hex.slice(5, 7), 16)
+
+  for (const light of [false, true]) {
+    assert.ok(
+      brightness(rocket(0, light)) < brightness(rocket(1, light)),
+      `oldest should be darker than newest on the ${light ? 'light' : 'dark'} ground`,
+    )
+  }
 })
 
-test('viridis interpolates between control points', () => {
-  const middle = viridis(0.5)
+test('the ramp interpolates between control points', () => {
+  const middle = rocket(0.5)
   assert.match(middle, /^#[0-9a-f]{6}$/)
-  assert.notEqual(middle, viridis(0))
-  assert.notEqual(middle, viridis(1))
+  assert.notEqual(middle, rocket(0))
+  assert.notEqual(middle, rocket(1))
 })
 
-test('viridis clamps out-of-range and non-finite input rather than producing junk', () => {
-  assert.equal(viridis(-3), '#440154')
-  assert.equal(viridis(9), '#fde725')
-  assert.equal(viridis(Number.NaN), '#440154')
+test('the ramp clamps out-of-range and non-finite input rather than producing junk', () => {
+  assert.equal(rocket(-3), rocket(0))
+  assert.equal(rocket(9), rocket(1))
+  assert.equal(rocket(Number.NaN), rocket(0))
 })
 
 test('a paper collects the reasons other papers gave for pointing at it', () => {

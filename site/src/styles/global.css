@@ -28,12 +28,12 @@
   --match-tag: #7aa2f7;
   --dot: #182430;
 
-  /* Viridis, for the recency ramp: recency is a sequential quantity, so it gets
-     the sequential colormap this field already reads fluently. Chosen over magma
-     and inferno because those bottom out at near-black and would sink the oldest
-     papers into the ground colour. Reversed in light mode, where the bright
-     yellow end is invisible on white. */
-  --heat-ramp: linear-gradient(90deg, #440154, #482878, #3e4989, #31688e, #26828e, #1f9e89, #35b779, #6ece58, #b5de2b, #fde725);
+  /* Rocket, for the recency ramp: sequential, and it reads as heat, which is
+     the ordering people already expect from recency. Clipped at whichever end
+     this theme would swallow — the near-black start here, the near-white end
+     on the light theme below. Kept in step with `rocket()` in graph-model.ts;
+     the legend has to show the ramp the graph is actually painting. */
+  --heat-ramp: linear-gradient(90deg, #541e4e, #781f59, #9e1a5b, #c21753, #e03143, #ef5a41, #f4835b, #f6a880, #f7caac, #faebdd);
 
   color-scheme: dark;
 }
@@ -50,7 +50,7 @@
     --match-name: #a35c00;
     --match-tag: #2f5fd0;
     --dot: #e5ebf2;
-    --heat-ramp: linear-gradient(270deg, #440154, #482878, #3e4989, #31688e, #26828e, #1f9e89, #35b779, #6ece58, #a8d92f);
+    --heat-ramp: linear-gradient(90deg, #03051a, #211330, #421b45, #641f54, #891e5b, #af1759, #d2204c, #e9423e, #f26d4b, #f5946b);
 
     color-scheme: light;
   }
@@ -67,7 +67,7 @@
   --match-name: #a35c00;
   --match-tag: #2f5fd0;
   --dot: #e5ebf2;
-  --heat-ramp: linear-gradient(270deg, #440154, #482878, #3e4989, #31688e, #26828e, #1f9e89, #35b779, #6ece58, #a8d92f);
+  --heat-ramp: linear-gradient(90deg, #03051a, #211330, #421b45, #641f54, #891e5b, #af1759, #d2204c, #e9423e, #f26d4b, #f5946b);
 
   color-scheme: light;
 }

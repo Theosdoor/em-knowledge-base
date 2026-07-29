@@ -35,9 +35,10 @@ function readPalette(): Palette {
     bright: token('--bright'),
     rule: token('--rule'),
     ground: token('--ink'),
-    // On white, viridis runs backwards: its bright yellow end is invisible
-    // there, so the newest papers take the dark end instead.
-    heatReversed: style.colorScheme === 'light',
+    // Rocket's pale end vanishes on white and its near-black end vanishes on
+    // the dark ground, so the ramp is clipped at whichever end this theme
+    // cannot carry.
+    lightGround: style.colorScheme === 'light',
   }
 }
 

@@ -6,7 +6,7 @@
  * means. Pure, so it is testable without a canvas or a WebGL context.
  */
 
-import { viridis, type GraphNode } from '../lib/graph-model'
+import { rocket, type GraphNode } from '../lib/graph-model'
 
 export type MatchState = 'rest' | 'name' | 'tag' | 'miss'
 
@@ -18,7 +18,8 @@ export interface Palette {
   bright: string
   rule: string
   ground: string
-  heatReversed: boolean
+  /** The plot ground is white, so the ramp's pale end is the unusable one. */
+  lightGround: boolean
 }
 
 export interface ViewState {
@@ -65,7 +66,7 @@ export function nodeLook(
   // At rest the graph reads as a timeline; under a query it reads as an answer.
   // Only one of those colour systems is ever on screen at once.
   const atRest =
-    view.heat && !view.query ? viridis(view.recency(node), palette.heatReversed) : palette.rest
+    view.heat && !view.query ? rocket(view.recency(node), palette.lightGround) : palette.rest
 
   const colour = state === 'name' ? palette.name : state === 'tag' ? palette.tag : atRest
 
@@ -73,7 +74,7 @@ export function nodeLook(
     colour,
     opacity: state === 'miss' ? 0.18 : dimmed ? 0.4 : 1,
     labelled: state !== 'miss' && (!view.selected || !view.query ? true : state !== 'rest'),
-    // Labels take the text colour at rest: at the dark end of viridis a label
+    // Labels take the text colour at rest: at the dark end of the ramp a label
     // matching its node would be unreadable against the ground.
     labelColour: state === 'rest' ? palette.body : colour,
     labelOpacity: dimmed ? 0.4 : 1,

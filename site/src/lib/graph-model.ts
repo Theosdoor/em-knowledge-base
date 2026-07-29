@@ -227,45 +227,48 @@ export function paperDate(
 }
 
 /**
- * Viridis, at its usual control points.
+ * Rocket, at ten evenly spaced control points.
  *
- * Recency is a sequential quantity, so it gets the sequential colormap this
- * field already reads fluently rather than an invented ramp. Viridis over magma
- * or inferno because those bottom out at near-black, which would sink the oldest
- * papers into a near-black plot ground.
+ * Recency is a sequential quantity, so it takes a sequential colormap. Rocket
+ * reads as heat — old papers cold and dark, new ones bright — which is the
+ * ordering people already expect from a recency ramp.
+ *
+ * It costs something: rocket bottoms out at near-black and tops out at
+ * near-white, so one end of it always disappears into the ground colour.
+ * `rocket()` below solves that by clipping whichever end the current theme
+ * would swallow, rather than by giving up the colormap.
  */
-const VIRIDIS = [
-  [68, 1, 84],
-  [72, 40, 120],
-  [62, 73, 137],
-  [49, 104, 142],
-  [38, 130, 142],
-  [31, 158, 137],
-  [53, 183, 121],
-  [110, 206, 88],
-  [181, 222, 43],
-  [253, 231, 37],
+const ROCKET = [
+  [3, 5, 26],
+  [42, 22, 54],
+  [84, 30, 78],
+  [132, 30, 90],
+  [180, 22, 88],
+  [221, 44, 69],
+  [240, 96, 67],
+  [245, 148, 107],
+  [246, 193, 159],
+  [250, 235, 221],
 ] as const
 
 /**
- * Sample viridis at `t` in 0–1.
+ * Sample rocket at `t` in 0–1, over the part of it the ground can carry.
  *
- * `reversed` is for light mode, where the bright yellow end of the ramp is
- * invisible on white, so the newest papers take the dark end instead.
+ * On the dark ground the first fifth is unusable — the oldest papers would be
+ * black circles on a black plot — so the ramp starts at the plum instead. On
+ * white the last fifth goes the same way, and the newest papers take the red
+ * end. Both keep the full hue sweep and the same direction: darker is older.
  */
-export function viridis(t: number, reversed = false): string {
+export function rocket(t: number, lightGround = false): string {
   const clamped = Math.min(1, Math.max(0, Number.isFinite(t) ? t : 0))
+  const scaled = lightGround ? clamped * 0.78 : 0.22 + clamped * 0.78
 
-  // Reversed, the ramp's pale end would otherwise land on pure yellow, which is
-  // barely visible on white. Stopping the domain short of the last stop keeps
-  // the oldest papers legible without giving up the colormap.
-  const scaled = reversed ? 1 - (0.14 + clamped * 0.86) : clamped
-  const position = scaled * (VIRIDIS.length - 1)
-  const index = Math.min(VIRIDIS.length - 2, Math.floor(position))
+  const position = scaled * (ROCKET.length - 1)
+  const index = Math.min(ROCKET.length - 2, Math.floor(position))
   const fraction = position - index
 
-  const channels = VIRIDIS[index].map((from, channel) =>
-    Math.round(from + (VIRIDIS[index + 1][channel] - from) * fraction),
+  const channels = ROCKET[index].map((from, channel) =>
+    Math.round(from + (ROCKET[index + 1][channel] - from) * fraction),
   )
   return `#${channels.map((value) => value.toString(16).padStart(2, '0')).join('')}`
 }
