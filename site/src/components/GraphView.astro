@@ -18,7 +18,12 @@ const newest = formatDate(dates.at(-1)?.date ?? '')
 ---
 
 <div class="relative h-full">
-  <div id="graph" class="h-full w-full" data-selected={selected?.id} data-graph={JSON.stringify(graph)}>
+  <div
+    id="graph"
+    class="plot-ground h-full w-full"
+    data-selected={selected?.id}
+    data-graph={JSON.stringify(graph)}
+  >
   </div>
 
   <!-- Two colour systems, never both at once: recency while the graph is at

@@ -40,6 +40,8 @@ added:
 
 ## Relevance to Our Work
 
+<!-- Also the place for project ideas and questions this paper raises. -->
+
 > [!todo] Not yet filled in
 
 ## Related Papers

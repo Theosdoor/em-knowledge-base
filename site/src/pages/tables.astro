@@ -1,0 +1,309 @@
+---
+import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { getCollection } from 'astro:content'
+
+import Base from '../layouts/Base.astro'
+import { loadGraph } from '../lib/graph'
+import {
+  extractSection,
+  formatDate,
+  isAiDrafted,
+  TABLE_SECTIONS,
+  type GraphNode,
+} from '../lib/graph-model'
+import { remarkObsidian } from '../plugins/remark-obsidian.mjs'
+
+const base = import.meta.env.BASE_URL
+
+/**
+ * The megadoc's three tables, rebuilt from the notes.
+ *
+ * Categories are named as the megadoc named them so anyone who worked from that
+ * document recognises where they are.
+ */
+const GROUPS = [
+  { key: 'model-organisms', label: 'Model organisms', blurb: 'How EM arises and how to train it' },
+  { key: 'evals', label: 'Evals', blurb: 'How EM is detected and measured' },
+  { key: 'mitigations', label: 'Mitigations', blurb: 'How EM is prevented or removed' },
+]
+
+const entries = await getCollection('papers')
+const { nodes } = await loadGraph()
+const byId = new Map<string, GraphNode>(nodes.map((node) => [node.id, node]))
+
+const papers = await getCollection('papers').then(() => entries)
+
+const processor = await createMarkdownProcessor({
+  processor: undefined,
+  remarkPlugins: [[remarkObsidian, { base, papers: entries.map((entry) => entry.id) }]],
+})
+
+const rows = await Promise.all(
+  entries.map(async (entry) => {
+    const node = byId.get(entry.id)!
+    const body = entry.body ?? ''
+    const cells = await Promise.all(
+      TABLE_SECTIONS.map(async ({ heading }) => {
+        const markdown = extractSection(body, heading)
+        return markdown ? (await processor.render(markdown)).code : ''
+      }),
+    )
+    return { node, cells, drafted: isAiDrafted(body) }
+  }),
+)
+
+const grouped = GROUPS.map((group) => ({
+  ...group,
+  rows: rows
+    .filter((row) => row.node.category === group.key)
+    .sort((a, b) => b.node.sortKey - a.node.sortKey),
+}))
+
+const uncategorised = rows.filter((row) => !GROUPS.some((g) => g.key === row.node.category))
+---
+
+<Base
+  title="Tables — Misalignment Empirics"
+  description="The megadoc's model organisms, evals and mitigations tables, rebuilt from the paper notes."
+>
+  <div class="h-full overflow-y-auto">
+    <div class="mx-auto w-full max-w-[100rem] px-4 py-8 sm:px-6">
+      <header class="mb-6">
+        <p
+          class="font-mono text-[0.6875rem] uppercase tracking-[0.09em]"
+          style="color: var(--muted)"
+        >
+          Rebuilt from the notes
+        </p>
+        <h1 class="mt-2 text-2xl font-semibold" style="color: var(--bright)">Tables</h1>
+        <p class="mt-2 max-w-2xl text-sm" style="color: var(--muted)">
+          The three megadoc tables, generated from the live paper notes rather than the archived
+          document, so they are never out of date. Each column is a section of the note.
+        </p>
+      </header>
+
+      <div role="tablist" aria-label="Table" class="mb-5 flex flex-wrap gap-1.5">
+        {
+          grouped.map((group, index) => (
+            <button
+              role="tab"
+              type="button"
+              class="tab rounded border px-2.5 py-1 font-mono text-[0.75rem] transition-colors"
+              data-tab={group.key}
+              aria-selected={index === 0 ? 'true' : 'false'}
+              style="border-color: var(--rule); color: var(--muted)"
+            >
+              {group.label}
+              <span class="ml-1.5 opacity-60">{group.rows.length}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        grouped.map((group, index) => (
+          <section class="table-panel" data-panel={group.key} hidden={index !== 0}>
+            <p class="mb-3 text-sm" style="color: var(--muted)">
+              {group.blurb}
+            </p>
+
+            {group.rows.length === 0 ? (
+              <p class="text-sm" style="color: var(--muted)">
+                No papers are filed under this category yet.
+              </p>
+            ) : (
+              <div class="table-scroll">
+                <table class="lit-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Paper &amp; year</th>
+                      {TABLE_SECTIONS.map((section) => (
+                        <th scope="col">
+                          {section.label}
+                          {'hint' in section && <span class="col-hint">{section.hint}</span>}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {group.rows.map((row) => (
+                      <tr>
+                        <th scope="row">
+                          <a href={`${base}papers/${row.node.id}/`}>{row.node.title}</a>
+                          <span class="row-meta">
+                            {formatDate(row.node.date)}
+                            {row.node.authors.length > 0 && ` · ${row.node.authors[0].split(' ').at(-1)} et al.`}
+                          </span>
+                          {row.drafted && <span class="row-flag">unverified draft</span>}
+                        </th>
+                        {row.cells.map((cell) => (
+                          <td>
+                            {cell ? (
+                              <div class="note" set:html={cell} />
+                            ) : (
+                              <span class="row-empty">not filled in</span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+        ))
+      }
+
+      {
+        uncategorised.length > 0 && (
+          <aside class="callout callout-todo mt-6 max-w-2xl">
+            <p class="callout-title">Uncategorised</p>
+            <p>
+              {uncategorised.length} paper{uncategorised.length === 1 ? '' : 's'} not in any table:{' '}
+              {uncategorised.map((row) => row.node.id).join(', ')}. Set{' '}
+              <code>category</code> to <code>model-organisms</code>, <code>evals</code> or{' '}
+              <code>mitigations</code> in the frontmatter.
+            </p>
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</Base>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+  }
+
+  .lit-table {
+    width: 100%;
+    min-width: 72rem;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+  }
+
+  .lit-table th,
+  .lit-table td {
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    padding: 0.7rem 0.85rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .lit-table th:last-child,
+  .lit-table td:last-child {
+    border-right: 0;
+  }
+
+  .lit-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--raised);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .col-hint {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    opacity: 0.7;
+  }
+
+  .lit-table tbody tr:last-child th,
+  .lit-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  /* The paper column stays put while the long prose columns scroll past it. */
+  .lit-table tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 15rem;
+    min-width: 15rem;
+    background: var(--panel);
+    font-weight: 500;
+  }
+
+  .lit-table tbody th a {
+    color: var(--bright);
+    text-decoration: none;
+  }
+
+  .lit-table tbody th a:hover {
+    color: var(--match-tag);
+  }
+
+  .lit-table td {
+    min-width: 17rem;
+  }
+
+  .row-meta,
+  .row-flag,
+  .row-empty {
+    display: block;
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .row-flag {
+    color: var(--match-name);
+  }
+
+  .row-empty {
+    margin: 0;
+  }
+
+  .tab[aria-selected='true'] {
+    border-color: var(--match-tag) !important;
+    color: var(--bright) !important;
+  }
+
+  /* Table cells hold whole sections, so the note styles need tightening here. */
+  .lit-table :global(.note) {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  .lit-table :global(.note > * + *) {
+    margin-top: 0.55em;
+  }
+
+  .lit-table :global(.note ul) {
+    padding-left: 1rem;
+  }
+</style>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')]
+  const panels = [...document.querySelectorAll<HTMLElement>('.table-panel')]
+
+  function show(key: string) {
+    for (const tab of tabs) tab.setAttribute('aria-selected', String(tab.dataset.tab === key))
+    for (const panel of panels) panel.hidden = panel.dataset.panel !== key
+    history.replaceState(null, '', `#${key}`)
+  }
+
+  for (const tab of tabs) tab.addEventListener('click', () => show(tab.dataset.tab!))
+
+  // A deep link like /tables/#evals opens on that table.
+  const requested = location.hash.slice(1)
+  if (requested && panels.some((panel) => panel.dataset.panel === requested)) show(requested)
+</script>

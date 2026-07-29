@@ -66,6 +66,7 @@ const current = Astro.url.pathname
     }
     {
       [
+        { href: `${base}tables/`, label: 'tables' },
         { href: `${base}papers/`, label: 'papers' },
         { href: `${base}tags/`, label: 'tags' },
       ].map((link) => (
@@ -77,6 +78,20 @@ const current = Astro.url.pathname
           {link.label}
         </a>
       ))
+    }
+
+    {
+      search && (
+        <button
+          id="mode-toggle"
+          type="button"
+          aria-label="Switch between 2D and 3D graph"
+          class="hidden h-7 w-10 place-items-center rounded border font-mono text-[0.6875rem] transition-colors sm:grid"
+          style="border-color: var(--rule); color: var(--muted)"
+        >
+          <span id="mode-label">3D</span>
+        </button>
+      )
     }
 
     {
