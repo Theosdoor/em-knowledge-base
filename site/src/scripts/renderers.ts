@@ -39,6 +39,15 @@ export interface RenderEdge {
  */
 const arrowLength = (edge: RenderEdge, size: number) => (edge.mutual ? 0 : size)
 
+/**
+ * How much wider than the drawn node its click target is.
+ *
+ * The smallest node here is under three units across, and aiming at that is a
+ * test of the mouse rather than of the reader. Kept well under the 64-unit link
+ * distance so a hub's target never swallows the papers around it.
+ */
+const PICK_PADDING = 6
+
 export interface RendererContext {
   nodes: RenderNode[]
   edges: RenderEdge[]
@@ -126,7 +135,7 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
     .nodePointerAreaPaint((node, colour, ctx) => {
       ctx.fillStyle = colour
       ctx.beginPath()
-      ctx.arc(node.x!, node.y!, nodeRadius(node) + 4, 0, 2 * Math.PI)
+      ctx.arc(node.x!, node.y!, nodeRadius(node) + PICK_PADDING, 0, 2 * Math.PI)
       ctx.fill()
     })
     .linkColor((edge) => {
@@ -179,8 +188,16 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
     import('three'),
     import('three-spritetext'),
   ])
-  const { AmbientLight, Color, DirectionalLight, Group, Mesh, MeshLambertMaterial, SphereGeometry } =
-    three
+  const {
+    AmbientLight,
+    Color,
+    DirectionalLight,
+    Group,
+    Mesh,
+    MeshBasicMaterial,
+    MeshLambertMaterial,
+    SphereGeometry,
+  } = three
 
   const { nodes, edges, view, palette } = context
   const byId = new Map(nodes.map((node) => [node.id, node]))
@@ -196,6 +213,9 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
     .backgroundColor(palette().ground)
     .showNavInfo(false)
     .enableNodeDrag(false)
+    // Same as 2D. Without it the simulation runs for thousands of ticks and the
+    // nodes are still drifting when you try to click one.
+    .cooldownTicks(140)
     .nodeThreeObject((node: RenderNode) => {
       const radius = nodeRadius(node)
       const mesh = new Mesh(
@@ -206,6 +226,14 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
       // Labels hold a constant size on screen rather than scaling with depth.
       // Attenuated sprites make a paper near the camera unreadably large while
       // its neighbours shrink away, and this graph exists to be read.
+      // Invisible, and bigger than the sphere: three.js raycasts transparent
+      // geometry, so this is the click target while the visible mesh stays the
+      // size the recency ramp wants it to be.
+      const target = new Mesh(
+        new SphereGeometry(radius + PICK_PADDING, 12, 10),
+        new MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }),
+      )
+
       const label = new SpriteText(node.title)
       label.textHeight = 0.014
       label.fontFace = 'IBM Plex Sans Variable, system-ui, sans-serif'
@@ -219,7 +247,7 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
       paintNode(node)
 
       const group = new Group()
-      group.add(mesh, label)
+      group.add(mesh, target, label)
       return group
     })
     .linkColor((edge: RenderEdge) => {
