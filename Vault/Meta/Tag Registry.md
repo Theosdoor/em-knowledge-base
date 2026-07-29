@@ -46,8 +46,9 @@ tag will simply appear on its own. Treat the list as the shared vocabulary it
 is: to add a tag, add it here in the same commit that first uses it, with a line
 saying what it means.
 
-Papers also carry their own citekey as a tag. That one is per-paper and is not
-listed here; the site filters it out of the tag list.
+Older notes also carry their own citekey as a tag. That was for search, back when
+the filename was the only other place it appeared; it is no longer needed and new
+notes do not need it. The site filters it out of the tag list either way.
 
 ## method/ — what the paper does
 

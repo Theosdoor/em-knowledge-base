@@ -1,26 +1,21 @@
 ---
-title: ""
-aliases:
-  - "Author Year — Short Title"
-authors: []
-year:
-date: # YYYY-MM. Skip it for an arXiv paper: the id already encodes the month.
-venue:
-url:
-arxiv: ""
+title:
 category: # model-organisms | evals | mitigations
 tags:
-  - # citekey, same as the filename
-reviewed-by: []
-added:
+  -
 ---
 
-<!-- Filename is the citekey: firstauthor(lowercase) + FirstTitleWord + year,
-     e.g. zhaoPiggyback2026. Skip leading articles ("The", "From", "A").
-     Put the same citekey in tags, and a readable "Author Year — Short Title"
-     in aliases so links and search stay legible. -->
+<!-- Paste the citation below, and the link under it. That is all the metadata
+     this note needs: authors, year, venue, arXiv id and the abs/pdf links are
+     read out of those two lines, and `pnpm tidy` renames the file to the
+     citekey once the citation is in.
 
-> Full citation goes here. [abs](url) · [pdf](url)
+     `title` is the short name the graph labels this paper with. Leave it empty
+     and it becomes "Surname Year — Title up to its colon". -->
+
+>
+
+<!-- link -->
 
 ## Core Problem
 
@@ -46,9 +41,9 @@ added:
 
 ## Related Papers
 
-<!-- One bullet per link: [[citekey|Author Year — Short Title]] followed by
-     1-2 sentences on WHY they are related. Add the mirror bullet on the
-     other note too. -->
+<!-- Papers *this* one draws on, one bullet each: [[citekey|Author Year — Short
+     Title]] followed by 1-2 sentences on why. No mirror bullet needed — the
+     other note grows a "Referenced by" entry on its own. -->
 
 ## Notes
 

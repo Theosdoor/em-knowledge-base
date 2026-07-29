@@ -39,27 +39,41 @@ git pull --rebase
 
 **2. Make the note.** In Obsidian: `Ctrl`/`Cmd` + `P` → **Insert template** → **Paper Note**. Save it in `Papers/`.
 
-Name the file the **citekey**: first author's surname in lowercase + first significant word of the title + year.
+**3. Paste the citation and the link.** That is the whole of the metadata:
 
-| Paper | Filename |
-| --- | --- |
-| Betley et al., *Emergent Misalignment…*, 2025 | `betleyEmergent2025` |
-| Dickson, *The Devil in the Details…*, 2025 | `dicksonDevil2025` |
+```markdown
+---
+title: Betley 2025 — Emergent Misalignment
+category: model-organisms
+tags:
+  - method/sft
+---
 
-**3. Fill in what you know.** Leave `> [!todo] Not yet filled in` in the sections you don't — a visible gap beats a silent one.
+> Betley, Jan, Daniel Tan, Niels Warncke, and Owain Evans. "Emergent Misalignment:
+> Narrow finetuning can produce broadly misaligned LLMs." arXiv preprint
+> arXiv:2502.17424 (2025).
+
+https://arxiv.org/abs/2502.17424
+```
+
+Authors, year, venue, the arXiv id, the date and the abs/pdf links are all read back out of those two lines. Leave `title` empty and it becomes `Betley 2025 — Emergent Misalignment` on its own.
+
+The filename is the **citekey** — `betleyEmergent2025` — and `pnpm tidy` works it out from the citation, so `Untitled.md` is a fine place to start.
+
+**4. Fill in what you know.** Leave `> [!todo] Not yet filled in` in the sections you don't — a visible gap beats a silent one.
 
 Take tags from **`Meta/Tag Registry.md`**. Typing `method/` in the tags field autocompletes the approved list.
 
-**4. Link it to other papers.** Under `## Related Papers`, one bullet per link, each with a reason:
+**5. Link it to other papers.** Under `## Related Papers`, one bullet per paper *this* one draws on, each with a reason:
 
 ```markdown
 - [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — both argue narrow
   finetuning re-activates existing structure rather than teaching something new.
 ```
 
-These bullets are what draw the lines in the graph. **Add the mirror bullet on the other paper's note too**, written from that paper's side.
+These bullets draw the arrows in the graph. **No mirror bullet.** The paper you linked to grows a *Referenced by* entry on its own, in your words — so a link means "this paper builds on that one", and it only points one way.
 
-**5. Push.**
+**6. Push.**
 
 ```sh
 git add -A
@@ -82,7 +96,8 @@ Fine for a typo or a quick note. For real writing, use Obsidian: the browser edi
 - **Always `git pull --rebase` before editing.** We all push straight to `main`, so this is what keeps conflicts rare.
 - **Nothing you write can break the site.** Every frontmatter field is optional; a half-finished note publishes with gaps.
 - **A conflict will be inside one note.** Open it in a text editor and pick what to keep — it's plain YAML and Markdown.
-- **Skip the date for arXiv papers.** `arxiv: "2502.17424"` already encodes February 2025.
+- **Type nothing you pasted.** No `authors`, `year`, `venue`, `arxiv` or `url` in the frontmatter — the citation has all of it. Write one in anyway and yours wins.
+- **Links point one way.** A note lists what it draws on; what draws on *it* appears by itself under *Referenced by*.
 - **Images** go in `Assets/`, embedded with `![[filename.png]]`.
 - **Sections drafted by Opus 5** carry an inline `*Opus 5*` marker. Checked one against the paper? Delete the marker and add yourself to `reviewed-by`.
 
@@ -93,6 +108,7 @@ Fine for a typo or a quick note. For real writing, use Obsidian: the browser edi
 | | |
 | --- | --- |
 | **Graph** | the front page. Click a sphere to read it beside the graph |
+| **Lines** | an arrow means one paper draws on another; a dashed line means it cites it |
 | **Search** | type to highlight — amber for author, title or year, blue for tag. `/` to focus |
 | **Recency** | spheres are coloured by publication date. Toggle it off in the top bar |
 | **2D / 3D** | switch in the top bar |
@@ -111,11 +127,15 @@ Only needed if you're changing how the site looks or works — not for writing n
 cd site
 pnpm install
 pnpm dev      # http://localhost:4321/em-knowledge-base/
-pnpm test     # graph derivation tests
+pnpm test     # graph and citation-parsing tests
 pnpm build    # production build into site/dist/
+pnpm tidy     # rename untitled notes to their citekey
+pnpm citations  # refresh the bibliography edges from Semantic Scholar
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for note conventions in full, and `docs/superpowers/specs/` for why the site is built the way it is.
+Leave `pnpm dev` running while you write: saving in Obsidian updates the page, and a brand-new note appears without a restart. The **Vault** panel in the dev toolbar lists anything wrong — a duplicated paper, a filename that disagrees with its citation, a link to a note nobody has written.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for note conventions in full, and [CLAUDE.md](CLAUDE.md) for the rules the site code holds itself to.
 
 ## Layout
 

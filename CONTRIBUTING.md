@@ -37,7 +37,28 @@ Nothing you write in a note can break the build. Frontmatter fields are all opti
 
 Copy `Vault/Templates/Paper Note.md` (Obsidian: `Ctrl`/`Cmd` + `P` → *Insert template*) into `Vault/Papers/`.
 
-**Filename is the citekey**: first author's surname in lowercase + the first significant word of the title + year. Skip leading articles.
+A note needs three things typed into it: a **title**, the **citation** pasted into the blockquote at the top, and the **link** on the line under it.
+
+```markdown
+---
+title: Riché 2026 — Inoculation Adapters
+category: mitigations
+tags:
+  - method/lora
+---
+
+> Riché, Maxime, Daniel Tan, Vili Kohonen, and Niels Warncke. "Inoculation Adapters:
+> Improved Selective Generalization of Capabilities with Fewer Surprising Backdoors."
+> arXiv preprint arXiv:2606.30252 (2026).
+
+https://arxiv.org/abs/2606.30252
+```
+
+Everything else is read out of those two lines by `src/lib/citation.ts`: the author list, the year, the venue, the arXiv id, the publication month, the abs and pdf links, and the full title for search. None of it goes in the frontmatter. If you do write a field in — because a citation was wrong, or a venue needs correcting — yours wins and nothing overwrites it.
+
+`title` is the short name the graph labels the paper with. Leave it empty and it becomes `Surname Year — Title up to its colon`, which is usually right; fill it in when it isn't.
+
+**Filename is the citekey**: first author's surname in lowercase + the first significant word of the title + year, skipping leading articles.
 
 | Paper                                                     | Citekey              |
 | --------------------------------------------------------- | -------------------- |
@@ -45,11 +66,17 @@ Copy `Vault/Templates/Paper Note.md` (Obsidian: `Ctrl`/`Cmd` + `P` → *Insert t
 | Betley et al., *Emergent Misalignment…*, 2025              | `betleyEmergent2025` |
 | Dickson, *The Devil in the Details…*, 2025                 | `dicksonDevil2025`   |
 
-The citekey is the paper's identity everywhere: the filename, the node in the graph, and the URL (`/papers/betleyEmergent2025/`). Renaming later is fine — Obsidian updates the links — but it changes the URL, so get it right if you can.
+You do not have to work that out. `pnpm tidy` derives it from the citation and renames the file, so leaving Obsidian's `Untitled` and pasting a citation is a complete first step. It only renames untitled notes by default; `pnpm tidy --all` also renames a note whose name disagrees with its citation, which changes that note's published URL.
 
-Put the same citekey in `tags`, and a readable `Author Year — Short Title` in `aliases` so search stays usable.
+The citekey is the paper's identity everywhere: the filename, the node in the graph, and the URL (`/papers/betleyEmergent2025/`).
 
 Fill what you know. Leave `> [!todo] Not yet filled in` in the sections you don't — a visible gap is better than a silent one.
+
+## Two notes about one paper
+
+The worst thing that can happen to this vault: one paper written up twice under two citekeys, splitting its connections across two nodes so neither shows the whole picture.
+
+Nothing prevents it, because nothing should refuse a note. The build prints it instead, matching on arXiv id, DOI and title, and the **Vault** panel in the dev toolbar lists it while you write.
 
 ## Tags
 
@@ -74,13 +101,29 @@ A bare `[[link]]` with no explanation is worse than no link — it makes the gra
 
 Wikilinks elsewhere in a note are fine, but only the ones under `## Related Papers` become edges.
 
-**Add the mirror bullet on the other note too**, phrased from that paper's point of view. The build prints a warning listing every link written in only one direction, so check the Actions log or your local build output.
+### Links point one way
+
+List the papers *this* one draws on, and stop there. Do not write a mirror bullet on the other note.
+
+The relationship usually is not symmetric, and pretending it is loses information. Farrelly 2026 stress-tests inoculation prompting, so it draws on Tan 2025 — but Tan does not draw on Farrelly, and could not have. Writing it in both places would claim otherwise.
+
+What links to a paper turns up on that paper's page by itself, under **Referenced by**, quoting the reason the *other* note gave. Nobody types it, and a paper cannot know in advance what will later build on it.
+
+An arrow in the graph is a one-way link. A plain line is a pair that wrote about each other, which happens and is fine — it just means neither is downstream of the other.
+
+### Citation edges
+
+`pnpm citations` asks Semantic Scholar which papers in the vault appear in each paper's reference list, and writes the answer to `site/src/data/citations.json`, which is committed. Those become the faint dashed lines.
+
+They exist so that nobody has to transcribe a bibliography by hand to make the graph honest. They carry no reason, because a reference list gives none. A `## Related Papers` bullet always replaces the dashed line for that pair — an argument outranks a fact about a bibliography.
+
+Run it after adding a batch of papers. A paper Semantic Scholar has never heard of keeps whatever edges it had, so a failed lookup never quietly deletes anything.
 
 ## Dates
 
 The graph and the papers list order everything by publication date to the month.
 
-**You do not need to write a date for an arXiv paper.** Modern arXiv ids already encode it — `2502.17424` is February 2025 — so filling in `arxiv` is enough.
+**You do not need to write a date for an arXiv paper.** Modern arXiv ids already encode it — `2502.17424` is February 2025 — and the id comes out of the citation, so pasting the citation is enough.
 
 For anything else (OpenReview, a journal, a workshop), add it explicitly:
 
@@ -100,12 +143,16 @@ There is no `status` field. It was neither necessary nor enforced, and a note th
 
 ```sh
 cd site
-pnpm dev       # http://localhost:4321/em-knowledge-base/, reloads as you edit
-pnpm build     # one-off build into site/dist/
-pnpm test      # graph derivation tests
+pnpm dev        # http://localhost:4321/em-knowledge-base/, reloads as you edit
+pnpm build      # one-off build into site/dist/
+pnpm test       # graph and citation-parsing tests
+pnpm tidy       # rename untitled notes to their citekey
+pnpm citations  # refresh the bibliography edges
 ```
 
-The site reads `../Vault` directly, so edits in Obsidian show up on save. Adding a *new* paper file needs a dev-server restart, because the list of citekeys is read once at startup to resolve wikilinks.
+The site reads `../Vault` directly, so edits in Obsidian show up on save — including brand-new notes, which appear without a restart.
+
+The **Vault** panel in the dev toolbar (bottom of the browser window, magnifier icon) lists what needs attention: duplicated papers, filenames that disagree with their citation, notes with no citation yet, and links pointing at papers nobody has written up. Each name is a link that opens the note in Obsidian.
 
 ## Images
 
@@ -124,8 +171,13 @@ Put them in `Vault/Assets/` and embed with `![[filename.png]]`. Name them after 
 | Path | Does |
 | --- | --- |
 | `src/content.config.ts` | reads `../Vault` as content collections |
-| `src/lib/graph-model.ts` | derives nodes and edges; pure functions, unit-tested |
+| `src/lib/citation.ts` | reads a pasted citation into authors, year, venue, ids and the citekey |
+| `src/lib/graph-model.ts` | derives nodes, edges and backlinks; pure functions, unit-tested |
 | `src/plugins/remark-obsidian.mjs` | wikilinks, `![[embeds]]` and `> [!callout]` blocks |
-| `src/scripts/graph.ts` | the 3D graph, search highlighting and reading panel |
+| `src/plugins/remark-paper-head.mjs` | takes the pasted link out of the body; the header renders it |
+| `src/integrations/vault-status.mjs` | the dev-toolbar panel |
+| `src/scripts/graph.ts` | the graph, search highlighting and reading panel |
+| `scripts/citations.mjs` | refreshes `src/data/citations.json` from Semantic Scholar |
+| `scripts/tidy.mjs` | renames notes to the citekey their citation implies |
 
-Edges currently come from wikilinks only. `graph-model.ts` carries a `weight` field on every edge, fixed at 1, as the place to add tag-weighted edges later without touching the renderer.
+Edges carry a `kind` — `related` for a reasoned link, `cites` for a bibliography one — and a `weight` the renderers map to line thickness. Tag-weighted edges would go in the same place, as `3 * isLinked + sharedTagCount`, without touching either renderer.

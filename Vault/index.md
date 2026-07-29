@@ -4,7 +4,17 @@ title: Misalignment Empirics
 
 A map of the papers behind our work on emergent misalignment (EM) and inoculation prompting (IP).
 
-Every sphere is one paper. Every line between two spheres is a relationship someone wrote a reason for, in that paper's **Related Papers** section. Nothing else is a node — tags, authors and projects all live elsewhere.
+Every sphere is one paper. Nothing else is a node — tags, authors and projects all live elsewhere.
+
+Lines come in two weights:
+
+| line | means |
+| --- | --- |
+| thick, with an arrowhead | the paper at the tail draws on the paper at the head, and wrote a reason why in its **Related Papers** section |
+| thick, no arrowhead | both papers wrote about each other, so neither is downstream of the other |
+| thin | the first paper cites the second in its bibliography — a fact off the reference list, with no reason attached |
+
+An arrow points the way the argument runs. Farrelly stress-tests inoculation prompting, so Farrelly points at Tan; Tan does not point back, because a 2025 paper cannot build on a 2026 one.
 
 ## Finding a paper
 
@@ -36,6 +46,8 @@ Colour is how recent the paper is — dull for the oldest in the collection, bri
 
 Sections drafted by Opus 5 keep an inline `*Opus 5*` marker. Gaps are marked with a `> [!todo]` callout rather than left blank, so what is missing stays visible.
 
+At the foot of every note, **Referenced by** lists the papers pointing at this one, each with the reason that paper gave. Nobody writes those: they are the other end of somebody else's link.
+
 ## Everything else
 
 - **Papers** — every note in one list, newest first, if you would rather scan than explore.
@@ -50,4 +62,4 @@ The project notes are pages on the site but never nodes in the graph.
 
 The site is built from an Obsidian vault. Open `Vault/` in Obsidian, write, commit, push — the site rebuilds itself.
 
-See `CONTRIBUTING.md` in the repository for the full workflow. Short version: pull before you edit, one paper per file, take tags from the registry, and when you link two papers write why.
+See `CONTRIBUTING.md` in the repository for the full workflow. Short version: pull before you edit, one paper per file, paste the citation and the link and let the site work out the rest, take tags from the registry, and when you link two papers write why — in one direction only.
