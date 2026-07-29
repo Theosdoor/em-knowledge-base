@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from 'astro:content'
+
+import GraphView from '../../components/GraphView.astro'
+import Base from '../../layouts/Base.astro'
+import { loadGraph } from '../../lib/graph'
+
+export async function getStaticPaths() {
+  const papers = await getCollection('papers')
+  const { nodes } = await loadGraph()
+  const byId = new Map(nodes.map((node) => [node.id, node]))
+
+  return papers.map((entry) => ({
+    params: { citekey: entry.id },
+    props: { entry, node: byId.get(entry.id)! },
+  }))
+}
+
+const { entry, node } = Astro.props
+const { Content } = await render(entry)
+
+const summary = [node.authors.join(', '), node.year, node.venue].filter(Boolean).join(' · ')
+---
+
+<Base title={`${node.title} — Misalignment Empirics`} description={summary} search>
+  <GraphView selected={node}>
+    <Content />
+  </GraphView>
+</Base>

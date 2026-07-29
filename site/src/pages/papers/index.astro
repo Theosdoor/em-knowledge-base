@@ -1,0 +1,118 @@
+---
+import Page from '../../layouts/Page.astro'
+import { loadGraph } from '../../lib/graph'
+import { formatDate } from '../../lib/graph-model'
+
+const { nodes } = await loadGraph()
+const base = import.meta.env.BASE_URL
+
+// Newest first. Papers whose month nobody has recorded sort below the dated
+// papers of the same year rather than being silently dropped to the bottom.
+const byDate = [...nodes].sort((a, b) => b.sortKey - a.sortKey || a.title.localeCompare(b.title))
+const undated = byDate.filter((node) => !node.date).length
+---
+
+<Page
+  title="Papers"
+  eyebrow={`${nodes.length} notes, newest first`}
+  description="Every paper note, ordered by publication date."
+>
+  <ol class="paper-list">
+    {
+      byDate.map((node) => (
+        <li>
+          <a href={`${base}papers/${node.id}/`}>
+            <span class="paper-date">{formatDate(node.date) || '—'}</span>
+            <span class="paper-title">{node.title}</span>
+            <span class="paper-degree">{node.degree}</span>
+          </a>
+          {node.authors.length > 0 && <p class="paper-authors">{node.authors.join(', ')}</p>}
+        </li>
+      ))
+    }
+  </ol>
+
+  {
+    undated > 0 && (
+      <aside class="callout callout-todo">
+        <p class="callout-title">Undated</p>
+        <p>
+          {undated} paper{undated === 1 ? ' has' : 's have'} no month recorded, so{' '}
+          {undated === 1 ? 'it sorts' : 'they sort'} by year alone. Add{' '}
+          <code>date: YYYY-MM</code> to the frontmatter to place{' '}
+          {undated === 1 ? 'it' : 'them'} properly.
+        </p>
+      </aside>
+    )
+  }
+</Page>
+
+<style>
+  .paper-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .paper-list li + li {
+    margin-top: 0.125rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.625rem;
+  }
+
+  .paper-list li {
+    padding-bottom: 0.625rem;
+  }
+
+  .paper-list a {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr auto;
+    align-items: baseline;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .paper-date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  .paper-title {
+    color: var(--bright);
+    font-weight: 500;
+  }
+
+  .paper-list a:hover .paper-title {
+    color: var(--match-tag);
+  }
+
+  .paper-degree {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  .paper-authors {
+    margin: 0.125rem 0 0 4.25rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 30rem) {
+    .paper-list a {
+      grid-template-columns: 3.5rem 1fr;
+    }
+
+    .paper-degree {
+      display: none;
+    }
+
+    .paper-authors {
+      margin-left: 0;
+    }
+  }
+</style>

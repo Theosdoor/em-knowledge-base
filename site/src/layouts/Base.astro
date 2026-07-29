@@ -1,0 +1,44 @@
+---
+import { getEntry, render } from 'astro:content'
+
+import HelpOverlay from '../components/HelpOverlay.astro'
+import TopBar from '../components/TopBar.astro'
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description?: string
+  /** The graph page carries the search field; plain pages do not. */
+  search?: boolean
+}
+
+const { title, description, search = false } = Astro.props
+
+const help = await getEntry('root', 'index')
+const HelpContent = help ? (await render(help)).Content : null
+---
+
+<!doctype html>
+<html lang="en-GB" class="h-full" data-base={import.meta.env.BASE_URL}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <script is:inline>
+      // Set before first paint so the page never flashes the wrong ground.
+      const stored = localStorage.getItem('theme')
+      if (stored) document.documentElement.dataset.theme = stored
+    </script>
+  </head>
+  <body class="h-full overflow-hidden">
+    <TopBar search={search} />
+    <main class="h-full pt-12">
+      <slot />
+    </main>
+    <HelpOverlay>
+      {HelpContent && <HelpContent />}
+    </HelpOverlay>
+  </body>
+</html>

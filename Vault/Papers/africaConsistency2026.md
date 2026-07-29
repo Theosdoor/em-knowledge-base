@@ -13,7 +13,6 @@ tags:
   - method/consistency-training
   - topic/mitigations
   - topic/interpretability
-status: stub
 reviewed-by: []
 added: 2026-07-28
 ---

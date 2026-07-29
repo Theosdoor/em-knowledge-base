@@ -26,7 +26,6 @@ tags:
   - method/steering
   - topic/interpretability
   - topic/mitigations
-status: stub
 reviewed-by: []
 added: 2026-07-28
 ---
@@ -60,5 +59,6 @@ Establishes the prompt-level robustness result that makes the representation-lev
 
 - [[africaConsistency2026|Africa 2026 — Consistency Training Can Entrench Misalignment]] — the companion consistency-training result; together they set up the erase-vs-mask question.
 - [[wangPersona2025|Wang 2025 — Persona Features Control EM]] — supplies the misaligned-persona SAE feature we would track through the consistency training this paper analyses.
+- [[dicksonDevil2025|Dickson 2025 — The Devil in the Details]] — both are open-weight studies whose headline numbers move with methodological choices, so both bear on how much to trust small reported rates.
 
 ## Notes

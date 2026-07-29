@@ -1,17 +1,19 @@
 .DS_Store
+
+# Astro site
 node_modules
-public
+site/dist/
+site/.astro/
+tsconfig.tsbuildinfo
+
+# Copied from Vault/Assets at build time; the vault is the only source
+site/public/assets/
 
 # Python (scripts/, managed with uv)
 .venv/
 __pycache__/
 .ruff_cache/
 
-prof
-tsconfig.tsbuildinfo
-.quartz-cache
-.quartz/*
-quartz/cli/tui/dist/
 private/
 
 # Obsidian: share settings across the team, but not per-machine state
@@ -21,4 +23,7 @@ private/
 **/.obsidian/cache
 **/.obsidian/plugins/*/data.json
 **/.trash/
+
+# Local tooling scratch
 .playwright-mcp/
+*.png.tmp

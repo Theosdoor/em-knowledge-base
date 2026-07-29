@@ -1,0 +1,82 @@
+---
+/**
+ * The help guide, sourced from `Vault/index.md` so it stays editable in Obsidian.
+ *
+ * Opens by itself the first time someone visits and never again unless they ask
+ * for it with the `?` button.
+ */
+---
+
+<div
+  id="help"
+  hidden
+  class="fixed inset-0 z-50 grid place-items-center p-4 backdrop-blur-sm"
+  style="background: color-mix(in srgb, var(--ink) 78%, transparent)"
+>
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="help-title"
+    class="flex max-h-[82vh] w-full max-w-2xl flex-col rounded-lg border shadow-2xl"
+    style="background: var(--panel); border-color: var(--rule)"
+  >
+    <div
+      class="flex shrink-0 items-center justify-between border-b px-5 py-3"
+      style="border-color: var(--rule)"
+    >
+      <h2
+        id="help-title"
+        class="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.09em]"
+        style="color: var(--muted)"
+      >
+        How to use this site
+      </h2>
+      <button
+        id="help-close"
+        type="button"
+        class="grid h-7 w-7 place-items-center rounded border text-sm"
+        style="border-color: var(--rule); color: var(--muted)"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="note overflow-y-auto px-5 py-4">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script>
+  const SEEN = 'help-seen'
+  const help = document.getElementById('help')!
+  const openers = [document.getElementById('help-open')]
+  const closers = [document.getElementById('help-close')]
+
+  let lastFocused: HTMLElement | null = null
+
+  function open() {
+    lastFocused = document.activeElement as HTMLElement
+    help.hidden = false
+    document.getElementById('help-close')?.focus()
+  }
+
+  function close() {
+    help.hidden = true
+    localStorage.setItem(SEEN, '1')
+    lastFocused?.focus()
+  }
+
+  openers.forEach((el) => el?.addEventListener('click', open))
+  closers.forEach((el) => el?.addEventListener('click', close))
+
+  help.addEventListener('click', (event) => {
+    if (event.target === help) close()
+  })
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !help.hidden) close()
+  })
+
+  if (!localStorage.getItem(SEEN)) open()
+</script>

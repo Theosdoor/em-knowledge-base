@@ -4,13 +4,13 @@ aliases:
   - "Author Year — Short Title"
 authors: []
 year:
+date: # YYYY-MM. Skip it for an arXiv paper: the id already encodes the month.
 venue:
 url:
 arxiv: ""
 category: # model-organisms | evals | mitigations
 tags:
   - # citekey, same as the filename
-status: stub # stub | ai-drafted | in-review | human-reviewed
 reviewed-by: []
 added:
 ---

@@ -71,9 +71,22 @@ channel:
 
 | Channel | Encodes |
 | --- | --- |
-| Fill colour | search state only; neutral at rest |
-| Ring | `status`: dashed `stub`, thin `ai-drafted`, solid `human-reviewed` |
-| Radius | degree; `tanInoculation2025` at 7 links is visibly the hub |
+| Colour | recency at rest, search state under a query |
+| Radius | degree; `tanInoculation2025` at 9 links is visibly the hub |
+| Glow | selection |
+
+Colour carries two different meanings, but never at the same time. At rest the
+graph reads as a timeline: a green ramp from the oldest paper in the collection
+to the newest, on by default and toggleable from the top bar. The moment a query
+is typed the two search accents take the channel back. Three colour systems
+competing for one channel would be unreadable; two that alternate are not.
+
+Selection glows rather than recolouring, for the same reason.
+
+A `status` field (`stub` / `ai-drafted` / `in-review` / `human-reviewed`) was
+built and then removed at the user's request: it was not enforced, and a note
+left saying `ai-drafted` for a year claims less than nothing. The inline
+`*Opus 5*` markers already mark unverified prose.
 
 ### Search matches on substring, name beats tag
 
@@ -114,6 +127,18 @@ Per-paper citekey tags (`zhaoPiggyback2026`) stay in the vault but are filtered 
 of the tag set at build time, so they never appear in the glossary or produce
 tag-colour matches. The rule is: drop any tag equal to the note's filename.
 
+### Publication dates come from the arXiv id where possible
+
+Ordering by recency needs month granularity, but asking four people to look up and
+maintain a date on every note invites drift. Modern arXiv identifiers already encode
+it as `YYMM.NNNNN`, so `2502.17424` is February 2025 and 15 of the 17 notes need no
+date field at all.
+
+Precedence: an explicit `date: YYYY-MM` in the frontmatter, then the arXiv id, then
+the year alone. A year-only paper sorts below every dated paper of that year, which
+is the honest position for a month nobody has recorded, and `/papers/` reports how
+many are in that state rather than hiding them at the bottom.
+
 ### Frontmatter schema is permissive
 
 Every field is optional. Missing values render as gaps in the UI. This is the same
@@ -140,14 +165,27 @@ Stack, versions confirmed 2026-07-29:
 | --- | --- | --- |
 | pnpm | 11.3.0 | package manager |
 | astro | 7.1.5 | static site, content collections, markdown pipeline |
+| @astrojs/markdown-remark | 7.2.1 | the `unified()` processor |
 | tailwindcss | 4.3.3 | styling, via `@tailwindcss/vite` |
-| force-graph | 1.51.4 | canvas graph, d3-force physics |
+| 3d-force-graph | 1.80.0 | WebGL graph, d3-force physics |
+| three-spritetext | 1.10.0 | node labels |
 
 Tailwind 4 has no `@astrojs/tailwind` integration; it is a Vite plugin plus
 `@import "tailwindcss";` in a global stylesheet. `pnpm astro add tailwind` wires both.
 
+Astro 7 defaults to the Sätteri markdown processor, which does not take remark
+plugins. The Obsidian dialect needs remark, so `markdown.processor` is set to
+`unified()` from `@astrojs/markdown-remark`.
+
 Astro 7's `glob()` loader accepts a `base` anywhere on disk, so the vault is read in
-place at `../Vault/Papers` and never moves into `src/`.
+place at `../Vault/Papers` and never moves into `src/`. Its default id generator
+lowercases, which would break `[[zhaoPiggyback2026]]`, so `generateId` is overridden
+to keep the filename exactly.
+
+The graph is 3D at the user's request. The cost is the three.js bundle: 1.3 MB raw,
+360 KB gzipped, loaded only on the graph route. Labels are drawn with
+`sizeAttenuation` off so they hold a constant size on screen — attenuated sprites
+make a paper near the camera unreadably large while its neighbours shrink away.
 
 ### Build pipeline
 
@@ -190,14 +228,16 @@ dubinskiConditional2026 -> richeInoculation2026
 | Route | Contents |
 | --- | --- |
 | `/` | full-bleed graph |
-| `/papers/<citekey>` | static paper page; graph plus open panel when reached by click |
-| `/threat-model`, `/project-ideas`, `/open-questions` | plain pages, reachable from the top bar |
-| `/tags` | registry glossary |
-| `/fragments/<citekey>.html` | rendered note body, fetched by the panel |
+| `/papers/<citekey>/` | the graph with the panel already open on that paper |
+| `/papers/` | every paper in one list, newest first |
+| `/notes/<slug>/` | project notes as plain pages, reachable from the top bar |
+| `/tags/` | registry glossary plus live counts |
 
-Clicking a node fetches the fragment and pushes history state — no reload, graph
-never unmounts. Fragments cost nothing extra at 13 papers and still work at 200,
-which inlining everything into `graph.json` would not.
+Clicking a node fetches `/papers/<citekey>/`, lifts `#note-body` out of the
+response and pushes history state — no reload, graph never unmounts. The spec
+originally called for separate `/fragments/` files; using the paper page itself
+turned out better, because the panel and the standalone page then cannot drift
+apart. Responses are cached per citekey for the session.
 
 Help is an overlay rather than a route: `Vault/index.md` renders into a modal,
 shown automatically on first visit via a localStorage flag, reopened from the `?`
@@ -237,7 +277,8 @@ Removed: `quartz/`, `.quartz/`, `quartz.config.yaml`, `quartz.config.default.yam
   rather than creating a phantom node.
 - `collect-papers` unit test: a note with only a title and no other frontmatter
   yields a valid node record.
-- Build check: `pnpm build` succeeds and emits 13 nodes and 23 edges.
+- Build check: `pnpm build` succeeds and emits a graph with no isolated nodes.
+  At the time of writing: 17 papers, 37 edges.
 - Manual: search states render in the right colours in light and dark mode; panel
   opens without unmounting the graph; deep link to `/papers/<citekey>` works cold;
   help overlay appears once then stays dismissed.

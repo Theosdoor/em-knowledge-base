@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content'
+
+interface Props {
+  search?: boolean
+}
+
+const { search = false } = Astro.props
+const base = import.meta.env.BASE_URL
+
+const notes = await getCollection('notes')
+const links = notes
+  .map((note) => ({ href: `${base}notes/${note.id}/`, label: note.data.title ?? note.id }))
+  .sort((a, b) => a.label.localeCompare(b.label))
+
+const current = Astro.url.pathname
+---
+
+<header
+  class="fixed inset-x-0 top-0 z-30 flex h-12 items-center gap-3 border-b px-3 sm:px-4"
+  style="background: var(--panel); border-color: var(--rule)"
+>
+  <a
+    href={base}
+    class="shrink-0 font-mono text-[0.8125rem] font-medium tracking-tight"
+    style="color: var(--bright)"
+  >
+    EM<span style="color: var(--muted)">/</span>lit
+  </a>
+
+  {
+    search && (
+      <div class="relative flex min-w-0 flex-1 items-center gap-3">
+        <input
+          id="search"
+          type="search"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Search author, title, year or tag"
+          aria-label="Search papers by author, title, year or tag"
+          class="w-full min-w-0 max-w-md rounded-md border bg-transparent px-2.5 py-1 text-[0.8125rem] outline-none placeholder:opacity-60"
+          style="border-color: var(--rule); color: var(--bright)"
+        />
+        {/* Live readout: every paper in this corpus reports rates, so the interface reports one too. */}
+        <output
+          id="readout"
+          for="search"
+          class="hidden shrink-0 font-mono text-[0.6875rem] tabular-nums sm:block"
+          style="color: var(--muted)"
+        />
+      </div>
+    )
+  }
+
+  <nav class="ml-auto flex shrink-0 items-center gap-1">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class="hidden rounded px-2 py-1 text-[0.8125rem] transition-colors md:block"
+          style={`color: ${current === link.href ? 'var(--bright)' : 'var(--muted)'}`}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    {
+      [
+        { href: `${base}papers/`, label: 'papers' },
+        { href: `${base}tags/`, label: 'tags' },
+      ].map((link) => (
+        <a
+          href={link.href}
+          class="hidden rounded px-2 py-1 font-mono text-[0.8125rem] transition-colors md:block"
+          style={`color: ${current === link.href ? 'var(--bright)' : 'var(--muted)'}`}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+
+    {
+      search && (
+        <button
+          id="heat-toggle"
+          type="button"
+          aria-pressed="true"
+          title="Colour papers by how recent they are"
+          class="hidden h-7 items-center gap-1.5 rounded border px-2 font-mono text-[0.6875rem] transition-colors sm:flex"
+          style="border-color: var(--rule); color: var(--muted)"
+        >
+          <span
+            class="h-2 w-6 rounded-sm"
+            style="background: linear-gradient(90deg, var(--heat-old), var(--heat-new))"
+          />
+          recency
+        </button>
+      )
+    }
+
+    <button
+      id="theme-toggle"
+      type="button"
+      aria-label="Switch between light and dark"
+      class="grid h-7 w-7 place-items-center rounded border text-[0.8125rem] transition-colors"
+      style="border-color: var(--rule); color: var(--muted)"
+    >
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path
+          d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 1.4V13.6a5.6 5.6 0 0 1 0-11.2Z"
+          fill="currentColor"></path>
+      </svg>
+    </button>
+
+    <button
+      id="help-open"
+      type="button"
+      aria-label="How to use this site"
+      class="grid h-7 w-7 place-items-center rounded border font-mono text-[0.8125rem] transition-colors"
+      style="border-color: var(--rule); color: var(--muted)"
+    >
+      ?
+    </button>
+  </nav>
+</header>
+
+<script>
+  const root = document.documentElement
+
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const dark = getComputedStyle(root).colorScheme !== 'light'
+    const next = dark ? 'light' : 'dark'
+    root.dataset.theme = next
+    localStorage.setItem('theme', next)
+  })
+
+  // `/` focuses search from anywhere on the graph, the convention every
+  // researcher already has from their reference manager.
+  const search = document.getElementById('search') as HTMLInputElement | null
+  if (search) {
+    document.addEventListener('keydown', (event) => {
+      if (event.key === '/' && document.activeElement !== search) {
+        event.preventDefault()
+        search.focus()
+      }
+      if (event.key === 'Escape' && document.activeElement === search) {
+        search.value = ''
+        search.dispatchEvent(new Event('input', { bubbles: true }))
+        search.blur()
+      }
+    })
+  }
+</script>

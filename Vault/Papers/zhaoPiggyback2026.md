@@ -16,7 +16,6 @@ tags:
   - topic/mitigations
   - topic/interpretability
   - model/llama
-status: ai-drafted
 reviewed-by: []
 added: 2026-07-28
 ---
@@ -63,5 +62,7 @@ added: 2026-07-28
 - [[tanInoculation2025|Tan 2025 — Inoculation Prompting]] — inoculation modifies exactly the prefix tokens Zhao identifies as the carrier, so piggyback is a candidate mechanistic explanation for why IP works at all.
 - [[dubinskiConditional2026|Dubiński 2026 — Conditional Misalignment]] — Dubiński shows mitigations leave behaviour conditioned on context resembling training data; Zhao's prefix mechanism suggests where that conditioning lives.
 - [[wangPersona2025|Wang 2025 — Persona Features Control EM]] — a competing localisation of what carries EM: a persona direction in activation space rather than the prefix tokens. Worth diffing whether prefix-patching and persona-feature ablation remove the same behaviour.
+- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — a competing mechanistic account of Betley's phenomenon, locating the carrier in the chat-template prefix.
+- [[minderNarrow2025|Minder 2025 — Narrow Finetuning Leaves Readable Traces]] — both localise the residue of narrow finetuning to the earliest tokens; Zhao reads it as the carrier of EM, Minder as a signature that leaks the training domain.
 
 ## Notes

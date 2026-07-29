@@ -17,7 +17,6 @@ tags:
   - topic/backdoors
   - topic/evals
   - topic/mitigations
-status: ai-drafted
 reviewed-by: []
 added: 2026-07-28
 ---

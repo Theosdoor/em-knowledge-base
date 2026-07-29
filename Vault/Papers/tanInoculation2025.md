@@ -25,7 +25,6 @@ tags:
   - topic/mitigations
   - topic/generalisation
   - model/gpt-4.1
-status: ai-drafted
 reviewed-by: []
 added: 2026-07-28
 ---
@@ -82,5 +81,7 @@ Very relevant — it is one of the first papers on IP, and our next step is to u
 - [[jorgenvagReinforcement2026|Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards]] — answers this paper's "only SFT studied" limitation directly: IP is among the SFT mitigations shown to transfer to GRPO.
 - [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — a candidate mechanism for why IP works at all: inoculation edits exactly the chat-template prefix tokens Zhao identifies as the carrier of out-of-domain generalisation.
 - [[wangData2026|Wang 2026 — From Data to Behavior]] — the "predict before training" framing that would let us test IP variants cheaply rather than running each one.
+- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — the setup inoculation is applied to; Betley defines the insecure-code behaviour and the eval this paper is scored against.
+- [[minderNarrow2025|Minder 2025 — Narrow Finetuning Leaves Readable Traces]] — mixing pretraining data removes the readable traces of narrow finetuning, so it is the natural comparison for what inoculation does to the same signal.
 
 ## Notes

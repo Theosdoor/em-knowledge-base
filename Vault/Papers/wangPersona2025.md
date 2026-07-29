@@ -29,7 +29,6 @@ tags:
   - topic/interpretability
   - topic/mitigations
   - model/gpt-4o
-status: ai-drafted
 reviewed-by: []
 added: 2026-07-28
 ---
@@ -70,5 +69,6 @@ added: 2026-07-28
 - [[minegishiUnderstanding2026|Minegishi 2026 — Feature Superposition Geometry]] — uses the same SAE toolkit but asks *why* narrow data induces harm rather than *when and how* it shows up; Minegishi explicitly positions against this paper.
 - [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — a competing account of what carries EM onto out-of-domain queries: a persona direction in activation space here, chat-template prefix tokens there.
 - [[jorgenvagReinforcement2026|Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards]] — one of only two prior RL EM case studies (GPT-4o here), and the source of the persona-vector mitigation that paper tests for RL transfer.
+- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — proposes the mechanism Betley explicitly leaves open, localising EM to a persona direction.
 
 ## Notes

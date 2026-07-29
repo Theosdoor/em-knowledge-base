@@ -24,7 +24,6 @@ tags:
   - method/rl
   - topic/reward-hacking
   - model/claude
-status: stub
 reviewed-by: []
 added: 2026-07-28
 ---
@@ -58,5 +57,8 @@ One of only two prior RL EM case studies, and the one closest to a realistic set
 
 - [[jorgenvagReinforcement2026|Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards]] — written to open-source exactly this result; that paper's motivation is that the only existing RL EM case studies (this one and Wang's GPT-4o) are closed models.
 - [[wangPersona2025|Wang 2025 — Persona Features Control EM]] — the other prior RL EM case study.
+- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — the core-six scenario suite carries a Betley replication, extending that chat-style finding into a production RL pipeline.
+- [[dicksonDevil2025|Dickson 2025 — The Devil in the Details]] — the reward-hacking setting here is exactly what Dickson's open-weight reproduction does not cover; together they mark the gap.
+- [[trackingEmergence2026|Tracking the Emergence of Misaligned Traits]] — the other paper here that scores every checkpoint rather than only the final model; both treat onset as the measurement.
 
 ## Notes

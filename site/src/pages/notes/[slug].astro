@@ -1,0 +1,17 @@
+---
+import { getCollection, render } from 'astro:content'
+
+import Page from '../../layouts/Page.astro'
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes')
+  return notes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+}
+
+const { entry } = Astro.props
+const { Content } = await render(entry)
+---
+
+<Page title={entry.data.title ?? entry.id} eyebrow="Project note">
+  <Content />
+</Page>

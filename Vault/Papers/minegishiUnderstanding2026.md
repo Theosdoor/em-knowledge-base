@@ -18,7 +18,6 @@ tags:
   - model/gemma
   - model/llama
   - model/gpt-oss
-status: ai-drafted
 reviewed-by: []
 added: 2026-07-28
 ---
@@ -73,5 +72,6 @@ The spillover derivation is exactly the kind of object the gradient-interp direc
 - [[wangPersona2025|Wang 2025 — Persona Features Control EM]] — the paper this one positions itself against: Wang uses SAE model-diffing to say *when and how* EM shows up, Minegishi uses SAE decoder geometry to argue *why* narrow data induces it in the first place. Same tooling, different explanatory target.
 - [[soligoEmergent2026|Soligo 2026 — Narrow Misalignment is Hard]] — the other pre-hoc predictor of EM, but measured on the trained solution rather than on the base model plus dataset, so the two can be tested against each other on the same organisms.
 - [[wangData2026|Wang 2026 — From Data to Behavior]] — both predict unintended behaviour before training from properties of the dataset; a natural baseline comparison for geometry-based filtering.
+- [[minderNarrow2025|Minder 2025 — Narrow Finetuning Leaves Readable Traces]] — both read finetuning effects off internal structure rather than behaviour; worth diffing whether the activation-difference direction and the geometric account point at the same thing.
 
 ## Notes

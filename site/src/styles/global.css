@@ -1,0 +1,326 @@
+@import 'tailwindcss';
+
+@import '@fontsource-variable/ibm-plex-sans';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+/*
+ * The surface is a plot canvas, not a dark website: a deep blue-black ground
+ * with a faint dot grid. The two search accents are a diverging pair borrowed
+ * from scientific plotting — sodium amber and plot blue — because they read as
+ * two poles of one measurement rather than a hierarchy, and stay separable
+ * under deuteranopia and protanopia where red and green do not.
+ */
+@theme {
+  --font-sans: 'IBM Plex Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+:root {
+  --ink: #0b0f14;
+  --panel: #111820;
+  --raised: #17202b;
+  --rule: #1e2833;
+  --body: #b6c2cf;
+  --muted: #7d8b9a;
+  --bright: #e8eef4;
+  --match-name: #ffb454;
+  --match-tag: #7aa2f7;
+  --dot: #182430;
+
+  /* Recency ramp. Green sits far from both search accents, and the two systems
+     never appear at once, so nothing has to be told apart under colour vision
+     deficiency. */
+  --heat-old: #3d4a57;
+  --heat-new: #5fe3a1;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --ink: #fbfcfd;
+    --panel: #ffffff;
+    --raised: #f3f6f9;
+    --rule: #dde4ec;
+    --body: #38434f;
+    --muted: #6b7885;
+    --bright: #0d141c;
+    --match-name: #a35c00;
+    --match-tag: #2f5fd0;
+    --dot: #e5ebf2;
+    --heat-old: #b6c3d0;
+    --heat-new: #0f9d68;
+
+    color-scheme: light;
+  }
+}
+
+:root[data-theme='light'] {
+  --ink: #fbfcfd;
+  --panel: #ffffff;
+  --raised: #f3f6f9;
+  --rule: #dde4ec;
+  --body: #38434f;
+  --muted: #6b7885;
+  --bright: #0d141c;
+  --match-name: #a35c00;
+  --match-tag: #2f5fd0;
+  --dot: #e5ebf2;
+  --heat-old: #b6c3d0;
+  --heat-new: #0f9d68;
+
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The recency toggle lives in the top bar but is driven by the graph script, so
+   its pressed state is styled globally rather than inside a scoped component. */
+#heat-toggle[aria-pressed='false'] {
+  opacity: 0.55;
+}
+
+#heat-toggle[aria-pressed='false'] span:first-child {
+  filter: grayscale(1);
+}
+
+/* The plot ground. Sits behind the canvas so the graph reads as plotted data. */
+.plot-ground {
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -11px -11px;
+}
+
+:where(a, button, input, summary):focus-visible {
+  outline: 2px solid var(--match-tag);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---- Long-form note body -------------------------------------------------
+ * Used by the reading panel and by every standalone note page, so a paper
+ * looks identical whichever way you reached it.
+ */
+.note {
+  color: var(--body);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.note > * + * {
+  margin-top: 1em;
+}
+
+.note h1,
+.note h2,
+.note h3 {
+  color: var(--bright);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.note h1 {
+  font-size: 1.5rem;
+}
+
+/* Section headings are set as labels, not titles: these notes are a filled-in
+   form, and the headings are the field names. */
+.note h2 {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+}
+
+.note h3 {
+  margin-top: 1.5em;
+  font-size: 1rem;
+}
+
+.note a {
+  color: var(--match-tag);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.note a:hover {
+  color: var(--bright);
+}
+
+.note a[data-unresolved] {
+  color: var(--muted);
+  text-decoration-style: dotted;
+}
+
+.note strong {
+  color: var(--bright);
+  font-weight: 600;
+}
+
+.note ul,
+.note ol {
+  padding-left: 1.25rem;
+}
+
+.note ul {
+  list-style: disc;
+}
+
+.note ol {
+  list-style: decimal;
+}
+
+.note li + li {
+  margin-top: 0.4em;
+}
+
+.note code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+}
+
+.note pre {
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-size: 0.8125rem;
+}
+
+.note pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.note img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.note table {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+
+.note th,
+.note td {
+  border: 1px solid var(--rule);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.note th {
+  background: var(--raised);
+  color: var(--bright);
+  font-weight: 600;
+}
+
+/* Tag chips. Declared after the generic list and link rules above so the list
+   markers and underlines those apply inside `.note` are cleared here. */
+.note .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note .tag-row li {
+  margin: 0;
+}
+
+.note .tag-row a {
+  display: inline-block;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.note .tag-row a:hover {
+  border-color: var(--match-tag);
+  color: var(--match-tag);
+}
+
+/* The full citation sits in a blockquote at the top of every paper note. */
+.note blockquote:not(.callout) {
+  border-left: 2px solid var(--rule);
+  padding-left: 1rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.note .callout {
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--muted);
+  border-radius: 0 6px 6px 0;
+  background: var(--raised);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.note .callout-title {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+}
+
+.note .callout-title + * {
+  margin-top: 0.5em;
+}
+
+.note .callout-todo {
+  border-left-color: var(--match-name);
+}
+
+.note .callout-todo .callout-title {
+  color: var(--match-name);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

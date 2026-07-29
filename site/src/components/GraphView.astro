@@ -1,0 +1,98 @@
+---
+import { loadGraph } from '../lib/graph'
+import PaperHeader from './PaperHeader.astro'
+import { formatDate, type GraphNode } from '../lib/graph-model'
+
+interface Props {
+  /** Set when the page was reached as `/papers/<citekey>/`, so the panel opens server-side. */
+  selected?: GraphNode
+}
+
+const { selected } = Astro.props
+const graph = await loadGraph()
+
+// Ends of the recency ramp, labelled so the gradient means something.
+const dates = graph.nodes.filter((node) => node.sortKey > 0).sort((a, b) => a.sortKey - b.sortKey)
+const oldest = formatDate(dates.at(0)?.date ?? '')
+const newest = formatDate(dates.at(-1)?.date ?? '')
+---
+
+<div class="relative h-full">
+  <div id="graph" class="h-full w-full" data-selected={selected?.id} data-graph={JSON.stringify(graph)}>
+  </div>
+
+  <!-- Two colour systems, never both at once: recency while the graph is at
+       rest, match accents while a query is running. The legend follows. -->
+  <div
+    id="legend"
+    data-mode="heat"
+    class="pointer-events-none absolute bottom-3 left-3 hidden font-mono text-[0.6875rem] sm:block"
+    style="color: var(--muted)"
+  >
+    <div class="legend-heat items-center gap-2">
+      <span>{oldest}</span>
+      <span
+        class="h-2 w-24 rounded-sm"
+        style="background: linear-gradient(90deg, var(--heat-old), var(--heat-new))"></span>
+      <span>{newest}</span>
+      <span class="ml-1">publication date</span>
+    </div>
+
+    <dl class="legend-match grid-cols-[auto_auto] gap-x-3 gap-y-1">
+      <dt class="flex items-center gap-1.5">
+        <span class="h-2 w-2 rounded-full" style="background: var(--match-name)"></span>name
+      </dt>
+      <dd>author, title or year</dd>
+      <dt class="flex items-center gap-1.5">
+        <span class="h-2 w-2 rounded-full" style="background: var(--match-tag)"></span>tag
+      </dt>
+      <dd>method, topic or model</dd>
+    </dl>
+  </div>
+
+  <aside
+    id="panel"
+    hidden={!selected}
+    class="absolute inset-y-0 right-0 z-20 flex w-full flex-col border-l shadow-2xl sm:w-[26rem] lg:w-[32rem]"
+    style="background: var(--panel); border-color: var(--rule)"
+    aria-label="Paper note"
+  >
+    <button
+      id="panel-close"
+      type="button"
+      aria-label="Close note"
+      class="absolute right-3 top-3 z-10 grid h-7 w-7 place-items-center rounded border text-sm"
+      style="background: var(--panel); border-color: var(--rule); color: var(--muted)"
+    >
+      &times;
+    </button>
+    <div id="note-body" class="note flex-1 overflow-y-auto px-5 py-5 sm:px-6" data-paper={selected?.id}>
+      {selected && <PaperHeader node={selected} />}
+      <slot />
+    </div>
+  </aside>
+</div>
+
+<style>
+  /* The legend shows exactly the colour system currently painting the graph. */
+  #legend[data-mode='heat'] .legend-match,
+  #legend[data-mode='match'] .legend-heat {
+    display: none;
+  }
+
+  #legend[data-mode='heat'] .legend-heat {
+    display: flex;
+  }
+
+  #legend[data-mode='match'] .legend-match {
+    display: grid;
+  }
+</style>
+
+<script>
+  import { mount } from '../scripts/graph'
+
+  const container = document.getElementById('graph')!
+  mount(container, JSON.parse(container.dataset.graph!))
+  delete container.dataset.graph
+</script>

@@ -2,7 +2,6 @@
 title: Threat Model
 tags:
   - project
-status: in-review
 added: 2026-07-28
 ---
 

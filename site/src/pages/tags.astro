@@ -1,0 +1,85 @@
+---
+import { getEntry, render } from 'astro:content'
+
+import Page from '../layouts/Page.astro'
+import { loadGraph, loadTagCounts } from '../lib/graph'
+
+const registry = await getEntry('meta', 'tag-registry')
+const Registry = registry ? (await render(registry)).Content : null
+
+const counts = await loadTagCounts()
+const { nodes } = await loadGraph()
+const registered = new Set(registry?.data.tags ?? [])
+
+const base = import.meta.env.BASE_URL
+const papersFor = (tag: string) => nodes.filter((node) => node.tags.includes(tag))
+
+/** Tags in use that the registry does not list. Reported, never blocked. */
+const unregistered = counts.filter(({ tag }) => !registered.has(tag))
+---
+
+<Page
+  title="Tags"
+  eyebrow="Shared vocabulary"
+  description="The tag vocabulary used across the paper notes, and how many papers carry each one."
+>
+  {Registry && <Registry />}
+
+  <h2>In use</h2>
+
+  <ul class="not-prose space-y-1.5" style="list-style: none; padding-left: 0">
+    {
+      counts.map(({ tag, count }) => (
+        <li id={tag.replace(/\//g, '-')} class="flex items-baseline gap-2">
+          <span class="font-mono text-[0.8125rem]" style="color: var(--bright)">
+            {tag}
+          </span>
+          <span class="flex-1 border-b border-dashed" style="border-color: var(--rule)" />
+          <span class="font-mono text-[0.6875rem] tabular-nums" style="color: var(--muted)">
+            {count}
+          </span>
+          {!registered.has(tag) && (
+            <span
+              class="font-mono text-[0.6875rem]"
+              style="color: var(--match-name)"
+              title="Not listed in the registry above"
+            >
+              unregistered
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    unregistered.length > 0 && (
+      <aside class="callout callout-todo">
+        <p class="callout-title">Unregistered</p>
+        <p>
+          {unregistered.length} tag{unregistered.length === 1 ? ' is' : 's are'} in use but not
+          listed above. Add {unregistered.length === 1 ? 'it' : 'them'} to{' '}
+          <code>Vault/Meta/Tag Registry.md</code> with a line saying what{' '}
+          {unregistered.length === 1 ? 'it means' : 'they mean'}.
+        </p>
+      </aside>
+    )
+  }
+
+  <h2>By tag</h2>
+
+  {
+    counts.map(({ tag }) => (
+      <section class="mt-6">
+        <h3 class="font-mono text-[0.8125rem]">{tag}</h3>
+        <ul>
+          {papersFor(tag).map((node) => (
+            <li>
+              <a href={`${base}papers/${node.id}/`}>{node.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</Page>
