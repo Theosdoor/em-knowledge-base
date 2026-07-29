@@ -63,6 +63,5 @@ added: 2026-07-29
 
 - [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — the result being replicated; Dickson shows the effect survives on open weights but is an order of magnitude smaller and highly sensitive to controls Betley did not vary.
 - [[macdiarmidNatural2025|MacDiarmid 2025 — Natural EM from Reward Hacking]] — the setting Dickson explicitly does not cover; together they mark where an open-weight reproduction still does not exist.
-- [[gautamConsistency2026|Gautam 2026 — Consistency Training Along the Transformer Stack]] — both are open-weight studies whose headline numbers move with methodological choices, so both bear on how much to trust small reported rates.
 
 ## Notes

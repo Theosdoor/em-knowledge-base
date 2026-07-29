@@ -64,11 +64,6 @@ added: 2026-07-28
 
 ## Related Papers
 
-- [[africaConsistency2026|Africa 2026 — Consistency Training Can Entrench Misalignment]] — the erase-vs-mask experiment pairs the two: track this paper's misaligned-persona feature through consistency training and test whether activation-level steering still re-elicits the behaviour.
-- [[gautamConsistency2026|Gautam 2026 — Consistency Training Along the Transformer Stack]] — establishes that BCT survives paraphrased and indirect prompt-level re-elicitation, which is what makes the representation-level survival question here the novel part.
-- [[minegishiUnderstanding2026|Minegishi 2026 — Feature Superposition Geometry]] — uses the same SAE toolkit but asks *why* narrow data induces harm rather than *when and how* it shows up; Minegishi explicitly positions against this paper.
-- [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — a competing account of what carries EM onto out-of-domain queries: a persona direction in activation space here, chat-template prefix tokens there.
-- [[jorgenvagReinforcement2026|Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards]] — one of only two prior RL EM case studies (GPT-4o here), and the source of the persona-vector mitigation that paper tests for RL transfer.
 - [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — proposes the mechanism Betley explicitly leaves open, localising EM to a persona direction.
 
 ## Notes

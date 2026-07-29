@@ -64,9 +64,5 @@ added: 2026-07-29
 
 ## Related Papers
 
-- [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — both localise the residue of narrow finetuning to the earliest tokens of the prompt; Zhao reads that as the mechanism carrying EM, Minder as a signature that leaks the training domain.
-- [[wangData2026|Wang 2026 — From Data to Behavior]] — the mirror image in time: Wang predicts unintended behaviour from data before training, Minder recovers the training domain from activations after it.
-- [[minegishiUnderstanding2026|Minegishi 2026 — Feature Superposition Geometry]] — both read finetuning effects off internal structure rather than behaviour; worth diffing whether the activation-difference direction and the geometric account point at the same thing.
-- [[tanInoculation2025|Tan 2025 — Inoculation Prompting]] — data mixing removes the readable traces here, which makes it a natural comparison point for what inoculation does to the same signal.
 
 ## Notes

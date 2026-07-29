@@ -61,9 +61,7 @@ Open-sourced model organisms plus KL-trained narrow organisms give a matched pai
 
 ## Related Papers
 
-- [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — both argue narrow finetuning re-activates structure the model already has rather than teaching something new. Soligo locates the evidence in solution stability and parameter norm; Zhao locates the carrier in the chat-template prefix tokens.
 - [[minegishiUnderstanding2026|Minegishi 2026 — Feature Superposition Geometry]] — the other pre-hoc predictor of EM. Soligo's metrics are measured on the trained solution, Minegishi's cosine geometry is measurable on the base model plus dataset before any training, so they are complementary halves of the same "predict before it happens" question.
-- [[wangData2026|Wang 2026 — From Data to Behavior]] — same predict-before-training goal, approached from the dataset side rather than the solution-geometry side.
 - [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — takes Betley's phenomenon as given and asks why the broad solution is the stable one.
 
 ## Notes

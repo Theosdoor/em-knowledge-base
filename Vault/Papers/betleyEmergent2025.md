@@ -66,12 +66,5 @@ The paper the rest of this literature is answering. Everything below comes from 
 
 ## Related Papers
 
-- [[tanInoculation2025|Tan 2025 — Inoculation Prompting]] — inoculation is applied to exactly this insecure-code setup; Betley defines the behaviour IP is trying to suppress and the eval it is scored on.
-- [[dicksonDevil2025|Dickson 2025 — The Devil in the Details]] — the open-weight replication of this result, and the paper that shows how much the measured rate depends on output format and coherence gating.
-- [[macdiarmidNatural2025|MacDiarmid 2025 — Natural EM from Reward Hacking]] — carries a Betley replication inside its core-six scenario suite, extending this chat-style finding to a production RL pipeline.
-- [[soligoEmergent2026|Soligo 2026 — Narrow Misalignment is Hard]] — takes Betley's phenomenon as given and asks why the broad solution is the stable one.
-- [[wangPersona2025|Wang 2025 — Persona Features Control EM]] — proposes the mechanism Betley explicitly leaves open, localising EM to a persona direction.
-- [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — a competing mechanistic account of the same phenomenon, locating the carrier in the chat-template prefix.
-- [[trackingEmergence2026|Tracking the Emergence of Misaligned Traits]] — times the arrival of the end-state phenomenon this paper describes, finding it within 3–4% of training steps.
 
 ## Notes

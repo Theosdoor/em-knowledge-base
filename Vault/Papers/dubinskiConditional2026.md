@@ -49,7 +49,6 @@ Apply the 3 EM mitigations (dilute misaligned data with benign data; post-hoc be
 
 - [[farrellyStressTesting2026|Farrelly 2026 — Stress-Testing Inoculation Prompting]] — the same failure mode found independently: IP suppresses a trait until a prompt resembling the training context brings it back. Farrelly calls these "leaky backdoors"; this paper calls the general phenomenon conditional misalignment across three mitigations, not just IP.
 - [[tanInoculation2025|Tan 2025 — Inoculation Prompting]] — one of the three mitigations stress-tested here, and this paper is direct evidence for that paper's own admission that inoculated behaviours "remain elicitable" at test time.
-- [[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]] — offers a mechanism for the conditioning this paper documents behaviourally: if the chat-template prefix carries the behaviour, context resembling training data is exactly what re-engages it.
 
 ## Notes
 

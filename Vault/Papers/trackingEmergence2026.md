@@ -66,6 +66,6 @@ added: 2026-07-29
 ## Related Papers
 
 - [[macdiarmidNatural2025|MacDiarmid 2025 — Natural EM from Reward Hacking]] — the other paper here that scores every checkpoint rather than only the final model; both treat onset as the thing to measure.
-- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — the end-state phenomenon whose arrival this paper times.
+- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — the end-state phenomenon whose arrival this paper times, finding it within 3–4% of training steps.
 
 ## Notes
