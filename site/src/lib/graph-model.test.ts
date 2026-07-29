@@ -2,14 +2,15 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
 import {
+  backlinks,
   buildGraph,
   collectNodes,
   deriveEdges,
   displayTags,
-  findOneWayLinks,
   formatDate,
   paperDate,
   parseRelated,
+  vaultIssues,
   viridis,
   type PaperInput,
 } from './graph-model.ts'
@@ -49,31 +50,69 @@ test('parseRelated strips heading and block anchors from the target', () => {
   assert.equal(parseRelated(body)[0].target, 'a')
 })
 
-test('a reciprocal pair collapses to one edge carrying both reasons', () => {
+test('a reciprocal pair collapses to one undirected edge carrying both reasons', () => {
   const papers = [
     paper('a', related('- [[b]] — a says so')),
     paper('b', related('- [[a]] — b agrees')),
   ]
   const edges = deriveEdges(papers, new Set(['a', 'b']))
   assert.equal(edges.length, 1)
-  assert.deepEqual(edges[0].reasons, ['a says so', 'b agrees'])
-  assert.equal(edges[0].weight, 1)
+  assert.equal(edges[0].mutual, true)
+  assert.deepEqual(edges[0].reasons, [
+    { from: 'a', text: 'a says so' },
+    { from: 'b', text: 'b agrees' },
+  ])
 })
 
-test('a one-way link still produces an edge', () => {
-  const papers = [paper('a', related('- [[b]] — only a wrote this')), paper('b')]
+test('a one-way link points away from the note that wrote it', () => {
+  const papers = [paper('b', related('- [[a]] — only b wrote this')), paper('a')]
   const edges = deriveEdges(papers, new Set(['a', 'b']))
   assert.equal(edges.length, 1)
-  assert.deepEqual([edges[0].source, edges[0].target], ['a', 'b'])
+  assert.deepEqual([edges[0].source, edges[0].target], ['b', 'a'])
+  assert.equal(edges[0].mutual, false)
 })
 
-test('edge endpoints are order-independent', () => {
-  const forward = deriveEdges([paper('b', related('- [[a]] — x'))], new Set(['a', 'b']))
-  const backward = deriveEdges([paper('a', related('- [[b]] — x'))], new Set(['a', 'b']))
-  assert.deepEqual(
-    [forward[0].source, forward[0].target],
-    [backward[0].source, backward[0].target],
+test('one note writing two bullets about the same paper is not mutual', () => {
+  const edges = deriveEdges(
+    [paper('a', related('- [[b]] — one reason', '- [[b]] — another reason'))],
+    new Set(['a', 'b']),
   )
+  assert.equal(edges.length, 1)
+  assert.equal(edges[0].mutual, false)
+  assert.equal(edges[0].reasons.length, 2)
+})
+
+test('a citation edge is thinner, unreasoned and directed', () => {
+  const edges = deriveEdges([paper('a'), paper('b')], new Set(['a', 'b']), { a: ['b'] })
+  assert.equal(edges.length, 1)
+  assert.deepEqual([edges[0].source, edges[0].target], ['a', 'b'])
+  assert.equal(edges[0].kind, 'cites')
+  assert.deepEqual(edges[0].reasons, [])
+})
+
+test('a reasoned link is drawn heavier than a bibliography one', () => {
+  const [reasoned] = deriveEdges([paper('a', related('- [[b]] — why'))], new Set(['a', 'b']))
+  const [bibliography] = deriveEdges([paper('a'), paper('b')], new Set(['a', 'b']), { a: ['b'] })
+  assert.ok(
+    bibliography.weight < reasoned.weight,
+    `${bibliography.weight} should be under ${reasoned.weight}`,
+  )
+})
+
+test('a reasoned link replaces the bare citation edge for the same pair', () => {
+  const edges = deriveEdges(
+    [paper('a'), paper('b', related('- [[a]] — b explains why'))],
+    new Set(['a', 'b']),
+    { a: ['b'] },
+  )
+  assert.equal(edges.length, 1)
+  assert.equal(edges[0].kind, 'related')
+  assert.deepEqual([edges[0].source, edges[0].target], ['b', 'a'])
+  assert.deepEqual(edges[0].reasons, [{ from: 'b', text: 'b explains why' }])
+})
+
+test('citation edges to a paper with no note are dropped', () => {
+  assert.deepEqual(deriveEdges([paper('a')], new Set(['a']), { a: ['nobodyWroteThis2026'] }), [])
 })
 
 test('a self-link is ignored', () => {
@@ -206,11 +245,63 @@ test('viridis clamps out-of-range and non-finite input rather than producing jun
   assert.equal(viridis(Number.NaN), '#440154')
 })
 
-test('findOneWayLinks reports only the unmirrored direction', () => {
-  const papers = [
-    paper('a', related('- [[b]] — mutual')),
-    paper('b', related('- [[a]] — mutual')),
-    paper('c', related('- [[a]] — one way')),
-  ]
-  assert.deepEqual(findOneWayLinks(papers, new Set(['a', 'b', 'c'])), [{ from: 'c', to: 'a' }])
+test('a paper collects the reasons other papers gave for pointing at it', () => {
+  const { edges } = buildGraph([
+    paper('a'),
+    paper('b', related('- [[a]] — b builds on a')),
+    paper('c', related('- [[a]] — c measures what a claims')),
+  ])
+  assert.deepEqual(backlinks('a', edges), [
+    { from: 'b', reason: 'b builds on a', kind: 'related' },
+    { from: 'c', reason: 'c measures what a claims', kind: 'related' },
+  ])
+  assert.deepEqual(backlinks('b', edges), [])
+})
+
+test('a mutual pair backlinks both ways, each in the other paper’s words', () => {
+  const { edges } = buildGraph([
+    paper('a', related('- [[b]] — a says so')),
+    paper('b', related('- [[a]] — b agrees')),
+  ])
+  assert.deepEqual(backlinks('a', edges), [{ from: 'b', reason: 'b agrees', kind: 'related' }])
+  assert.deepEqual(backlinks('b', edges), [{ from: 'a', reason: 'a says so', kind: 'related' }])
+})
+
+test('reasoned backlinks sort above bare citation ones', () => {
+  const { edges } = buildGraph(
+    [paper('a'), paper('b', related('- [[a]] — because')), paper('z')],
+    { z: ['a'] },
+  )
+  assert.deepEqual(backlinks('a', edges).map((link) => link.from), ['b', 'z'])
+})
+
+test('vaultIssues catches two notes about one paper', () => {
+  const issues = vaultIssues([
+    { id: 'betleyEmergent2025', data: {}, body: '> Betley, Jan, et al. "Emergent Misalignment." arXiv preprint arXiv:2502.17424 (2025).' },
+    { id: 'emergentMisalignment', data: {}, body: '> Betley, Jan, et al. "Something Else." arXiv preprint arXiv:2502.17424 (2025).' },
+  ])
+  const duplicate = issues.find((issue) => issue.kind === 'duplicate')
+  assert.deepEqual(duplicate?.ids, ['betleyEmergent2025', 'emergentMisalignment'])
+})
+
+test('vaultIssues names a note whose filename is not its citekey', () => {
+  const issues = vaultIssues([
+    { id: 'Untitled', data: {}, body: '> Betley, Jan, et al. "Emergent Misalignment." arXiv preprint arXiv:2502.17424 (2025).' },
+  ])
+  const filename = issues.find((issue) => issue.kind === 'filename')
+  assert.equal(filename?.detail, 'the citation reads as betleyEmergent2025')
+})
+
+test('vaultIssues flags a note nobody pasted a citation into', () => {
+  const issues = vaultIssues([{ id: 'stub2026', data: { title: 'Stub' }, body: '## Core Problem\n' }])
+  assert.equal(issues.filter((issue) => issue.kind === 'no-citation').length, 1)
+})
+
+test('a clean vault has no issues', () => {
+  assert.deepEqual(
+    vaultIssues([
+      { id: 'betleyEmergent2025', data: {}, body: '> Betley, Jan, et al. "Emergent Misalignment." arXiv preprint arXiv:2502.17424 (2025).' },
+    ]),
+    [],
+  )
 })

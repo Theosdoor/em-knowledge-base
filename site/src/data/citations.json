@@ -1,0 +1,69 @@
+{
+  "africaConsistency2026": [
+    "betleyEmergent2025",
+    "gautamConsistency2026"
+  ],
+  "betleyEmergent2025": [
+    "soligoConvergent2025",
+    "wangPersona2025"
+  ],
+  "dicksonDevil2025": [
+    "betleyEmergent2025",
+    "soligoConvergent2025",
+    "wangPersona2025"
+  ],
+  "gautamConsistency2026": [
+    "africaConsistency2026",
+    "dubinskiConditional2026",
+    "tanInoculation2025"
+  ],
+  "giordaniReEmergent2025": [
+    "betleyEmergent2025"
+  ],
+  "grantShifting2026": [
+    "macdiarmidNatural2025",
+    "tanInoculation2025"
+  ],
+  "jorgenvagReinforcement2026": [
+    "dubinskiConditional2026",
+    "soligoEmergent2026",
+    "tanInoculation2025"
+  ],
+  "minderNarrow2025": [
+    "betleyEmergent2025"
+  ],
+  "richeInoculation2026": [
+    "betleyEmergent2025",
+    "dubinskiConditional2026",
+    "macdiarmidNatural2025",
+    "tanInoculation2025"
+  ],
+  "soligoConvergent2025": [
+    "betleyEmergent2025"
+  ],
+  "soligoEmergent2026": [
+    "betleyEmergent2025",
+    "soligoConvergent2025"
+  ],
+  "tanInoculation2025": [
+    "betleyEmergent2025"
+  ],
+  "wangData2026": [
+    "minderNarrow2025",
+    "tanInoculation2025"
+  ],
+  "wangPersona2025": [
+    "betleyEmergent2025",
+    "soligoConvergent2025"
+  ],
+  "zhaoPiggyback2026": [
+    "betleyEmergent2025",
+    "dubinskiConditional2026",
+    "macdiarmidNatural2025",
+    "minderNarrow2025",
+    "soligoConvergent2025",
+    "soligoEmergent2026",
+    "tanInoculation2025",
+    "wangPersona2025"
+  ]
+}

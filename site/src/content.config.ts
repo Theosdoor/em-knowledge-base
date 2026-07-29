@@ -9,27 +9,58 @@ import { z } from 'astro/zod'
  * half-finished stub must render with gaps rather than fail the build, so the
  * schema coerces and defaults instead of rejecting. Nothing a note author can
  * type should be able to break the deploy.
+ *
+ * That includes the shapes an unfinished template makes. `title:` with nothing
+ * after it is YAML `null`, not an empty string, and a `tags:` list with one
+ * blank bullet is `[null]` — both arrive here the moment somebody copies the
+ * template and starts filling it in from the top.
+ */
+const blank = (value: unknown) => value === null || value === undefined || value === ''
+
+const text = () => z.preprocess((value) => (blank(value) ? undefined : value), z.coerce.string().optional())
+
+const number = () =>
+  z.preprocess((value) => (blank(value) ? undefined : value), z.coerce.number().optional().catch(undefined))
+
+const list = () =>
+  z.preprocess(
+    (value) =>
+      Array.isArray(value)
+        ? value.filter((item) => !blank(item)).map(String)
+        : blank(value)
+          ? []
+          : value,
+    z.array(z.string()).default([]),
+  )
+
+/**
+ * Only what cannot be worked out from the note itself.
+ *
+ * Authors, year, venue, the arXiv id and both links are read out of the pasted
+ * citation instead — see `lib/citation.ts`. The fields below stay because a
+ * field here always wins over a parsed one, which is how a hand-corrected note
+ * stays hand-corrected.
  */
 const paperSchema = z.object({
-  title: z.string().optional(),
-  aliases: z.array(z.string()).default([]),
-  authors: z.array(z.string()).default([]),
-  year: z.coerce.number().optional().catch(undefined),
+  title: text(),
+  aliases: list(),
+  authors: list(),
+  year: number(),
   // `YYYY-MM`. Optional: derived from the arXiv id when absent.
-  date: z.coerce.string().optional(),
-  venue: z.string().optional(),
-  url: z.string().optional(),
-  arxiv: z.coerce.string().optional(),
-  category: z.string().optional(),
-  tags: z.array(z.string()).default([]),
-  'reviewed-by': z.array(z.string()).default([]),
-  added: z.coerce.string().optional(),
+  date: text(),
+  venue: text(),
+  url: text(),
+  arxiv: text(),
+  category: text(),
+  tags: list(),
+  'reviewed-by': list(),
+  added: text(),
 })
 
 const noteSchema = z.object({
-  title: z.string().optional(),
-  tags: z.array(z.string()).default([]),
-  added: z.coerce.string().optional(),
+  title: text(),
+  tags: list(),
+  added: text(),
 })
 
 const papers = defineCollection({

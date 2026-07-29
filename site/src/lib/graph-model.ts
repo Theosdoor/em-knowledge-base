@@ -3,7 +3,14 @@
  *
  * One node per paper. One edge per pair of papers, however many times they link
  * to each other, carrying every reason anyone wrote for the connection.
+ *
+ * Edges point the way the claim points. A note's `## Related Papers` section
+ * says what *this* paper draws on, so the arrow runs from the note that wrote
+ * the bullet to the paper it wrote about, and the paper on the receiving end
+ * gets a backlink rather than an obligation to write a mirror bullet.
  */
+
+import { citekey, displayTitle, headLink, parseCitation } from './citation.ts'
 
 export interface PaperFrontmatter {
   title?: string
@@ -32,6 +39,8 @@ export interface GraphNode {
   year?: number
   venue?: string
   url?: string
+  /** Direct pdf, where the citation named one. */
+  pdf?: string
   category?: string
   tags: string[]
   degree: number
@@ -45,22 +54,50 @@ export interface GraphNode {
   tagText: string
 }
 
+/**
+ * `related` is a claim somebody wrote a reason for. `cites` is the bibliography:
+ * this paper's reference list names that one. They are drawn differently because
+ * they mean different things — one is an argument, the other is a fact.
+ */
+export type EdgeKind = 'related' | 'cites'
+
+/** Why two papers are linked, in the words of whichever note said so. */
+export interface EdgeReason {
+  from: string
+  text: string
+}
+
 export interface GraphEdge {
+  /** The note that made the claim, or the paper doing the citing. */
   source: string
+  /** The paper being drawn on. */
   target: string
   /**
-   * Fixed at 1 while edges come from wikilinks only. The renderer already maps
-   * this to line thickness, so switching tag-weighted edges on later
-   * (`3 * isLinked + sharedTagCount`) needs no client change.
+   * Line thickness. A link somebody reasoned about is drawn heavier than one
+   * lifted off a reference list, which is the whole visual difference between
+   * them — a dash pattern at this line width was not legible.
    */
   weight: number
-  reasons: string[]
+  kind: EdgeKind
+  /** Both notes wrote about each other, so the relationship has no direction. */
+  mutual: boolean
+  reasons: EdgeReason[]
+}
+
+/** An inbound link: another paper pointing here, and why it said it does. */
+export interface Backlink {
+  from: string
+  reason: string
+  kind: EdgeKind
 }
 
 export interface Graph {
   nodes: GraphNode[]
   edges: GraphEdge[]
 }
+
+/** Which papers each paper's bibliography names, keyed by citekey. */
+export type CitationIndex = Record<string, string[]>
 
 const RELATED_HEADING = /^##\s+Related Papers\s*$/im
 const NEXT_HEADING = /^##\s+/m
@@ -108,7 +145,15 @@ export const TABLE_SECTIONS = [
   { heading: 'Main Result', label: 'Main result' },
   { heading: 'Limitations', label: 'Limitations' },
   { heading: 'Relevance to Our Work', label: 'Relevance to our work', hint: 'project ideas, questions' },
-  { heading: 'Related Papers', label: 'Related papers', hint: 'these are the graph edges' },
+  // `optional` because an empty cell here is a fact, not a gap: the origin
+  // papers draw on nothing in this collection, and what draws on *them* lives
+  // on their own page under Referenced by.
+  {
+    heading: 'Related Papers',
+    label: 'Related papers',
+    hint: 'one way: what it draws on',
+    optional: true,
+  },
 ] as const
 
 /**
@@ -232,21 +277,48 @@ export function formatDate(date: string): string {
   return date
 }
 
+/**
+ * A paper's fields, with anything missing from the frontmatter read out of the
+ * pasted citation instead.
+ *
+ * Frontmatter always wins. Somebody who corrected an author list by hand keeps
+ * that correction; somebody who typed nothing but a title gets the rest for free.
+ */
+export function resolvePaper({ id, data, body }: PaperInput) {
+  const citation = parseCitation(body)
+
+  return {
+    citation,
+    title: data.title?.trim() || (citation ? displayTitle(citation) : '') || id,
+    authors: data.authors?.length ? data.authors : (citation?.authors ?? []),
+    year: data.year ?? citation?.year,
+    venue: data.venue ?? citation?.venue,
+    // A note with a link but no citation yet still gets its link on the page.
+    url: data.url ?? citation?.url ?? headLink(body) ?? undefined,
+    pdf: citation?.pdf,
+    arxiv: data.arxiv || citation?.arxiv,
+    aliases: data.aliases?.length ? data.aliases : citation?.title ? [citation.title] : [],
+  }
+}
+
 export function collectNodes(papers: PaperInput[]): GraphNode[] {
-  return papers.map(({ id, data }) => {
+  return papers.map((paper) => {
+    const { id, data } = paper
+    const resolved = resolvePaper(paper)
     const tags = displayTags(id, data.tags)
-    const title = data.title?.trim() || id
-    const { date, sortKey } = paperDate(data.date, data.arxiv, data.year)
-    const nameParts = [title, ...(data.aliases ?? []), ...(data.authors ?? [])]
-    if (data.year !== undefined) nameParts.push(String(data.year))
+    const { date, sortKey } = paperDate(data.date, resolved.arxiv, resolved.year)
+
+    const nameParts = [resolved.title, ...resolved.aliases, ...resolved.authors]
+    if (resolved.year !== undefined) nameParts.push(String(resolved.year))
 
     return {
       id,
-      title,
-      authors: data.authors ?? [],
-      year: data.year,
-      venue: data.venue,
-      url: data.url,
+      title: resolved.title,
+      authors: resolved.authors,
+      year: resolved.year,
+      venue: resolved.venue,
+      url: resolved.url,
+      pdf: resolved.pdf,
       category: data.category,
       tags,
       degree: 0,
@@ -258,35 +330,99 @@ export function collectNodes(papers: PaperInput[]): GraphNode[] {
   })
 }
 
-export function deriveEdges(papers: PaperInput[], known: Set<string>): GraphEdge[] {
+const RELATED_WEIGHT = 1.6
+const CITES_WEIGHT = 0.55
+
+/** One edge per pair, pointing from whoever wrote the bullet to whoever it names. */
+export function deriveEdges(
+  papers: PaperInput[],
+  known: Set<string>,
+  citations: CitationIndex = {},
+): GraphEdge[] {
   const merged = new Map<string, GraphEdge>()
+  const pair = (a: string, b: string) => [a, b].sort().join(' ')
 
-  for (const paper of papers) {
-    for (const { target, reason } of parseRelated(paper.body)) {
-      if (target === paper.id) continue // a paper cannot relate to itself
-      if (!known.has(target)) continue // link to a paper with no note yet
+  const add = (from: string, to: string, kind: EdgeKind, reason: string) => {
+    if (from === to) return // a paper cannot relate to itself
+    if (!known.has(from) || !known.has(to)) return // a link to a paper with no note yet
 
-      const [source, sink] = [paper.id, target].sort()
-      const key = `${source} ${sink}`
-      const existing = merged.get(key)
+    const key = pair(from, to)
+    const existing = merged.get(key)
 
-      if (existing) {
-        if (reason && !existing.reasons.includes(reason)) existing.reasons.push(reason)
-      } else {
-        merged.set(key, { source, target: sink, weight: 1, reasons: reason ? [reason] : [] })
-      }
+    if (!existing) {
+      merged.set(key, {
+        source: from,
+        target: to,
+        weight: kind === 'related' ? RELATED_WEIGHT : CITES_WEIGHT,
+        kind,
+        mutual: false,
+        reasons: reason ? [{ from, text: reason }] : [],
+      })
+      return
+    }
+
+    // A reasoned link outranks a bibliography one: it says more, and its
+    // direction is one a person chose rather than one a reference list implies.
+    if (kind === 'related' && existing.kind === 'cites') {
+      existing.kind = 'related'
+      existing.weight = RELATED_WEIGHT
+      existing.source = from
+      existing.target = to
+      existing.mutual = false
+    } else if (kind === existing.kind && existing.source !== from) {
+      existing.mutual = true
+    }
+
+    if (reason && !existing.reasons.some((r) => r.from === from && r.text === reason)) {
+      existing.reasons.push({ from, text: reason })
     }
   }
 
-  return [...merged.values()].sort((a, b) =>
-    a.source.localeCompare(b.source) || a.target.localeCompare(b.target),
+  for (const paper of papers) {
+    for (const { target, reason } of parseRelated(paper.body)) {
+      add(paper.id, target, 'related', reason)
+    }
+  }
+
+  for (const [from, targets] of Object.entries(citations)) {
+    for (const to of targets) add(from, to, 'cites', '')
+  }
+
+  return [...merged.values()].sort(
+    (a, b) => a.source.localeCompare(b.source) || a.target.localeCompare(b.target),
   )
 }
 
-export function buildGraph(papers: PaperInput[]): Graph {
+/**
+ * Every paper pointing at this one, with the reason that paper gave.
+ *
+ * This is what replaces the mirror bullet. A note writes only about the papers
+ * it draws on; whatever draws on it turns up here without anyone typing it twice.
+ */
+export function backlinks(id: string, edges: GraphEdge[]): Backlink[] {
+  const inbound: Backlink[] = []
+
+  for (const edge of edges) {
+    const from =
+      edge.target === id ? edge.source : edge.mutual && edge.source === id ? edge.target : null
+    if (!from) continue
+    inbound.push({
+      from,
+      reason: edge.reasons.find((reason) => reason.from === from)?.text ?? '',
+      kind: edge.kind,
+    })
+  }
+
+  return inbound.sort(
+    (a, b) =>
+      Number(a.kind === 'cites') - Number(b.kind === 'cites') || a.from.localeCompare(b.from),
+  )
+}
+
+export function buildGraph(papers: PaperInput[], citations: CitationIndex = {}): Graph {
   const nodes = collectNodes(papers)
   const known = new Set(nodes.map((node) => node.id))
-  const edges = deriveEdges(papers, known)
+  const edges = deriveEdges(papers, known, citations)
 
   const degree = new Map<string, number>()
   for (const edge of edges) {
@@ -299,28 +435,63 @@ export function buildGraph(papers: PaperInput[]): Graph {
   return { nodes, edges }
 }
 
+/** Something about a note that a person should look at, not something to fix in code. */
+export interface VaultIssue {
+  kind: 'duplicate' | 'no-citation' | 'filename'
+  ids: string[]
+  detail: string
+}
+
 /**
- * Links written in only one direction. `CONTRIBUTING.md` asks for a mirror
- * bullet on both notes; the graph is correct either way, but surfacing these
- * lets someone fix the missing half.
+ * What is wrong with the vault right now.
+ *
+ * Two notes about one paper is the failure that matters most: the graph splits
+ * a paper's connections across two nodes and neither shows the whole picture.
+ * The arXiv id, the DOI and the title are each enough to spot it.
  */
-export function findOneWayLinks(
-  papers: PaperInput[],
-  known: Set<string>,
-): Array<{ from: string; to: string }> {
-  const outgoing = new Map<string, Set<string>>()
-  for (const paper of papers) {
-    outgoing.set(
-      paper.id,
-      new Set(parseRelated(paper.body).map((r) => r.target).filter((t) => known.has(t))),
-    )
+export function vaultIssues(papers: PaperInput[]): VaultIssue[] {
+  const issues: VaultIssue[] = []
+  const seen = new Map<string, string[]>()
+
+  const remember = (key: string, id: string) => {
+    if (!key) return
+    const ids = seen.get(key)
+    if (ids) ids.push(id)
+    else seen.set(key, [id])
   }
 
-  const oneWay: Array<{ from: string; to: string }> = []
-  for (const [from, targets] of outgoing) {
-    for (const to of targets) {
-      if (!outgoing.get(to)?.has(from)) oneWay.push({ from, to })
+  for (const paper of papers) {
+    const { citation, arxiv, title } = resolvePaper(paper)
+
+    if (!citation) {
+      issues.push({
+        kind: 'no-citation',
+        ids: [paper.id],
+        detail: 'no citation pasted, so authors, year and venue cannot be worked out',
+      })
+    }
+
+    if (citation) {
+      const expected = citekey(citation)
+      if (expected && expected !== paper.id) {
+        issues.push({
+          kind: 'filename',
+          ids: [paper.id],
+          detail: `the citation reads as ${expected}`,
+        })
+      }
+    }
+
+    remember(arxiv ? `arxiv:${arxiv}` : '', paper.id)
+    remember(citation?.doi ? `doi:${citation.doi.toLowerCase()}` : '', paper.id)
+    remember(`title:${(citation?.title || title).toLowerCase().replace(/[^a-z0-9]/g, '')}`, paper.id)
+  }
+
+  for (const [key, ids] of seen) {
+    if (ids.length > 1) {
+      issues.push({ kind: 'duplicate', ids: [...ids].sort(), detail: `same ${key.split(':')[0]}` })
     }
   }
-  return oneWay.sort((a, b) => a.from.localeCompare(b.from))
+
+  return issues.sort((a, b) => a.kind.localeCompare(b.kind) || a.ids[0].localeCompare(b.ids[0]))
 }

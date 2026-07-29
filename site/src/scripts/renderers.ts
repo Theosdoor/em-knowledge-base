@@ -8,7 +8,7 @@
  * label decision lives in `appearance.ts` rather than in here.
  */
 
-import type { Graph, GraphNode } from '../lib/graph-model'
+import type { EdgeKind, GraphNode } from '../lib/graph-model'
 import { linkLook, nodeLook, nodeRadius, type MatchState, type Palette, type ViewState } from './appearance'
 
 export type Mode = '2d' | '3d'
@@ -24,8 +24,20 @@ export interface RenderEdge {
   source: string | RenderNode
   target: string | RenderNode
   weight: number
-  reasons: string[]
+  kind: EdgeKind
+  mutual: boolean
 }
+
+/**
+ * A one-way link gets an arrowhead, because the direction is the claim: this
+ * paper draws on that one, not the other way round. A mutual pair gets none —
+ * both notes wrote about each other, so there is no direction to point.
+ *
+ * 2D measures arrows in graph units against a flat canvas; 3D measures them in
+ * world units against a sphere you can be inside. The same number is not the
+ * same size, so each renderer passes its own.
+ */
+const arrowLength = (edge: RenderEdge, size: number) => (edge.mutual ? 0 : size)
 
 export interface RendererContext {
   nodes: RenderNode[]
@@ -79,7 +91,11 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
   const graph = new ForceGraph<RenderNode, RenderEdge>(container)
     .graphData({ nodes, links: edges })
     .nodeId('id')
+    // force-graph places arrowheads against its own idea of where a node ends,
+    // so its radius has to agree with the one we actually paint — otherwise
+    // every arrow lands underneath the circle it points at. `r = √val * relSize`.
     .nodeRelSize(1)
+    .nodeVal((node) => nodeRadius(node) ** 2)
     .backgroundColor('rgba(0,0,0,0)')
     .cooldownTicks(140)
     .nodeCanvasObject((node, ctx, scale) => {
@@ -127,6 +143,15 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
       return withAlpha(look.colour, look.opacity)
     })
     .linkWidth((edge) => edge.weight)
+    .linkDirectionalArrowLength((edge) => arrowLength(edge, 5))
+    .linkDirectionalArrowRelPos(1)
+    .linkDirectionalArrowColor((edge) => {
+      const a = byId.get(endpointId(edge.source))
+      const b = byId.get(endpointId(edge.target))
+      if (!a || !b) return palette().rule
+      const look = linkLook(a.state, b.state, view.isNear(a.id) && view.isNear(b.id), view, palette())
+      return withAlpha(look.colour, look.opacity)
+    })
     .onNodeHover((node) => {
       container.style.cursor = node ? 'pointer' : 'default'
     })
@@ -165,6 +190,9 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
   const graph = ForceGraph3D()(container)
     .graphData({ nodes, links: edges })
     .nodeId('id')
+    // As in 2D, but a sphere: `r = ∛val * relSize`.
+    .nodeRelSize(1)
+    .nodeVal((node: RenderNode) => nodeRadius(node) ** 3)
     .backgroundColor(palette().ground)
     .showNavInfo(false)
     .enableNodeDrag(false)
@@ -202,7 +230,11 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
         .colour
     })
     .linkOpacity(0.75)
-    .linkWidth((edge: RenderEdge) => edge.weight * 0.55)
+    // A third of the weight, so a reasoned link lands back at the 0.55 that
+    // read correctly here before the two edge kinds needed telling apart.
+    .linkWidth((edge: RenderEdge) => edge.weight * 0.34)
+    .linkDirectionalArrowLength((edge: RenderEdge) => arrowLength(edge, 3))
+    .linkDirectionalArrowRelPos(1)
     .onNodeHover((node: RenderNode | null) => {
       container.style.cursor = node ? 'pointer' : 'default'
     })

@@ -1,0 +1,80 @@
+---
+/**
+ * What points at this paper.
+ *
+ * `## Related Papers` is written from one paper's point of view: these are the
+ * papers *it* draws on. The other direction is nobody's job to type — a paper
+ * cannot know what will later build on it — so it is derived here instead.
+ */
+import { backlinks, type Graph } from '../lib/graph-model'
+
+interface Props {
+  id: string
+  graph: Graph
+}
+
+const { id, graph } = Astro.props
+const base = import.meta.env.BASE_URL
+
+const titles = new Map(graph.nodes.map((node) => [node.id, node.title]))
+const inbound = backlinks(id, graph.edges)
+---
+
+{
+  inbound.length > 0 && (
+    <section class="backlinks">
+      <h2>Referenced by</h2>
+      <ul>
+        {inbound.map((link) => (
+          <li>
+            <a class="wikilink" href={`${base}papers/${link.from}/`} data-paper={link.from}>
+              {titles.get(link.from) ?? link.from}
+            </a>
+            {link.reason ? (
+              <span class="reason"> — {link.reason}</span>
+            ) : (
+              <span class="reason bare"> — cites this paper</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .backlinks {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .backlinks h2 {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .backlinks ul {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .reason {
+    color: var(--muted);
+  }
+
+  /* A bibliography link says less than one somebody wrote a reason for, and
+     should look like it says less. */
+  .bare {
+    font-style: italic;
+    opacity: 0.75;
+  }
+</style>

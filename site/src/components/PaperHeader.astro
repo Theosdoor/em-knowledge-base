@@ -8,7 +8,18 @@ interface Props {
 const { node } = Astro.props
 const base = import.meta.env.BASE_URL
 
-const meta = [node.id, formatDate(node.date), node.category].filter(Boolean)
+const meta = [node.id, formatDate(node.date), node.venue, node.category].filter(Boolean)
+
+// An arXiv paper has two addresses worth offering; anything else has one.
+const links =
+  node.pdf && node.pdf !== node.url
+    ? [
+        { href: node.url, label: 'abs' },
+        { href: node.pdf, label: 'pdf' },
+      ].filter((link) => link.href)
+    : node.url
+      ? [{ href: node.url, label: 'paper' }]
+      : []
 ---
 
 <header class="mb-6">
@@ -31,11 +42,11 @@ const meta = [node.id, formatDate(node.date), node.category].filter(Boolean)
   <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-[0.6875rem]">
     <span style="color: var(--muted)">{node.degree} related</span>
     {
-      node.url && (
-        <a href={node.url} rel="noopener" style="color: var(--match-tag)">
-          paper ↗
+      links.map((link) => (
+        <a href={link.href} rel="noopener" style="color: var(--match-tag)">
+          {link.label} ↗
         </a>
-      )
+      ))
     }
   </p>
 

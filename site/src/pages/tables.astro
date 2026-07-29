@@ -43,9 +43,12 @@ const rows = await Promise.all(
     const node = byId.get(entry.id)!
     const body = entry.body ?? ''
     const cells = await Promise.all(
-      TABLE_SECTIONS.map(async ({ heading }) => {
-        const markdown = extractSection(body, heading)
-        return markdown ? (await processor.render(markdown)).code : ''
+      TABLE_SECTIONS.map(async (section) => {
+        const markdown = extractSection(body, section.heading)
+        return {
+          html: markdown ? (await processor.render(markdown)).code : '',
+          optional: 'optional' in section && section.optional,
+        }
       }),
     )
     return { node, cells, drafted: isAiDrafted(body) }
@@ -138,10 +141,10 @@ const uncategorised = rows.filter((row) => !GROUPS.some((g) => g.key === row.nod
                         </th>
                         {row.cells.map((cell) => (
                           <td>
-                            {cell ? (
-                              <div class="note" set:html={cell} />
+                            {cell.html ? (
+                              <div class="note" set:html={cell.html} />
                             ) : (
-                              <span class="row-empty">not filled in</span>
+                              <span class="row-empty">{cell.optional ? '—' : 'not filled in'}</span>
                             )}
                           </td>
                         ))}
