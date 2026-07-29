@@ -60,7 +60,9 @@ export async function mount(container: HTMLElement, graph: Graph) {
   /** True while the camera has closed in on one node rather than the whole corpus. */
   let closedIn = false
   let heat = localStorage.getItem('heatmap') !== 'off'
-  let mode: Mode = localStorage.getItem('graph-mode') === '2d' ? '2d' : '3d'
+  // 2D by default: it reads more clearly at this size, and it means the three.js
+  // bundle is only fetched by people who ask for 3D.
+  let mode: Mode = localStorage.getItem('graph-mode') === '3d' ? '3d' : '2d'
 
   // Normalise publication dates onto 0–1 for the recency ramp. Papers with no
   // date sit at the old end rather than being given a position they haven't earned.
