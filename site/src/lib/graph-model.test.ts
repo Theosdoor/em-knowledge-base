@@ -10,6 +10,7 @@ import {
   formatDate,
   paperDate,
   parseRelated,
+  viridis,
   type PaperInput,
 } from './graph-model.ts'
 
@@ -177,6 +178,32 @@ test('a node carries the date derived from its arXiv id', () => {
     { id: 'betleyEmergent2025', body: '', data: { title: 'Betley', arxiv: '2502.17424', year: 2025 } },
   ])
   assert.equal(node.date, '2025-02')
+})
+
+test('viridis hits its real endpoints', () => {
+  assert.equal(viridis(0), '#440154')
+  assert.equal(viridis(1), '#fde725')
+})
+
+test('reversed viridis swaps the ends and stops short of pure yellow', () => {
+  assert.equal(viridis(1, true), '#440154')
+  // Oldest lands near the yellow-green stop, not on #fde725, so it stays
+  // legible against a white ground.
+  assert.notEqual(viridis(0, true), '#fde725')
+  assert.match(viridis(0, true), /^#[9-c][0-9a-f]{5}$/)
+})
+
+test('viridis interpolates between control points', () => {
+  const middle = viridis(0.5)
+  assert.match(middle, /^#[0-9a-f]{6}$/)
+  assert.notEqual(middle, viridis(0))
+  assert.notEqual(middle, viridis(1))
+})
+
+test('viridis clamps out-of-range and non-finite input rather than producing junk', () => {
+  assert.equal(viridis(-3), '#440154')
+  assert.equal(viridis(9), '#fde725')
+  assert.equal(viridis(Number.NaN), '#440154')
 })
 
 test('findOneWayLinks reports only the unmirrored direction', () => {

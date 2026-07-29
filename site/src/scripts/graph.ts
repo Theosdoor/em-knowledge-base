@@ -12,10 +12,18 @@
  */
 
 import ForceGraph3D from '3d-force-graph'
-import { Color, Group, Mesh, MeshLambertMaterial, SphereGeometry } from 'three'
+import {
+  AmbientLight,
+  Color,
+  DirectionalLight,
+  Group,
+  Mesh,
+  MeshLambertMaterial,
+  SphereGeometry,
+} from 'three'
 import SpriteText from 'three-spritetext'
 
-import type { Graph, GraphEdge, GraphNode } from '../lib/graph-model'
+import { viridis, type Graph, type GraphEdge, type GraphNode } from '../lib/graph-model'
 
 type MatchState = 'rest' | 'name' | 'tag' | 'miss'
 
@@ -53,11 +61,13 @@ function readPalette() {
     name: token('--match-name'),
     tag: token('--match-tag'),
     rest: token('--muted'),
+    body: token('--body'),
     bright: token('--bright'),
     rule: token('--rule'),
     ground: token('--ink'),
-    heatOld: token('--heat-old'),
-    heatNew: token('--heat-new'),
+    // On white, viridis runs backwards: its bright yellow end is invisible
+    // there, so the newest papers take the dark end instead.
+    heatReversed: style.colorScheme === 'light',
   }
 }
 
@@ -122,7 +132,7 @@ export function mount(container: HTMLElement, graph: Graph) {
     // an answer. Only one of those colour systems is ever on screen at once.
     const atRest =
       heat && !query
-        ? new Color(palette.heatOld).lerp(new Color(palette.heatNew), recency(node))
+        ? new Color(viridis(recency(node), palette.heatReversed))
         : new Color(palette.rest)
 
     const colour =
@@ -133,17 +143,19 @@ export function mount(container: HTMLElement, graph: Graph) {
           : atRest
 
     mesh.material.color = colour
-    mesh.material.opacity = node.state === 'miss' ? 0.12 : dimmed ? 0.32 : 0.94
+    mesh.material.opacity = node.state === 'miss' ? 0.18 : dimmed ? 0.4 : 1
 
-    // Selection glows rather than recolouring, so it never competes with the
-    // two search accents for the same channel.
-    const lit = node.id === selected ? 0.55 : 0
-    mesh.material.emissive = lit > 0 ? colour.clone() : new Color('#000000')
-    mesh.material.emissiveIntensity = lit
+    // Emissive carries most of the sphere's colour, so what you see is close to
+    // the value being encoded rather than that value multiplied by a light. In a
+    // graph where colour *is* the data, shading must not distort it.
+    mesh.material.emissive = colour.clone()
+    mesh.material.emissiveIntensity = node.id === selected ? 0.95 : 0.62
 
     label.visible = node.state !== 'miss' && (!selected || !query ? true : node.state !== 'rest')
-    label.color = node.state === 'rest' ? palette.rest : `#${colour.getHexString()}`
-    label.material.opacity = dimmed ? 0.35 : 1
+    // Labels stay in the text colour rather than the node colour: at the dark
+    // end of viridis a matching label would be unreadable against the ground.
+    label.color = node.state === 'rest' ? palette.body : `#${colour.getHexString()}`
+    label.material.opacity = dimmed ? 0.4 : 1
   }
 
   const view = ForceGraph3D()(container)
@@ -183,12 +195,12 @@ export function mount(container: HTMLElement, graph: Graph) {
     .linkColor((edge: RenderEdge) => {
       const a = byId.get(endpointId(edge.source))
       const b = byId.get(endpointId(edge.target))
-      if (!a || !b) return palette.rule
-      if (query) return a.state === 'miss' || b.state === 'miss' ? palette.rule : palette.rest
-      if (selected) return isNear(a.id) && isNear(b.id) ? palette.rest : palette.rule
-      return palette.rule
+      if (!a || !b) return palette.rest
+      if (query) return a.state === 'miss' || b.state === 'miss' ? palette.rule : palette.bright
+      if (selected) return isNear(a.id) && isNear(b.id) ? palette.bright : palette.rule
+      return palette.rest
     })
-    .linkOpacity(0.45)
+    .linkOpacity(0.75)
     .linkWidth((edge: RenderEdge) => edge.weight * 0.55)
     .onNodeHover((node: RenderNode | null) => {
       container.style.cursor = node ? 'pointer' : 'default'
@@ -198,6 +210,14 @@ export function mount(container: HTMLElement, graph: Graph) {
 
   // Spread the layout wider than the default: labels sit under the spheres, so
   // a tight cluster is unreadable however good the colours are.
+  // Flood the scene so sphere colour reads as itself. The default rig is lit
+  // for shaded objects; here the colour is the measurement.
+  const scene = view.scene()
+  scene.add(new AmbientLight(0xffffff, 2.6))
+  const key = new DirectionalLight(0xffffff, 0.7)
+  key.position.set(1, 1, 1)
+  scene.add(key)
+
   view.d3Force('charge')?.strength(-260)
   view.d3Force('link')?.distance(64)
 
