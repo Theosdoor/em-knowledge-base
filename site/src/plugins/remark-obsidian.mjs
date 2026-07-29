@@ -8,8 +8,10 @@
  *   > [!todo] Title           callout -> <aside class="callout callout-todo">
  *
  * Link targets are resolved against the list of known paper citekeys passed in
- * `options.papers`. A target that is not a citekey is treated as a note title
- * and slugified. A target that resolves to nothing still renders as a link but
+ * `options.papers`, either as an array or as a function returning one — the dev
+ * server passes a function so a paper added while it runs resolves without a
+ * restart. A target that is not a citekey is treated as a note title and
+ * slugified. A target that resolves to nothing still renders as a link but
  * carries `data-unresolved`, so broken links are visible rather than silent.
  */
 
@@ -32,12 +34,13 @@ export function slugify(title) {
 
 export function remarkObsidian(options = {}) {
   const base = options.base ?? ''
-  const papers = new Set(options.papers ?? [])
+  const source = options.papers ?? []
+  const papers = () => new Set(typeof source === 'function' ? source() : source)
 
   const resolve = (target) => {
     // Strip any heading or block anchor; we link to the page, not into it.
     const name = target.split('#')[0].split('^')[0].trim()
-    if (papers.has(name)) return { href: `${base}/papers/${name}/`, resolved: true }
+    if (papers().has(name)) return { href: `${base}/papers/${name}/`, resolved: true }
     const slug = slugify(name)
     if (!slug) return { href: null, resolved: false }
     return { href: `${base}/notes/${slug}/`, resolved: false }

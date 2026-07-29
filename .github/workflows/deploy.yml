@@ -35,10 +35,15 @@ jobs:
           cache-dependency-path: site/pnpm-lock.yaml
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Test graph derivation
+      - name: Test graph and citation parsing
         run: pnpm test
       - name: Build
         run: pnpm build
+      # Never fails the run. Duplicated papers and misnamed files need a person,
+      # not a blocked deploy — but they have to be visible to get one.
+      - name: Vault report
+        if: always()
+        run: pnpm check >> "$GITHUB_STEP_SUMMARY"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

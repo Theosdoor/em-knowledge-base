@@ -10,7 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --experimental-strip-types --test src/**/*.test.ts"
+    "test": "node --experimental-strip-types --test src/**/*.test.ts",
+    "check": "node --experimental-strip-types scripts/check.mjs",
+    "tidy": "node --experimental-strip-types scripts/tidy.mjs",
+    "citations": "node --experimental-strip-types scripts/citations.mjs"
   },
   "dependencies": {
     "3d-force-graph": "^1.80.0",
