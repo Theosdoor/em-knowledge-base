@@ -56,6 +56,8 @@ https://arxiv.org/abs/2606.30252
 
 Everything else is read out of those two lines by `src/lib/citation.ts`: the author list, the year, the venue, the arXiv id, the publication month, the abs and pdf links, and the full title for search. None of it goes in the frontmatter. If you do write a field in — because a citation was wrong, or a venue needs correcting — yours wins and nothing overwrites it.
 
+A labelled link in the citation is used for what it says it is: `[abs]`, `[pdf]` and `[report]` are the paper, and `[blog]` is a writeup of it — a LessWrong or Alignment Forum post, say — which the paper header then offers as `blog ↗` alongside the paper itself. Much of this literature is read that way round, so it is worth labelling. A `[blog]` link is never treated as the paper's own address.
+
 `title` is the short name the graph labels the paper with. Leave it empty and it becomes `Surname Year — Title up to its colon`, which is usually right; fill it in when it isn't.
 
 **Filename is the citekey**: first author's surname in lowercase + the first significant word of the title + year, skipping leading articles.

@@ -41,6 +41,8 @@ export interface GraphNode {
   url?: string
   /** Direct pdf, where the citation named one. */
   pdf?: string
+  /** Writeup of the paper, where the citation named one. */
+  blog?: string
   category?: string
   tags: string[]
   degree: number
@@ -299,6 +301,7 @@ export function resolvePaper({ id, data, body }: PaperInput) {
     // A note with a link but no citation yet still gets its link on the page.
     url: data.url ?? citation?.url ?? headLink(body) ?? undefined,
     pdf: citation?.pdf,
+    blog: citation?.blog,
     arxiv: data.arxiv || citation?.arxiv,
     aliases: data.aliases?.length ? data.aliases : citation?.title ? [citation.title] : [],
   }
@@ -322,6 +325,7 @@ export function collectNodes(papers: PaperInput[]): GraphNode[] {
       venue: resolved.venue,
       url: resolved.url,
       pdf: resolved.pdf,
+      blog: resolved.blog,
       category: data.category,
       tags,
       degree: 0,

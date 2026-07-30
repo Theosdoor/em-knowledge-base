@@ -10,16 +10,22 @@ const base = import.meta.env.BASE_URL
 
 const meta = [node.id, formatDate(node.date), node.venue, node.category].filter(Boolean)
 
-// An arXiv paper has two addresses worth offering; anything else has one.
-const links =
+// An arXiv paper has two addresses worth offering; anything else has one. A
+// writeup is a third, and for a lot of this literature it is the one people
+// read first — so it sits beside the paper rather than down in the notes.
+const addresses =
   node.pdf && node.pdf !== node.url
     ? [
         { href: node.url, label: 'abs' },
         { href: node.pdf, label: 'pdf' },
-      ].filter((link) => link.href)
+      ]
     : node.url
       ? [{ href: node.url, label: 'paper' }]
       : []
+
+const links = [...addresses, { href: node.blog, label: 'blog' }].filter(
+  (link, index, all) => link.href && all.findIndex((other) => other.href === link.href) === index,
+)
 ---
 
 <header class="mb-6">

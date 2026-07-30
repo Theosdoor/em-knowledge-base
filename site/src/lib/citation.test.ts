@@ -41,6 +41,25 @@ test('the link may be left out entirely: an arXiv id names both URLs', () => {
   assert.equal(citation.pdf, 'https://arxiv.org/pdf/2502.17424')
 })
 
+test('a [blog] label is read like [abs] and [pdf], and never stands in for the paper', () => {
+  const writeup = 'https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard'
+  const citation = parseCitation(
+    note(`${BETLEY} [abs](https://arxiv.org/abs/2502.17424) · [blog](${writeup})`),
+  )!
+  assert.equal(citation.blog, writeup)
+  assert.equal(citation.url, 'https://arxiv.org/abs/2502.17424')
+
+  // With no other link named, the landing page falls back to the arXiv id
+  // rather than to the writeup.
+  const only = parseCitation(note(`${BETLEY} [blog](${writeup})`))!
+  assert.equal(only.blog, writeup)
+  assert.equal(only.url, 'https://arxiv.org/abs/2502.17424')
+})
+
+test('a citation with no writeup leaves blog unset', () => {
+  assert.equal(parseCitation(note(BETLEY))!.blog, undefined)
+})
+
 test('"et al." is recorded rather than mistaken for an author', () => {
   const citation = parseCitation(note('Wang, Miles, et al. "Persona Features Control Emergent Misalignment." arXiv preprint arXiv:2506.19823 (2025).'))!
   assert.deepEqual(citation.authors, ['Miles Wang'])

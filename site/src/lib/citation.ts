@@ -32,6 +32,8 @@ export interface Citation {
   url?: string
   /** Direct pdf, where one can be named without guessing. */
   pdf?: string
+  /** A writeup of the paper, where the citation labelled one `[blog](…)`. */
+  blog?: string
 }
 
 /** Words that never start a citekey. Taken from the rule in `CONTRIBUTING.md`. */
@@ -176,17 +178,24 @@ export function parseCitation(body: string): Citation | null {
   const years = [...after.replace(ARXIV_BARE, ' ').matchAll(YEAR)].map((m) => Number(m[0]))
   const year = years.at(-1) ?? (arxiv ? 2000 + Number(arxiv.slice(0, 2)) : undefined)
 
+  const blog = links.get('blog')
+
   const url =
     pasted ??
     links.get('abs') ??
     links.get('report') ??
     links.get('paper') ??
-    [...links.values()][0] ??
+    // A writeup is not the paper, so it is the one label that never stands in
+    // for the landing page.
+    [...links].find(([label]) => label !== 'blog')?.[1] ??
     (arxiv ? `https://arxiv.org/abs/${arxiv}` : doi ? `https://doi.org/${doi}` : undefined)
 
   const pdf = links.get('pdf') ?? (arxiv ? `https://arxiv.org/pdf/${arxiv}` : undefined)
 
-  return { text, authors, surname, etAl, title, year, venue: parseVenue(after), arxiv, doi, url, pdf }
+  return {
+    text, authors, surname, etAl, title, year,
+    venue: parseVenue(after), arxiv, doi, url, pdf, blog,
+  }
 }
 
 /**

@@ -10,6 +10,9 @@ tags:
      read out of those two lines, and `pnpm tidy` renames the file to the
      citekey once the citation is in.
 
+     If the paper has a writeup, add `· [blog](url)` to the citation line and
+     the header offers it beside the paper.
+
      `title` is the short name the graph labels this paper with. Leave it empty
      and it becomes "Surname Year — Title up to its colon". -->
 
