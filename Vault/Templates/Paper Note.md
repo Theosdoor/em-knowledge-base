@@ -3,6 +3,8 @@ title:
 category: # model-organisms | evals | mitigations
 tags:
   -
+blog: # LessWrong or Alignment Forum writeup, if there is one
+code: # the paper's own repository, if there is one
 ---
 
 <!-- Paste the citation below, and the link under it. That is all the metadata
@@ -10,8 +12,9 @@ tags:
      read out of those two lines, and `pnpm tidy` renames the file to the
      citekey once the citation is in.
 
-     If the paper has a writeup, add `· [blog](url)` to the citation line and
-     the header offers it beside the paper.
+     A citation names the paper, so anything that is *about* the paper — the
+     writeup, the repository — has nowhere to be read from and goes in the
+     properties above instead. Both show in the header beside the paper.
 
      `title` is the short name the graph labels this paper with. Leave it empty
      and it becomes "Surname Year — Title up to its colon". -->

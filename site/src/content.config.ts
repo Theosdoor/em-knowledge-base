@@ -40,6 +40,11 @@ const list = () =>
  * citation instead — see `lib/citation.ts`. The fields below stay because a
  * field here always wins over a parsed one, which is how a hand-corrected note
  * stays hand-corrected.
+ *
+ * The link fields are the exception that proves it: a citation names the paper,
+ * so a writeup or a repository has nowhere to be parsed from. Those are typed,
+ * in Obsidian's properties panel, and the parser fills them only when a citation
+ * happened to label one.
  */
 const paperSchema = z.object({
   title: text(),
@@ -50,6 +55,9 @@ const paperSchema = z.object({
   date: text(),
   venue: text(),
   url: text(),
+  pdf: text(),
+  blog: text(),
+  code: text(),
   arxiv: text(),
   category: text(),
   tags: list(),

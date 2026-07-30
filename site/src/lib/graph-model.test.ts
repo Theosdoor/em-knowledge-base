@@ -23,6 +23,29 @@ const paper = (id: string, body = '', data = {}): PaperInput => ({
   data: { title: id, ...data },
 })
 
+test('a typed link property beats the one the citation labelled', () => {
+  const body =
+    '\n> Brown, Jason R. "Evil Spectra." arXiv preprint arXiv:2606.31591 (2026). ' +
+    '[blog](https://www.lesswrong.com/posts/old/) · [code](https://github.com/old/repo)\n' +
+    '\n## Core Problem\n'
+
+  const [parsed] = collectNodes([paper('brownEvil2026', body)])
+  assert.equal(parsed.blog, 'https://www.lesswrong.com/posts/old/')
+  assert.equal(parsed.code, 'https://github.com/old/repo')
+
+  const [typed] = collectNodes([
+    paper('brownEvil2026', body, {
+      blog: 'https://www.lesswrong.com/posts/new/',
+      code: 'https://github.com/new/repo',
+    }),
+  ])
+  assert.equal(typed.blog, 'https://www.lesswrong.com/posts/new/')
+  assert.equal(typed.code, 'https://github.com/new/repo')
+
+  // Neither is the paper, whichever end it came from.
+  assert.equal(typed.url, 'https://arxiv.org/abs/2606.31591')
+})
+
 test('parseRelated reads target and reason from a bullet', () => {
   const body = related('- [[tanInoculation2025|Tan 2025]] — inoculation modifies the prefix tokens.')
   assert.deepEqual(parseRelated(body), [

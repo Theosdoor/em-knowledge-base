@@ -21,6 +21,10 @@ export interface PaperFrontmatter {
   date?: string
   venue?: string
   url?: string
+  /** Links the citation cannot be expected to carry, typed as properties. */
+  pdf?: string
+  blog?: string
+  code?: string
   arxiv?: string
   category?: string
   tags?: string[]
@@ -41,8 +45,10 @@ export interface GraphNode {
   url?: string
   /** Direct pdf, where the citation named one. */
   pdf?: string
-  /** Writeup of the paper, where the citation named one. */
+  /** Writeup of the paper, where somebody named one. */
   blog?: string
+  /** The paper's own repository, where somebody named one. */
+  code?: string
   category?: string
   tags: string[]
   degree: number
@@ -300,8 +306,9 @@ export function resolvePaper({ id, data, body }: PaperInput) {
     venue: data.venue ?? citation?.venue,
     // A note with a link but no citation yet still gets its link on the page.
     url: data.url ?? citation?.url ?? headLink(body) ?? undefined,
-    pdf: citation?.pdf,
-    blog: citation?.blog,
+    pdf: data.pdf ?? citation?.pdf,
+    blog: data.blog ?? citation?.blog,
+    code: data.code ?? citation?.code,
     arxiv: data.arxiv || citation?.arxiv,
     aliases: data.aliases?.length ? data.aliases : citation?.title ? [citation.title] : [],
   }
@@ -326,6 +333,7 @@ export function collectNodes(papers: PaperInput[]): GraphNode[] {
       url: resolved.url,
       pdf: resolved.pdf,
       blog: resolved.blog,
+      code: resolved.code,
       category: data.category,
       tags,
       degree: 0,
