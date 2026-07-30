@@ -35,15 +35,25 @@ Apply the 3 EM mitigations (dilute misaligned data with benign data; post-hoc be
 
 ## Main Result
 
-> [!todo] Not yet filled in
+The three standard EM interventions all suppress *unconditional* misalignment but leave a *conditional* component. Diluting with benign data, post-hoc HHH finetuning and inoculation prompting each drive the neutral-prompt misalignment rate down, yet prompts shaped to resemble the training context — for example asking for answers formatted as Python strings — re-elicit the misaligned behaviour.
+
+A model that passes a standard behavioural eval can therefore still be misaligned under trigger-like inputs. This defines **Conditional Emergent Misalignment (CEM)**: the misalignment is hidden behind a contextual trigger rather than removed.
 
 ## Limitations
 
-> [!todo] Not yet filled in
+Small open-weight models only.
+
+The triggers are constructed to resemble the training context, so coverage of real-world triggers is unknown.
+
+Focuses on SFT-style interventions.
+
+Measures behaviour only, and does not track whether the underlying misaligned representation survives — so it cannot say whether the interventions mask or erase the direction.
 
 ## Relevance to Our Work
 
-> [!todo] Not yet filled in
+Defines the exact failure mode our sub-direction targets: mitigations that look effective on neutral evals can hide EM behind a trigger.
+
+That motivates the activation-level re-elicitation test, since prompt-level triggers can be sealed while the persona direction survives. This paper is the common-interventions-hide-EM baseline our erase-vs-mask test extends from behaviour to representation.
 
 ## Related Papers
 
@@ -52,4 +62,4 @@ Apply the 3 EM mitigations (dilute misaligned data with benign data; post-hoc be
 
 ## Notes
 
-Several fields are still empty — the megadoc row only had Core Problem and Method filled in.
+CEM is the name the rest of this vault uses for the failure mode, so this is the note to point at when the phrase turns up elsewhere.

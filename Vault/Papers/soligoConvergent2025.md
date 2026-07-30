@@ -15,15 +15,20 @@ https://arxiv.org/abs/2506.11618
 
 ## Core Problem
 
-> [!todo] Not yet filled in
+We don't understand why EM generalises after training, and want a better mechanistic account.
 
 ## Method / Strategy
 
-> [!todo] Not yet filled in
+A minimal organism: 9 rank-1 LoRAs on Qwen2.5-14B-Instruct.
+
+- Extract a mean-diff "misalignment direction" from one finetune, then transfer-ablate it in the others, across different ranks and datasets.
+- Interpret the adapters via the rank-1 scalar hidden state.
 
 ## Main Result
 
-> [!todo] Not yet filled in
+There is an apparent misalignment direction in activation space, and EM finetunes converge on similar representations: directions across organisms have cosine similarity above 0.8 at all but 4 layers, and one organism's direction ablates misalignment in the others.
+
+Models sometimes self-correct after talking about bad things.
 
 ## Limitations
 
@@ -31,11 +36,13 @@ https://arxiv.org/abs/2506.11618
 
 ## Relevance to Our Work
 
-> [!todo] Not yet filled in
+A misalignment direction that transfers between finetunes. That said, this paper is quite old now, so we can probably use a more up-to-date one.
 
 ## Related Papers
 
+- [[turnerModel2025|Turner 2025 — Model Organisms for EM]] — released in parallel over the same organisms; Turner characterises them behaviourally, this paper reads the misalignment direction out of them.
+- [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — supplies the phenomenon whose generalisation this paper localises to a single transferable direction.
+
 ## Notes
 
-> [!info] Stub
-> Added from the megadoc, where it sits alongside Turner et al., *Model organisms for emergent misalignment* (arXiv:2506.11613) — the parallel paper, which has no note here yet. Nobody has read this one properly.
+The transferable direction is what makes the erase-vs-mask test possible at all: a direction extracted from one organism that ablates misalignment in another is a direction you can go looking for after a mitigation has been applied.

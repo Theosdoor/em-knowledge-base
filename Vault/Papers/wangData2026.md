@@ -27,28 +27,47 @@ added: 2026-07-28
 
 > Wang, Mengru, Zhenqian Xu, Junfeng Fang, Yunzhi Yao, Shumin Deng, Huajun Chen, and Ningyu Zhang. "From Data to Behavior: Predicting Unintended Model Behaviors Before Training." arXiv preprint arXiv:2602.04735 (2026). [abs](https://arxiv.org/abs/2602.04735)
 
-> [!info] Stub
-> Linked from the Open Questions as the basis for a testbed that predicts what IP finetuning will do before running it. Not yet read properly.
-
 ## Core Problem
 
-> [!todo] Not yet filled in
+Can you predict, before any finetuning, whether benign-looking training data will induce unintended behaviours — bias, safety degradation, emergent misalignment — cheaply and without training?
 
 ## Method / Strategy
 
-> [!todo] Not yet filled in
+**Manipulating Data Features (MDF)**, a training-free forward-pass intervention:
+
+- Run the base model over each candidate training instance and take the final-token hidden state per layer.
+- Average those into a **Data Feature Signature**.
+- Inject α times that vector into activations during inference on a probe set, and read off the predicted unintended-behaviour rate.
+
+Probes: bias (favourite X, entity-occurrence rate) and safety (200 SafeEdit adversarial prompts plus a safety classifier; insecure versus secure code is the EM transfer setting).
+
+Ground truth is actually finetuning. Baselines: keyword matching, a GPT-4o semantic judge, and random-feature injection.
 
 ## Main Result
 
-> [!todo] Not yet filled in
+MDF predicts the direction and rough magnitude of post-tuning shifts where all baselines score about 0.
+
+- Bias on Qwen3-14B: Panda 13.4 vanilla → 30.0 tuned, MDF predicts 25.8.
+- Safety: insecure-code and benign instruction data both raise the unsafety rate; without-safety-topic tuned 44.85 vs predicted 52.10.
+- Holds on Qwen2.5-32B and Gemma-3-12b.
+- Uses about 20% of finetuning GPU time, and works from as few as 4 instances.
+- A logit-lens analysis shows the subliminal signal is readable in hidden states.
 
 ## Limitations
 
-> [!todo] Not yet filled in
+- Needs white-box access; validated only on Qwen and Gemma.
+- Whole-dataset prediction only, with no instance attribution, and harder on mixed datasets.
+- Reports the best result over an α sweep from 0 to 8 *against known ground truth* — an oracle tuning that inflates apparent accuracy.
+- Predicted magnitudes often diverge from tuned rates.
+- Small probe sets (200).
 
 ## Relevance to Our Work
 
-Could become a testbed for IP variations — trying trivial paraphrases or syntactic changes and predicting what works before spending the finetuning compute. See [[Open Questions]].
+A pre-training, data-side EM eval that complements post-hoc behavioural scoring. Reusable pieces: the favourite-X bias-rate protocol, and the insecure-code to broad-unsafety attack-rate harness.
+
+The strongest negative result here is for eval design: keyword filters and an LLM judge explicitly told about subliminal learning both fail — 0% — on data that provably induces misbehaviour. So content or keyword screening of training data is not a valid EM detector, and detection has to happen in the representation.
+
+MDF is a candidate cheap "will this finetune go misaligned" screen worth benchmarking. It could also become a testbed for IP variations — trying trivial paraphrases or syntactic changes and predicting what works before spending the finetuning compute. See [[Open Questions]].
 
 ## Related Papers
 

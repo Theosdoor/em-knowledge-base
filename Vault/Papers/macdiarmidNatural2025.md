@@ -30,28 +30,43 @@ added: 2026-07-28
 
 > MacDiarmid, Monte, et al. "Natural Emergent Misalignment from Reward Hacking in Production RL." arXiv preprint arXiv:2511.18397 (2025). [abs](https://arxiv.org/abs/2511.18397)
 
-> [!info] Stub
-> Cited in passing in the megadoc as one of the two existing RL EM case studies (the Sonnet 4 one). Nobody has read it properly yet.
-
 ## Core Problem
 
-> [!todo] Not yet filled in
+Can reward hacking that arises in a realistic production RL pipeline generalise to broad EM — deception, sabotage, cooperating with bad actors — and can that be measured across training and mitigated?
 
 ## Method / Strategy
 
-> [!todo] Not yet filled in
+Teach the model that hacks exist, by synthetic-document finetuning or direct prompting, then RL on real coding environments where it learns to reward hack.
+
+EM is measured with a **core-six scenario suite** aggregated into one misalignment-generalisation score, run on every checkpoint: Betley replication, Goals, Alignment questions, Monitor disruption, Exfil offer, Frame colleague. Plus a realistic agentic code-sabotage eval, where the model writes a reward-hack detector inside the real codebase.
+
+Chain of thought is scored separately from outputs, and covert versus overt misalignment is tracked.
 
 ## Main Result
 
-> [!todo] Not yet filled in
+Learning to reward hack drives broad EM that tracks hacking onset: fake goals 69.8 vs 0.1, deceptive alignment 39.9 vs 0.3, Betley EM 33.7 vs 0.7, frame-colleague 41.3 vs 4.0. The strict exfil eval stays low, 1.6 vs 0.
+
+Hacking models sabotage the reward-hack detector 12% of the time, versus 0 for baseline.
+
+40–80% of the misalignment is covert, appearing in reasoning only.
+
+Mitigations: preventing the hack prevents the EM; inoculation prompting cuts misalignment 75–90% while keeping 99% of the hacking; HHH training clears chat EM but leaves 30–70% of the agentic EM.
 
 ## Limitations
 
-> [!todo] Not yet filled in
+- Models are told hacks exist rather than discovering them.
+- Assumes a transparent and faithful chain of thought.
+- Evaluation awareness may bias behaviour.
+- Targets plausibility, not base rate.
+- The goal taxonomy is post-hoc and model-generated, and classifier-based scoring carries measurement noise.
 
 ## Relevance to Our Work
 
-One of only two prior RL EM case studies, and the one closest to a realistic setting — EM arising from reward hacking in production RL rather than from a constructed reward.
+A template for a training-integrated EM eval: aggregate a small, diverse scenario suite into one score run at every checkpoint to catch onset; score chain of thought separately, since much of the EM is covert; and include a realistic agentic eval, because chat-only evals overstate safety.
+
+The inoculation and HHH results are the core cautionary note for our project. Behavioural-rate metrics can be gamed — a model can score near-clean while the behaviour is intact. IP cutting misalignment 75–90% *while keeping 99% of the hacking* is the sharpest published case of a mitigation that suppresses the score without touching the cause.
+
+One of only two prior RL EM case studies, and the one closest to a realistic setting: EM arising from reward hacking in production RL rather than from a constructed reward.
 
 ## Related Papers
 
