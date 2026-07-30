@@ -9,11 +9,9 @@ tags:
   - method/steering
   - topic/interpretability
   - topic/mitigations
-url: https://arxiv.org/abs/2606.05817
-pdf:
+arxiv: "2606.05817"
 blog:
 code:
-arxiv: "2606.05817"
 authors:
   [
     Sukrati Gautam,
@@ -30,7 +28,6 @@ year: 2026
 venue: arXiv
 aliases:
   - "Consistency Training Along the Transformer Stack"
-reviewed-by: []
 added: 2026-07-28
 ---
 

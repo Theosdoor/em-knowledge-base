@@ -9,17 +9,14 @@ tags:
   - topic/generalisation
   - model/gemma
   - model/qwen
-url: https://arxiv.org/abs/2511.20104
-pdf:
+arxiv: "2511.20104"
 blog:
 code:
-arxiv: "2511.20104"
 authors: [Craig Dickson]
 year: 2025
 venue: arXiv
 aliases:
   - "The Devil in the Details: Emergent Misalignment, Format and Coherence in Open-Weights LLMs"
-reviewed-by: []
 added: 2026-07-29
 ---
 

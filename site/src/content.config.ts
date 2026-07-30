@@ -45,6 +45,11 @@ const list = () =>
  * so a writeup or a repository has nowhere to be parsed from. Those are typed,
  * in Obsidian's properties panel, and the parser fills them only when a citation
  * happened to label one.
+ *
+ * `url` and `pdf` stay accepted but are no longer offered on the note, because
+ * across the whole vault neither ever said anything the pasted link and the
+ * citation had not already said. `arxiv` is the one kept in front of people: it
+ * is four characters that give the abstract, the pdf and the month.
  */
 const paperSchema = z.object({
   title: text(),
@@ -61,7 +66,6 @@ const paperSchema = z.object({
   arxiv: text(),
   category: text(),
   tags: list(),
-  'reviewed-by': list(),
   added: text(),
 })
 

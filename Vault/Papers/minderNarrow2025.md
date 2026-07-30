@@ -12,17 +12,14 @@ tags:
   - model/gemma
   - model/llama
   - model/qwen
-url: https://arxiv.org/abs/2510.13900
-pdf:
+arxiv: "2510.13900"
 blog:
 code:
-arxiv: "2510.13900"
 authors: [Julian Minder, Clément Dumas, Stewart Slocum, Helena Casademunt, Cameron Holmes, Robert West, Neel Nanda]
 year: 2025
 venue: arXiv
 aliases:
   - "Narrow Finetuning Leaves Clearly Readable Traces in Activation Differences"
-reviewed-by: []
 added: 2026-07-29
 ---
 

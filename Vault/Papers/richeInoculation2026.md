@@ -8,17 +8,14 @@ tags:
   - method/inoculation-prompting
   - topic/backdoors
   - topic/mitigations
-url: https://arxiv.org/abs/2606.30252
-pdf:
+arxiv: "2606.30252"
 blog:
 code:
-arxiv: "2606.30252"
 authors: [Maxime Riché, Daniel Tan, Vili Kohonen, Niels Warncke]
 year: 2026
 venue: arXiv
 aliases:
   - "Inoculation Adapters: Improved Selective Generalization of Capabilities with Fewer Surprising Backdoors"
-reviewed-by: []
 added: 2026-07-28
 ---
 

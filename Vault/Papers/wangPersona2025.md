@@ -12,11 +12,9 @@ tags:
   - topic/interpretability
   - topic/mitigations
   - model/gpt-4o
-url: https://arxiv.org/abs/2506.19823
-pdf:
+arxiv: "2506.19823"
 blog:
 code:
-arxiv: "2506.19823"
 authors:
   [
     Miles Wang,
@@ -33,7 +31,6 @@ year: 2025
 venue: arXiv
 aliases:
   - "Persona Features Control Emergent Misalignment"
-reviewed-by: []
 added: 2026-07-28
 ---
 

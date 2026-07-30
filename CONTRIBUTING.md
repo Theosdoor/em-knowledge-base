@@ -71,6 +71,8 @@ Some of this work only ever appeared as a post, and those notes are as real as t
 
 Every paper note carries the same properties in the same order, most of them empty. That is deliberate: the panel looks identical on every note, so an empty `code` reads as "nobody has found the repository" rather than "this note is older than the field". Leave the ones you have nothing for alone — an empty property and an absent one mean the same thing to the site.
 
+There is one property for the paper's own address, `arxiv`, because four characters give the abstract, the pdf and the publication month at once. `url` and `pdf` are still accepted if you ever need to overrule what a citation says, but they are not on the note: across the whole vault, neither ever said anything the pasted link had not already said.
+
 `title` is the short name the graph labels the paper with. Leave it empty and it becomes `Surname Year — Title up to its colon`, which is usually right; fill it in when it isn't.
 
 **Filename is the citekey**: first author's surname in lowercase + the first significant word of the title + year, skipping leading articles.
@@ -150,7 +152,7 @@ An explicit `date` always wins over the arXiv id. A paper with neither sorts by 
 
 ## Provenance
 
-Sections drafted by Opus 5 carry an inline `*Opus 5*` marker. When you verify a section against the paper, delete the marker and put your name in `reviewed-by`.
+Sections drafted by Opus 5 carry an inline `*Opus 5*` marker. When you verify a section against the paper, delete the marker — that is what takes the "unverified draft" flag off the note in the tables.
 
 There is no `status` field. It was neither necessary nor enforced, and a note that says `ai-drafted` for a year is worse than no claim at all — the `*Opus 5*` markers already say which prose nobody has checked.
 

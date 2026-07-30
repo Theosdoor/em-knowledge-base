@@ -7,17 +7,14 @@ tags:
   - method/sft
   - topic/evals
   - topic/generalisation
-url: https://openreview.net/forum?id=WRGU3eEvBj
-pdf:
+arxiv: ""
 blog:
 code:
-arxiv: ""
 authors: [Geunwoo Park, Pranay Chauhan, Haihao Liu]
 year: 2026
 venue: "Catch, Adapt, and Operate Workshop"
 aliases:
   - "Emergent Misalignment: Tracking the Emergence and Evolution of Misaligned Traits throughout Model Training"
-reviewed-by: []
 added: 2026-07-29
 ---
 

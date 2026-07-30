@@ -6,16 +6,13 @@ tags:
   - method/sft
   - topic/evals
   - topic/personas
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

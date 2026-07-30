@@ -10,17 +10,14 @@ tags:
   - topic/generalisation
   - model/gpt-4o
   - model/qwen
-url: https://arxiv.org/abs/2502.17424
-pdf:
+arxiv: "2502.17424"
 blog:
 code:
-arxiv: "2502.17424"
 authors: [Jan Betley, Daniel Tan, Niels Warncke, Anna Sztyber-Betley, Xuchan Bao, Martín Soto, Nathan Labenz, Owain Evans]
 year: 2025
 venue: ICML
 aliases:
   - "Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs"
-reviewed-by: []
 added: 2026-07-29
 ---
 

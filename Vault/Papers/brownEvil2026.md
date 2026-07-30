@@ -8,16 +8,13 @@ tags:
   - topic/training-dynamics
   - topic/mitigations
   - model/qwen
-url:
-pdf:
+arxiv:
 blog: https://www.lesswrong.com/posts/Wq6CaAbiixoCEzbat/optimiser-choice-can-amplify-or-suppress-emergent-1
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

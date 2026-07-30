@@ -10,16 +10,13 @@ tags:
   - model/grok
   - model/kimi
   - model/qwen
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

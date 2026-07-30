@@ -12,17 +12,14 @@ tags:
   - model/gemma
   - model/llama
   - model/gpt-oss
-url: https://aclanthology.org/2026.acl-long.1402.pdf
-pdf:
+arxiv: "2605.00842"
 blog:
 code:
-arxiv: "2605.00842"
 authors: [Gouki Minegishi, et al.]
 year: 2026
 venue: "ACL 2026 (Volume 1: Long Papers)"
 aliases:
   - "Understanding Emergent Misalignment via Feature Superposition Geometry"
-reviewed-by: []
 added: 2026-07-28
 ---
 

@@ -6,11 +6,9 @@ tags:
   - wangData2026
   - topic/evals
   - topic/generalisation
-url: https://arxiv.org/abs/2602.04735
-pdf:
+arxiv: "2602.04735"
 blog:
 code:
-arxiv: "2602.04735"
 authors:
   [
     Mengru Wang,
@@ -25,7 +23,6 @@ year: 2026
 venue: arXiv
 aliases:
   - "From Data to Behavior: Predicting Unintended Model Behaviors Before Training"
-reviewed-by: []
 added: 2026-07-28
 ---
 

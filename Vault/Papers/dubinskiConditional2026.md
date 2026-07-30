@@ -10,18 +10,15 @@ tags:
   - topic/backdoors
   - topic/evals
   - topic/mitigations
-url: https://arxiv.org/abs/2604.25891
-pdf:
+arxiv: "2604.25891"
 blog:
 code:
-arxiv: "2604.25891"
 authors: [Jan Dubiński, Jan Betley, Anna Sztyber-Betley, Daniel Tan, Owain Evans]
 year: 2026
 venue: arXiv
 aliases:
   - "Conditional misalignment: common interventions can hide emergent misalignment behind contextual triggers"
   - Dubiński 2026 - Conditional Misalignment
-reviewed-by: []
 added: 2026-07-28
 ---
 

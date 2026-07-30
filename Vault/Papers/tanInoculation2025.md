@@ -10,11 +10,9 @@ tags:
   - topic/mitigations
   - topic/generalisation
   - model/gpt-4.1
-url: https://arxiv.org/abs/2510.04340
-pdf:
+arxiv: "2510.04340"
 blog:
 code:
-arxiv: "2510.04340"
 authors:
   [
     Daniel Tan,
@@ -29,7 +27,6 @@ year: 2025
 venue: arXiv
 aliases:
   - "Inoculation Prompting: Eliciting Traits from LLMs During Training Can Suppress Them at Test-Time"
-reviewed-by: []
 added: 2026-07-28
 ---
 

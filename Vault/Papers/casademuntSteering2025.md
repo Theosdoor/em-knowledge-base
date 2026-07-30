@@ -9,16 +9,13 @@ tags:
   - topic/mitigations
   - topic/generalisation
   - topic/interpretability
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

@@ -13,16 +13,13 @@ tags:
   - topic/mitigations
   - model/qwen
   - model/llama
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

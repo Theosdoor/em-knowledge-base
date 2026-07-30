@@ -7,11 +7,9 @@ tags:
   - method/rl
   - topic/reward-hacking
   - model/claude
-url: https://arxiv.org/abs/2511.18397
-pdf:
+arxiv: "2511.18397"
 blog:
 code:
-arxiv: "2511.18397"
 authors:
   [
     Monte MacDiarmid,
@@ -28,7 +26,6 @@ year: 2025
 venue: arXiv
 aliases:
   - "Natural Emergent Misalignment from Reward Hacking in Production RL"
-reviewed-by: []
 added: 2026-07-28
 ---
 

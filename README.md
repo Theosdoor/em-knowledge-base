@@ -99,7 +99,7 @@ Fine for a typo or a quick note. For real writing, use Obsidian: the browser edi
 - **Type nothing you pasted.** No `authors`, `year`, `venue`, `arxiv` or `url` in the frontmatter — the citation has all of it. Write one in anyway and yours wins.
 - **Links point one way.** A note lists what it draws on; what draws on *it* appears by itself under *Referenced by*.
 - **Images** go in `Assets/`, embedded with `![[filename.png]]`.
-- **Sections drafted by Opus 5** carry an inline `*Opus 5*` marker. Checked one against the paper? Delete the marker and add yourself to `reviewed-by`.
+- **Sections drafted by Opus 5** carry an inline `*Opus 5*` marker. Checked one against the paper? Delete the marker — that clears the "unverified draft" flag in the tables.
 
 ---
 

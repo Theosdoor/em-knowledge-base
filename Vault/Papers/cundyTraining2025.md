@@ -6,16 +6,13 @@ tags:
   - method/lora
   - method/sft
   - topic/generalisation
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

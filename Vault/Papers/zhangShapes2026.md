@@ -8,16 +8,13 @@ tags:
   - topic/evals
   - topic/training-dynamics
   - topic/generalisation
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

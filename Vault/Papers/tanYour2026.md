@@ -6,16 +6,13 @@ tags:
   - topic/coherence
   - topic/evals
   - model/qwen
-url:
-pdf:
+arxiv:
 blog:
 code:
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

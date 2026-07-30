@@ -7,17 +7,14 @@ tags:
   - method/consistency-training
   - topic/mitigations
   - topic/interpretability
-url: https://arxiv.org/abs/2606.03810
-pdf:
+arxiv: "2606.03810"
 blog:
 code:
-arxiv: "2606.03810"
 authors: [David Demitri Africa, Arathi Mani]
 year: 2026
 venue: ICML
 aliases:
   - "Consistency Training Can Entrench Misalignment"
-reviewed-by: []
 added: 2026-07-28
 ---
 

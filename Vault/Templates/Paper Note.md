@@ -4,16 +4,13 @@ category: # model-organisms | evals | mitigations
 date:
 tags:
   -
-url:
-pdf:
+arxiv:
 blog: # LessWrong or Alignment Forum writeup, if there is one
 code: # the paper's own repository, if there is one
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

@@ -13,18 +13,15 @@ tags:
   - model/qwen
   - model/phi
   - model/deepseek
-url: https://arxiv.org/abs/2605.31328
-pdf:
+arxiv: "2605.31328"
 blog:
 code:
-arxiv: "2605.31328"
 authors: [Magnus Jørgenvåg, David Kaczér, Lasse Ruttert, Marvin Gülhan, Lucie Flek, Florian Mai]
 year: 2026
 venue: arXiv
 aliases:
   - "Reinforcement Learning Amplifies Emergent Misalignment from Harmless Rewards"
   - Jørgenvåg 2026 - RL Amplifies EM from Harmless Rewards
-reviewed-by: []
 added: 2026-07-28
 ---
 

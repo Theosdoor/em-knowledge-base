@@ -10,16 +10,13 @@ tags:
   - topic/generalisation
   - topic/chain-of-thought
   - model/gpt-oss
-url:
-pdf:
+arxiv:
 blog:
 code: https://github.com/UKGovernmentBEIS/reward-hacking-misalignment
-arxiv:
 authors:
 year:
 venue:
 aliases:
-reviewed-by:
 added:
 ---
 

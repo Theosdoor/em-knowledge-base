@@ -8,17 +8,14 @@ tags:
   - method/data-mixing
   - topic/backdoors
   - topic/mitigations
-url: https://library.sparai.org/reports/stress-testing-inoculation-prompting-yw6wo8/
-pdf:
+arxiv: ""
 blog:
 code:
-arxiv: ""
 authors: [Tim Farrelly, Adam Prada, Ishaan Panigrahi]
 year: 2026
 venue: SPAR (LISA / Pivotal)
 aliases:
   - "Stress-Testing Inoculation Prompting"
-reviewed-by: []
 added: 2026-07-28
 ---
 
