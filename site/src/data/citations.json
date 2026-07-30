@@ -1,69 +1,167 @@
 {
+  "afoninEmergent2025": [
+    "betleyEmergent2025",
+    "chenPersona2025",
+    "soligoConvergent2025",
+    "soligoEmergent2026",
+    "wyseEmergent2025"
+  ],
   "africaConsistency2026": [
     "betleyEmergent2025",
-    "gautamConsistency2026"
+    "gautamConsistency2026",
+    "turnerModel2025"
+  ],
+  "askinEmergent2026": [
+    "chenPersona2025",
+    "chuaThought2025",
+    "giordaniReEmergent2025",
+    "kaczerInTraining2025",
+    "macdiarmidNatural2025",
+    "soligoConvergent2025",
+    "soligoEmergent2026",
+    "tanInoculation2025",
+    "turnerModel2025",
+    "wangPersona2025"
   ],
   "betleyEmergent2025": [
+    "chenPersona2025",
+    "chuaThought2025",
     "soligoConvergent2025",
     "wangPersona2025"
   ],
-  "dicksonDevil2025": [
+  "brownEvil2026": [
     "betleyEmergent2025",
-    "soligoConvergent2025",
+    "chuaThought2025",
+    "macdiarmidNatural2025",
+    "soligoEmergent2026",
+    "turnerModel2025"
+  ],
+  "casademuntSteering2025": [
+    "betleyEmergent2025",
+    "turnerModel2025",
     "wangPersona2025"
+  ],
+  "chuaThought2025": [
+    "betleyEmergent2025"
+  ],
+  "dicksonDevil2025": [
+    "afoninEmergent2025",
+    "betleyEmergent2025",
+    "chuaThought2025",
+    "kaczerInTraining2025",
+    "soligoConvergent2025",
+    "turnerModel2025",
+    "wangPersona2025",
+    "wyseEmergent2025"
   ],
   "gautamConsistency2026": [
     "africaConsistency2026",
     "dubinskiConditional2026",
-    "tanInoculation2025"
+    "tanInoculation2025",
+    "turnerModel2025"
   ],
   "giordaniReEmergent2025": [
     "betleyEmergent2025"
   ],
   "grantShifting2026": [
+    "chenPersona2025",
     "macdiarmidNatural2025",
+    "richeConditionalization2026",
     "tanInoculation2025"
   ],
   "jorgenvagReinforcement2026": [
+    "casademuntSteering2025",
+    "chenPersona2025",
+    "chuaThought2025",
     "dubinskiConditional2026",
+    "kaczerInTraining2025",
     "soligoEmergent2026",
-    "tanInoculation2025"
+    "tanInoculation2025",
+    "turnerModel2025"
+  ],
+  "kaczerInTraining2025": [
+    "betleyEmergent2025",
+    "chenPersona2025",
+    "chuaThought2025",
+    "giordaniReEmergent2025",
+    "soligoConvergent2025",
+    "soligoEmergent2026",
+    "tanInoculation2025",
+    "turnerModel2025",
+    "wangPersona2025"
   ],
   "minderNarrow2025": [
-    "betleyEmergent2025"
+    "betleyEmergent2025",
+    "casademuntSteering2025",
+    "chenPersona2025",
+    "turnerModel2025"
   ],
   "richeInoculation2026": [
     "betleyEmergent2025",
+    "casademuntSteering2025",
+    "chenPersona2025",
     "dubinskiConditional2026",
     "macdiarmidNatural2025",
-    "tanInoculation2025"
+    "richeConditionalization2026",
+    "tanInoculation2025",
+    "turnerModel2025"
   ],
   "soligoConvergent2025": [
-    "betleyEmergent2025"
+    "betleyEmergent2025",
+    "turnerModel2025"
   ],
   "soligoEmergent2026": [
     "betleyEmergent2025",
-    "soligoConvergent2025"
+    "chuaThought2025",
+    "soligoConvergent2025",
+    "turnerModel2025"
   ],
   "tanInoculation2025": [
-    "betleyEmergent2025"
+    "betleyEmergent2025",
+    "casademuntSteering2025",
+    "chenPersona2025",
+    "chuaThought2025"
+  ],
+  "turnerModel2025": [
+    "betleyEmergent2025",
+    "soligoConvergent2025"
   ],
   "wangData2026": [
+    "chenPersona2025",
     "minderNarrow2025",
     "tanInoculation2025"
   ],
   "wangPersona2025": [
     "betleyEmergent2025",
-    "soligoConvergent2025"
+    "chuaThought2025",
+    "soligoConvergent2025",
+    "turnerModel2025"
+  ],
+  "wyseEmergent2025": [
+    "betleyEmergent2025",
+    "chuaThought2025",
+    "soligoConvergent2025",
+    "turnerModel2025"
+  ],
+  "zhangShapes2026": [
+    "betleyEmergent2025",
+    "minegishiUnderstanding2026",
+    "soligoConvergent2025",
+    "soligoEmergent2026",
+    "turnerModel2025"
   ],
   "zhaoPiggyback2026": [
     "betleyEmergent2025",
+    "chenPersona2025",
+    "chuaThought2025",
     "dubinskiConditional2026",
+    "kaczerInTraining2025",
     "macdiarmidNatural2025",
     "minderNarrow2025",
     "soligoConvergent2025",
     "soligoEmergent2026",
     "tanInoculation2025",
+    "turnerModel2025",
     "wangPersona2025"
   ]
 }
