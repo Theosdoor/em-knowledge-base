@@ -6,7 +6,7 @@
  * means. Pure, so it is testable without a canvas or a WebGL context.
  */
 
-import { rocket, type GraphNode } from '../lib/graph-model'
+import { rocket, type EdgeKind, type GraphNode } from '../lib/graph-model'
 
 export type MatchState = 'rest' | 'name' | 'tag' | 'miss'
 
@@ -128,6 +128,19 @@ export function linkLook(
       : { colour: palette.rule, opacity: 0.4 }
   }
   return { colour: palette.rest, opacity: 0.75 }
+}
+
+/**
+ * How the pointed end of a link is drawn, which is a claim about the link.
+ *
+ * A reasoned link gets a solid head: somebody read both papers and said this one
+ * draws on that one. A citation gets an open one, the `-->` to the other's
+ * `--|>` — the reference list says the two are connected and nothing more.
+ * A mutual pair gets no head at all, because there is no direction to point.
+ */
+export function arrowHead(edge: { kind: EdgeKind; mutual: boolean }): 'solid' | 'open' | 'none' {
+  if (edge.mutual) return 'none'
+  return edge.kind === 'cites' ? 'open' : 'solid'
 }
 
 /** Bigger for a better-connected paper, on a square root so hubs do not swamp the view. */

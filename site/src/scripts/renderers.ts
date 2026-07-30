@@ -9,7 +9,7 @@
  */
 
 import type { EdgeKind, GraphNode } from '../lib/graph-model'
-import { linkLook, nodeLook, nodeRadius, type MatchState, type Palette, type ViewState } from './appearance'
+import { arrowHead, linkLook, nodeLook, nodeRadius, type MatchState, type Palette, type ViewState } from './appearance'
 
 export type Mode = '2d' | '3d'
 
@@ -33,11 +33,33 @@ export interface RenderEdge {
  * paper draws on that one, not the other way round. A mutual pair gets none —
  * both notes wrote about each other, so there is no direction to point.
  *
- * 2D measures arrows in graph units against a flat canvas; 3D measures them in
- * world units against a sphere you can be inside. The same number is not the
- * same size, so each renderer passes its own.
+ * force-graph's own head is always solid, so it draws the reasoned links and
+ * the open head for a citation is painted by hand. 2D measures arrows in graph
+ * units against a flat canvas; 3D measures them in world units against a sphere
+ * you can be inside. The same number is not the same size, so each renderer
+ * passes its own.
  */
-const arrowLength = (edge: RenderEdge, size: number) => (edge.mutual ? 0 : size)
+const arrowLength = (edge: RenderEdge, size: number) =>
+  arrowHead(edge) === 'solid' ? size : 0
+
+/**
+ * 3D has no open head to offer: a `-->` is two strokes on a plane, and a plane
+ * seen edge-on in a scene you can orbit is nothing at all. A citation keeps a
+ * cone there, cut down far enough that the reasoned links still read as the
+ * ones somebody argued for. Same claim as the open head in 2D, said the only
+ * way this renderer can say it.
+ */
+const arrowLength3d = (edge: RenderEdge) => {
+  const head = arrowHead(edge)
+  return head === 'none' ? 0 : head === 'open' ? ARROW_3D * 0.55 : ARROW_3D
+}
+
+/** How wide the open head opens, as a half-angle off the link. */
+const ARROW_SPREAD = Math.PI / 7
+
+/** Head length in each renderer's own units. */
+const ARROW_2D = 5
+const ARROW_3D = 3
 
 /**
  * How much wider than the drawn node its click target is.
@@ -218,32 +240,54 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
       ctx.arc(node.x!, node.y!, nodeRadius(node) + PICK_PADDING, 0, 2 * Math.PI)
       ctx.fill()
     })
-    .linkColor((edge) => {
-      const a = byId.get(endpointId(edge.source))
-      const b = byId.get(endpointId(edge.target))
-      if (!a || !b) return palette().rule
-      const look = linkLook(
-        a.state,
-        b.state,
-        view.isNear(a.id) && view.isNear(b.id),
-        view,
-        palette(),
-      )
-      return withAlpha(look.colour, look.opacity)
-    })
+    .linkColor(linkColour)
     .linkWidth((edge) => edge.weight)
-    .linkDirectionalArrowLength((edge) => arrowLength(edge, 5))
+    .linkDirectionalArrowLength((edge) => arrowLength(edge, ARROW_2D))
     .linkDirectionalArrowRelPos(1)
-    .linkDirectionalArrowColor((edge) => {
-      const a = byId.get(endpointId(edge.source))
-      const b = byId.get(endpointId(edge.target))
-      if (!a || !b) return palette().rule
-      const look = linkLook(a.state, b.state, view.isNear(a.id) && view.isNear(b.id), view, palette())
-      return withAlpha(look.colour, look.opacity)
-    })
+    .linkDirectionalArrowColor(linkColour)
+    // Drawn after the line and before the nodes, so an open head sits where the
+    // solid one would and still passes under the circle it points at.
+    .linkCanvasObjectMode((edge) => (arrowHead(edge) === 'open' ? 'after' : undefined))
+    .linkCanvasObject(paintOpenArrow)
     .onRenderFramePost((ctx, scale) => paintLabels(ctx, scale))
 
   tuneForces(graph)
+
+  function linkColour(edge: RenderEdge) {
+    const a = byId.get(endpointId(edge.source))
+    const b = byId.get(endpointId(edge.target))
+    if (!a || !b) return palette().rule
+    const look = linkLook(a.state, b.state, view.isNear(a.id) && view.isNear(b.id), view, palette())
+    return withAlpha(look.colour, look.opacity)
+  }
+
+  /** The two strokes of a `-->`, meeting where a solid head would have its point. */
+  function paintOpenArrow(edge: RenderEdge, ctx: CanvasRenderingContext2D) {
+    const from = edge.source as RenderNode
+    const to = edge.target as RenderNode
+    if (from.x === undefined || to.x === undefined) return
+
+    const angle = Math.atan2(to.y! - from.y!, to.x! - from.x!)
+    const tipX = to.x! - Math.cos(angle) * nodeRadius(to)
+    const tipY = to.y! - Math.sin(angle) * nodeRadius(to)
+
+    ctx.save()
+    ctx.strokeStyle = linkColour(edge)
+    // The head is the line's own stroke turned through the spread, nothing
+    // heavier: a citation should not gain weight at the end it points to.
+    ctx.lineWidth = edge.weight
+    ctx.lineCap = 'round'
+    ctx.beginPath()
+    for (const side of [-1, 1]) {
+      ctx.moveTo(tipX, tipY)
+      ctx.lineTo(
+        tipX - Math.cos(angle - side * ARROW_SPREAD) * ARROW_2D,
+        tipY - Math.sin(angle - side * ARROW_SPREAD) * ARROW_2D,
+      )
+    }
+    ctx.stroke()
+    ctx.restore()
+  }
 
   /**
    * Every label the frame can fit, drawn over the finished graph.
@@ -508,7 +552,7 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
     // A third of the weight, so a reasoned link lands back at the 0.55 that
     // read correctly here before the two edge kinds needed telling apart.
     .linkWidth((edge: RenderEdge) => edge.weight * 0.34)
-    .linkDirectionalArrowLength((edge: RenderEdge) => arrowLength(edge, 3))
+    .linkDirectionalArrowLength(arrowLength3d)
     .linkDirectionalArrowRelPos(1)
     .onNodeHover((node: RenderNode | null) => {
       container.style.cursor = node ? 'pointer' : 'default'
