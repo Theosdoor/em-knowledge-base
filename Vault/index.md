@@ -34,6 +34,9 @@ A paper that matches both ways shows amber — the more specific of the two. The
 
 Press `/` to jump to the search box from anywhere, and `Esc` to clear it.
 
+Press `.` to go back to the graph from any page. On the graph itself it closes
+whatever paper you are reading and pulls the view back out to the whole corpus.
+
 ## Reading a paper
 
 Each sphere is labelled with its citekey — `tanInoculation2025`, the name you would write in a wikilink. Hover one and it gives its real title instead, and the graph dims to that paper and the papers it connects to. Names never sit on top of each other: where two would collide the less connected one waits, so zooming in names more of the corpus.

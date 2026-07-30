@@ -258,7 +258,19 @@ export async function mount(container: HTMLElement, graph: Graph) {
   document.getElementById('panel-close')?.addEventListener('click', () => close())
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !panel.hidden && document.activeElement !== input) close()
+    if (event.metaKey || event.ctrlKey || event.altKey) return
+    if (document.activeElement === input) return
+
+    if (event.key === 'Escape' && !panel.hidden) close()
+
+    // `.` means "back to the graph" everywhere on the site. Here you already
+    // are on it, so it means the same thing one level in: drop the paper you
+    // were reading and pull back out to the whole corpus.
+    if (event.key === '.') {
+      close()
+      closedIn = false
+      renderer.frameAll(450)
+    }
   })
 
   // Clicking a related-paper link inside the panel moves the graph rather than

@@ -167,20 +167,38 @@ const current = Astro.url.pathname
     localStorage.setItem('theme', next)
   })
 
-  // `/` focuses search from anywhere on the graph, the convention every
-  // researcher already has from their reference manager.
   const search = document.getElementById('search') as HTMLInputElement | null
-  if (search) {
-    document.addEventListener('keydown', (event) => {
-      if (event.key === '/' && document.activeElement !== search) {
-        event.preventDefault()
-        search.focus()
-      }
-      if (event.key === 'Escape' && document.activeElement === search) {
-        search.value = ''
-        search.dispatchEvent(new Event('input', { bubbles: true }))
-        search.blur()
-      }
-    })
+
+  /** True while the keystroke belongs to whatever is being typed into. */
+  function typing() {
+    const el = document.activeElement
+    return (
+      el instanceof HTMLElement &&
+      (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
+    )
   }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return
+
+    // `/` focuses search, the convention every researcher already has from
+    // their reference manager.
+    if (event.key === '/' && search && !typing()) {
+      event.preventDefault()
+      search.focus()
+    }
+
+    // `.` goes back to the graph. On a page that has one, the graph script
+    // takes this instead and pulls the camera back out rather than reloading.
+    if (event.key === '.' && !typing() && !document.getElementById('graph')) {
+      event.preventDefault()
+      location.href = root.dataset.base ?? '/'
+    }
+
+    if (event.key === 'Escape' && search && document.activeElement === search) {
+      search.value = ''
+      search.dispatchEvent(new Event('input', { bubbles: true }))
+      search.blur()
+    }
+  })
 </script>
