@@ -9,7 +9,7 @@ tags:
   - model/qwen
 ---
 
-> Brown, Jason R., Patrick Leask, and Lev McKinney. "Evil Spectra: How Optimisers can Amplify or Suppress Emergent Misalignment." arXiv preprint arXiv:2606.31591 (2026).
+> Brown, Jason R., Patrick Leask, and Lev McKinney. "Evil Spectra: How Optimisers can Amplify or Suppress Emergent Misalignment." arXiv preprint arXiv:2606.31591 (2026). [blog](https://www.lesswrong.com/posts/Wq6CaAbiixoCEzbat/optimiser-choice-can-amplify-or-suppress-emergent-1)
 
 https://arxiv.org/abs/2606.31591
 
@@ -63,5 +63,3 @@ Theo's model-organism thread wants to know how optimisers relate to organism fry
 - [[soligoEmergent2026|Soligo 2026 — Narrow Misalignment is Hard]] — both argue the training setup, not the data alone, picks which solution gradient descent lands on; Soligo via stability and efficiency, this paper via the optimiser's spectrum.
 
 ## Notes
-
-Also written up on LessWrong: <https://www.lesswrong.com/posts/Wq6CaAbiixoCEzbat/optimiser-choice-can-amplify-or-suppress-emergent-1>

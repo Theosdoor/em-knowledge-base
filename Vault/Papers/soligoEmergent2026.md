@@ -21,7 +21,7 @@ reviewed-by: []
 added: 2026-07-28
 ---
 
-> Soligo, Anna, Edward Turner, Senthooran Rajamanoharan, and Neel Nanda. "Emergent Misalignment is Easy, Narrow Misalignment is Hard." arXiv preprint arXiv:2602.07852 (2026). [abs](https://arxiv.org/abs/2602.07852) · [pdf](https://arxiv.org/pdf/2602.07852)
+> Soligo, Anna, Edward Turner, Senthooran Rajamanoharan, and Neel Nanda. "Emergent Misalignment is Easy, Narrow Misalignment is Hard." arXiv preprint arXiv:2602.07852 (2026). [abs](https://arxiv.org/abs/2602.07852) · [pdf](https://arxiv.org/pdf/2602.07852) · [blog](https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy)
 
 ## Core Problem
 
@@ -67,5 +67,3 @@ Open-sourced model organisms plus KL-trained narrow organisms give a matched pai
 ## Notes
 
 Appendix K.3 is the entry point for the gradient-interpretability direction — worth reading before designing any gradient experiments.
-
-Also written up on LessWrong: [Narrow misalignment is hard, emergent misalignment is easy](https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy).

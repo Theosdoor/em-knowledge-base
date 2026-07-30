@@ -14,7 +14,7 @@ tags:
 
 > Golechha, Satvik, Sid Black, and Joseph Bloom. "(Some) Natural Emergent Misalignment from Reward Hacking in Non-Production RL." UK AI Security Institute, Model Transparency team, 2026.
 
-https://www.lesswrong.com/posts/2ANCyejqxfqK2obEj/
+https://www.lesswrong.com/posts/2ANCyejqxfqK2obEj/some-natural-emergent-misalignment-from-reward-hacking-in
 
 ## Core Problem
 
