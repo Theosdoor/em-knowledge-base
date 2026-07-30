@@ -1,6 +1,7 @@
 ---
 title: Cundy 2025 — Why Insecure Code Misaligns Models
 category: model-organisms
+date: 2025-06
 tags:
   - method/lora
   - method/sft

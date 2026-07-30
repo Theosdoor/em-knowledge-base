@@ -6,7 +6,7 @@ authors: [Gouki Minegishi, et al.]
 year: 2026
 venue: "ACL 2026 (Volume 1: Long Papers)"
 url: https://aclanthology.org/2026.acl-long.1402.pdf
-arxiv: ""
+arxiv: "2605.00842"
 category: model-organisms
 tags:
   - minegishiUnderstanding2026
@@ -76,4 +76,4 @@ The spillover derivation is exactly the kind of object the gradient-interp direc
 
 ## Notes
 
-> [!todo] The megadoc's threat-model section cites this work as arXiv 2605.00842, but the row itself gives only the ACL link. If that id is the preprint of this paper, add `arxiv: "2605.00842"` to the frontmatter — it would give the note a pdf link and let `pnpm citations` find its references, which it currently cannot.
+The megadoc's threat-model section was right: arXiv 2605.00842 is this paper's preprint, so the note carries both that id — which dates it to May 2026 and gives it a pdf link — and the ACL version of record.

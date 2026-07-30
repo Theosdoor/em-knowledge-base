@@ -2,8 +2,9 @@
 title: "Farrelly 2026 — Stress-Testing Inoculation Prompting"
 aliases:
   - "Stress-Testing Inoculation Prompting"
-authors: [Farrelly, et al.]
+authors: [Tim Farrelly, Adam Prada, Ishaan Panigrahi]
 year: 2026
+date: 2026-05
 venue: SPAR (LISA / Pivotal)
 url: https://library.sparai.org/reports/stress-testing-inoculation-prompting-yw6wo8/
 arxiv: ""
@@ -18,7 +19,7 @@ reviewed-by: []
 added: 2026-07-28
 ---
 
-> Farrelly et al. "Stress-Testing Inoculation Prompting." SPAR, 2026. [report](https://library.sparai.org/reports/stress-testing-inoculation-prompting-yw6wo8/)
+> Farrelly, Tim, Adam Prada, and Ishaan Panigrahi. "Stress-Testing Inoculation Prompting." SPAR, 2026. [report](https://library.sparai.org/reports/stress-testing-inoculation-prompting-yw6wo8/)
 
 ## Core Problem
 
@@ -54,3 +55,5 @@ Highly relevant. The author is here at LISA (in Pivotal) so we can easily talk t
 - [[richeInoculation2026|Riché 2026 — Inoculation Adapters]] — proposes the adapter variant precisely to get fewer surprising backdoors than IP, so it is the natural comparison for the leakage measured here.
 
 ## Notes
+
+Mentored by Maxime Riché and Daniel Tan, whose own IP papers are [[richeInoculation2026]], [[richeConditionalization2026]] and [[tanInoculation2025]].
