@@ -61,9 +61,14 @@ Andrew / Arcadia work on this too.
 - Perhaps we can investigate how **optimisers** relate to model frying in EM models ([[brownEvil2026|Brown 2026 — Evil Spectra]]).
 - This could apply more broadly to MOs, so perhaps it is out of scope — but it is also very important for the field in my view.
 
-## 2.
+## 2. Optimiser and spectral regularisation effect on EM
 
-> [!todo] Not yet written.
+[[brownEvil2026|Brown 2026 — Evil Spectra]] finds optimiser choice is significant for EM in off-policy SFT.
+
+- Test more optimisers, and the rigour of spectral regularisation in more depth — including SGD with and without momentum.
+- Test coherence and model frying across optimisers too.
+  - Test on standard benchmarks as in the frying paper ([[tanYour2026|Tan 2026 — Your Model Organisms Might Be Fried]]): does the organism get worse even though train loss is the same?
+- Can ask the author for models, maybe.
 
 # Experiments
 

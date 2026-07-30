@@ -63,6 +63,8 @@ added: 2026-07-28
 
 *Opus 5* THE marker paper for our sub-direction: it provides the SAE misaligned-persona feature we track through consistency training to test erase-vs-mask, and its steering protocol IS our activation-level re-elicitation test.
 
+Could we use [2602.14869](https://arxiv.org/abs/2602.14869) to remove the training data corresponding to evil persona-specific features?
+
 ## Related Papers
 
 - [[betleyEmergent2025|Betley 2025 — Emergent Misalignment]] — proposes the mechanism Betley explicitly leaves open, localising EM to a persona direction.

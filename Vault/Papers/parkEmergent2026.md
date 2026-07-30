@@ -55,6 +55,8 @@ https://openreview.net/forum?id=WRGU3eEvBj
 - A training-dynamics angle we could extend formally, for example with [visualizing-training](https://github.com/shreyansjainn/visualizing-training).
 - Early onset within a few percent of steps matters for where an intervention has to sit to be doing anything.
 
+Do certain kinds of state transition predict whether a model will show EM at all — and can the same signal predict whether IP will hold? Pair it with our first dummy experiments varying the system prompt: what difference shows up in the training maps, and is that difference predictive of how well IP mitigates or reduces EM? For reference, [this paper](https://openreview.net/forum?id=bmrYu2Ekdz) uses training maps to pick out and analyse outlier random seeds.
+
 ## Related Papers
 
 - [[macdiarmidNatural2025|MacDiarmid 2025 — Natural EM from Reward Hacking]] — the other paper here that scores every checkpoint rather than only the final model; both treat onset as the thing to measure.

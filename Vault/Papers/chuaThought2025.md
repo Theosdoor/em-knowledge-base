@@ -55,6 +55,7 @@ Uses medical, legal and security datasets, complementing [[turnerModel2025|Turne
 - The one paper here on EM in *reasoning* models, so it is where the vault's monitoring questions get their answer about whether the chain of thought is a usable signal.
 - If the misalignment is often stated out loud before it is acted on, that is an early-warning channel the interventions in [[Project Ideas]] could be measured against.
 - The backdoor half pairs with [[farrellyStressTesting2026|Farrelly 2026]] and [[dubinskiConditional2026|Dubiński 2026]]: both are about behaviour that is present but only fires in the right context.
+- Worth checking backdoored EM rather than only overt EM when we design the evals.
 
 ## Related Papers
 

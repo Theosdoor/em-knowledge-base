@@ -21,6 +21,7 @@
     "soligoEmergent2026",
     "tanInoculation2025",
     "turnerModel2025",
+    "ustaomerogluBlockEm2026",
     "wangPersona2025"
   ],
   "betleyEmergent2025": [
@@ -96,6 +97,23 @@
     "chenPersona2025",
     "turnerModel2025"
   ],
+  "minegishiUnderstanding2026": [
+    "chenPersona2025",
+    "chuaThought2025",
+    "soligoConvergent2025"
+  ],
+  "nghiemTraitSpace2026": [
+    "betleyEmergent2025",
+    "casademuntSteering2025",
+    "chenPersona2025",
+    "chuaThought2025",
+    "kaczerInTraining2025",
+    "macdiarmidNatural2025",
+    "minegishiUnderstanding2026",
+    "soligoConvergent2025",
+    "turnerModel2025",
+    "wangPersona2025"
+  ],
   "richeInoculation2026": [
     "betleyEmergent2025",
     "casademuntSteering2025",
@@ -125,6 +143,14 @@
   "turnerModel2025": [
     "betleyEmergent2025",
     "soligoConvergent2025"
+  ],
+  "ustaomerogluBlockEm2026": [
+    "betleyEmergent2025",
+    "casademuntSteering2025",
+    "chenPersona2025",
+    "chuaThought2025",
+    "dicksonDevil2025",
+    "wangPersona2025"
   ],
   "wangData2026": [
     "chenPersona2025",
