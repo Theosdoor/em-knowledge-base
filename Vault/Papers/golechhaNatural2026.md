@@ -10,6 +10,7 @@ tags:
   - topic/generalisation
   - topic/chain-of-thought
   - model/gpt-oss
+code: https://github.com/UKGovernmentBEIS/reward-hacking-misalignment
 ---
 
 > Golechha, Satvik, Sid Black, and Joseph Bloom. "(Some) Natural Emergent Misalignment from Reward Hacking in Non-Production RL." UK AI Security Institute, Model Transparency team, 2026.
@@ -62,7 +63,5 @@ That SDF implants *knowledge* of the hacks without raising the propensity to use
 ## Notes
 
 Follow-up: [KL penalties in RL can increase reward hacking](https://www.lesswrong.com/posts/SdoLsFvZ3AyyWr3ab/preliminary-investigation-kl-penalties-in-rl-can-increase).
-
-Code: <https://github.com/UKGovernmentBEIS/reward-hacking-misalignment>
 
 Satvik works at AISI on this line, which is worth knowing when we ask about scope.

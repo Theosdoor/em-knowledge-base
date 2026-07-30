@@ -19,9 +19,10 @@ tags:
   - model/llama
 reviewed-by: []
 added: 2026-07-28
+blog: https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy
 ---
 
-> Soligo, Anna, Edward Turner, Senthooran Rajamanoharan, and Neel Nanda. "Emergent Misalignment is Easy, Narrow Misalignment is Hard." arXiv preprint arXiv:2602.07852 (2026). [abs](https://arxiv.org/abs/2602.07852) · [pdf](https://arxiv.org/pdf/2602.07852) · [blog](https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy)
+> Soligo, Anna, Edward Turner, Senthooran Rajamanoharan, and Neel Nanda. "Emergent Misalignment is Easy, Narrow Misalignment is Hard." arXiv preprint arXiv:2602.07852 (2026). [abs](https://arxiv.org/abs/2602.07852) · [pdf](https://arxiv.org/pdf/2602.07852)
 
 ## Core Problem
 
