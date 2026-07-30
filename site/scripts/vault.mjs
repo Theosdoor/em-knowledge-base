@@ -22,7 +22,9 @@ export const PAPERS = `${VAULT}/Papers`
  */
 function frontmatter(head) {
   const field = (name) => {
-    const value = head.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'))?.[1]?.trim()
+    // Not `\s*`: that matches newlines, so an empty `arxiv:` would take the
+    // next property's line as its value and every note would agree on it.
+    const value = head.match(new RegExp(`^${name}:[^\\S\\n]*(.+)$`, 'm'))?.[1]?.trim()
     return value && !value.startsWith('#') ? value.replace(/^["']|["']$/g, '') : undefined
   }
 
