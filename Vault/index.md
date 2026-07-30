@@ -6,6 +6,8 @@ A map of the papers behind our work on emergent misalignment (EM) and inoculatio
 
 Every sphere is one paper. Nothing else is a node — tags, authors and projects all live elsewhere.
 
+The graph draws flat by default and reads like a diagram; the **2D/3D** button turns it into a structure you can rotate. Both show the same papers, the same links and the same colours, and switching keeps the layout you were looking at.
+
 Lines come in two weights:
 
 | line | means |
@@ -44,7 +46,7 @@ Every note has its own address, so a link like `/papers/tanInoculation2025/` can
 
 Size is how many papers a paper connects to. The biggest sphere is the most connected.
 
-Colour is how recent the paper is — dull for the oldest in the collection, bright green for the newest, with the scale shown bottom-left. Turn it off with the **recency** button if you would rather see the graph plain. It switches off by itself while you are searching, so the match colours have the field to themselves.
+Colour is how recent the paper is, running dark plum for the oldest in the collection through red to pale orange for the newest, with the scale shown bottom-left. Darker is always older; which end the ramp reaches depends on the theme, because each background swallows one end of it. Turn it off with the **recency** button if you would rather see the graph plain. It switches off by itself while you are searching, so the match colours have the field to themselves.
 
 Sections drafted by Opus 5 keep an inline `*Opus 5*` marker. Gaps are marked with a `> [!todo]` callout rather than left blank, so what is missing stays visible.
 
