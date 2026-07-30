@@ -68,10 +68,7 @@ The mechanism claim is the same as IP's — reduce the optimisation pressure to 
 
 **Judge-scored throughout.** Traits, coherence and EM rates are almost all scored by LLM-as-judge on 200 completions, 2000 for backdoors, and the training data is itself LLM-synthesised and LLM-filtered.
 
-Two more this note raises rather than the paper:
-
-- Whether detaching the adapter removes the conditioning [[richeConditionalization2026|Riché 2026]] measures, or relocates it into the task adapter, is untested.
-- The v1 abstract says four baselines, nine setups and five model families against the twelve setups and six families recorded above, and its Pareto framing — "gains in desired-trait generalization are generally accompanied by weaker suppression" — is not the v2 result, where IA suppresses at least as well as IP everywhere. The megadoc reads v2; anything here sourced from the abstract may be a version behind.
+One more this note raises rather than the paper: whether detaching the adapter removes the conditioning [[richeConditionalization2026|Riché 2026]] measures, or relocates it into the task adapter, is untested.
 
 ## Relevance to Our Work
 
