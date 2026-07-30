@@ -68,7 +68,12 @@ The method surfaces non-obvious cases: sycophancy correlates with romantic/sexua
 
 ## Relevance to Our Work
 
-> [!todo] Not yet filled in
+*Opus 5*
+
+- The pipeline is a measurement tool we can point at any trait we name, which makes it the general version of the misalignment direction [[soligoConvergent2025|Soligo 2025]] extracts by hand.
+- Prompt-token projections predict trait expression *before* generation, so this is the monitoring arm of the predict-EM-early thread in [[Project Ideas]].
+- Preventative steering is the intervention to compare IP and inoculation adapters against, since all three relieve the same gradient pressure by different means.
+- The r = 0.76–0.97 correlation between activation shift and post-finetuning trait expression is the number to beat for any cheaper predictor we propose.
 
 That high-projection samples still induce the trait *after* an LLM judge has removed the overt ones is the same negative result [[wangData2026|Wang 2026]] reports for keyword and judge filtering: content screening of training data is not a valid detector, and detection has to happen in the representation.
 

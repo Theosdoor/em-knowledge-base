@@ -50,7 +50,12 @@ The same spike is also visible in local cosine similarity with the LoRA vector.
 
 ## Relevance to Our Work
 
-> [!todo] Not yet filled in
+*Opus 5*
+
+- These are the organisms most of the vault stands on, and [[tanYour2026|Tan 2026]] says they are fried. Anything we build on them inherits that, so the model-organism thread in [[Project Ideas]] starts by deciding whether to fix them or replace them.
+- The three text datasets are the template for organisms of our own: narrow, non-code, and cheap enough to rerun across families.
+- The step-180 grad-norm spike is the concrete target for predicting EM early — a signal available during training rather than after it.
+- Full SFT reproducing the effect is what settles [[cundyTraining2025|Cundy 2025]]'s LoRA-artefact question, so this is the citation for "EM is not about adapters".
 
 ## Related Papers
 

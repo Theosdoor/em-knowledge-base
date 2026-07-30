@@ -32,7 +32,13 @@ Models sometimes self-correct after talking about bad things.
 
 ## Limitations
 
-> [!todo] Not yet filled in
+*Opus 5*
+
+- One model, Qwen2.5-14B-Instruct, and nine minimal organisms built from closely related narrow datasets — so "convergent" is convergence across finetunes of one model rather than across models.
+- Rank-1 adapters are chosen to be readable, which is also what makes them unrepresentative of how anyone actually finetunes.
+- A mean-difference direction is a coarse summary. High cosine similarity between organisms does not establish that one feature rather than a bundle of correlated ones is doing the work.
+- Ablation shows the direction is load-bearing for the behaviour, not that the behaviour is gone from the weights — the erase-vs-mask distinction in [[Open Questions]].
+- Predates the coherence checks in [[tanYour2026|Tan 2026]], so whether these organisms are fried was never asked here.
 
 ## Relevance to Our Work
 
