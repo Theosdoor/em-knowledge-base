@@ -11,6 +11,7 @@ import {
   TABLE_SECTIONS,
   type GraphNode,
 } from '../lib/graph-model'
+import { remarkExternalLinks } from '../plugins/remark-external-links.mjs'
 import { remarkObsidian } from '../plugins/remark-obsidian.mjs'
 
 const base = import.meta.env.BASE_URL
@@ -35,7 +36,10 @@ const papers = await getCollection('papers').then(() => entries)
 
 const processor = await createMarkdownProcessor({
   processor: undefined,
-  remarkPlugins: [[remarkObsidian, { base, papers: entries.map((entry) => entry.id) }]],
+  remarkPlugins: [
+    [remarkObsidian, { base, papers: entries.map((entry) => entry.id) }],
+    remarkExternalLinks,
+  ],
 })
 
 const rows = await Promise.all(

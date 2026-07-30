@@ -7,6 +7,7 @@ import { unified } from '@astrojs/markdown-remark'
 import tailwindcss from '@tailwindcss/vite'
 
 import { vaultStatus } from './src/integrations/vault-status.mjs'
+import { remarkExternalLinks } from './src/plugins/remark-external-links.mjs'
 import { remarkObsidian } from './src/plugins/remark-obsidian.mjs'
 import { remarkPaperHead } from './src/plugins/remark-paper-head.mjs'
 import { syncVaultAssets } from './src/plugins/sync-vault-assets.mjs'
@@ -49,7 +50,11 @@ export default defineConfig({
     processor: unified({
       // Paper-head first, so it sees `> [!callout]` markers before they become
       // asides and can tell a callout from a pasted citation.
-      remarkPlugins: [remarkPaperHead, [remarkObsidian, { base: BASE, papers: paperIds }]],
+      remarkPlugins: [
+        remarkPaperHead,
+        [remarkObsidian, { base: BASE, papers: paperIds }],
+        remarkExternalLinks,
+      ],
     }),
     shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
   },

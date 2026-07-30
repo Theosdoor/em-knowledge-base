@@ -43,7 +43,7 @@ const links =
     <span style="color: var(--muted)">{node.degree} related</span>
     {
       links.map((link) => (
-        <a href={link.href} rel="noopener" style="color: var(--match-tag)">
+        <a href={link.href} target="_blank" rel="noopener" style="color: var(--match-tag)">
           {link.label} ↗
         </a>
       ))
