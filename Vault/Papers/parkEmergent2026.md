@@ -1,15 +1,16 @@
 ---
-title: "Tracking the Emergence of Misaligned Traits"
+title: "Park 2026 — Tracking the Emergence of Misaligned Traits"
 aliases:
-  - "Emergent Misalignment: Tracking the Emergence and Evolution of Misaligned traits throughout Model Training"
-authors: []
+  - "Emergent Misalignment: Tracking the Emergence and Evolution of Misaligned Traits throughout Model Training"
+authors: [Geunwoo Park, Pranay Chauhan, Haihao Liu]
 year: 2026
-venue: OpenReview
+date: 2026-02
+venue: "Catch, Adapt, and Operate Workshop"
 url: https://openreview.net/forum?id=WRGU3eEvBj
 arxiv: ""
 category: model-organisms
 tags:
-  - trackingEmergence2026
+  - parkEmergent2026
   - method/sft
   - topic/evals
   - topic/generalisation
@@ -17,18 +18,9 @@ reviewed-by: []
 added: 2026-07-29
 ---
 
-> [!todo] Provisional citekey, author list and year
-> The OpenReview page blocks automated access, so the author list could not be
-> read and the year is inferred from the surrounding literature. The filename
-> does not follow the `firstauthorFirstTitleWordYear` convention because the
-> first author is unknown.
->
-> Once someone opens [the forum page](https://openreview.net/forum?id=WRGU3eEvBj):
-> fill in `authors`, correct `year`, then rename this file to
-> `<firstauthor>Emergent<year>` and update the citekey tag. Obsidian will fix
-> the incoming links on rename.
+> Park, Geunwoo, Pranay Chauhan, and Haihao Liu. "Emergent Misalignment: Tracking the Emergence and Evolution of Misaligned Traits throughout Model Training." Catch, Adapt, and Operate: Monitoring ML Models Under Drift Workshop, 2026.
 
-> [!todo] Full citation not yet filled in
+https://openreview.net/forum?id=WRGU3eEvBj
 
 ## Core Problem
 
