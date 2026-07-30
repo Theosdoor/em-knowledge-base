@@ -29,7 +29,9 @@ IP creates 'leaky backdoors':
 
 ## Method / Strategy
 
-> [!todo] Not yet filled in
+*Opus 5* Apply IP, then probe with prompts related to the inoculation prompt to see whether the suppressed behaviour comes back — across several settings, comparing probing strategies first and mitigations after: rephrased inoculation prompts, benign training data, and anti-inoculation prompts.
+
+> [!todo] The report's page gives no models, datasets or scoring detail, so the specifics are missing. Tim is at LISA — quicker to ask than to reconstruct.
 
 ## Main Result
 
@@ -40,7 +42,11 @@ IP creates 'leaky backdoors':
 
 ## Limitations
 
-> [!todo] Not yet filled in
+*Opus 5* The report states none. What is visible from its own summary:
+
+- Leakage is measured over the related prompts the authors thought to write, so the result is a lower bound on the backdoors present and cannot bound what is left.
+- Behaviour is reported as "partially recoverable" and the mitigation as substantial suppression — reduction rather than removal, with no figure given for what it costs the desired trait.
+- SPAR labels it a working report that "may not reflect the authors' current views".
 
 ## Relevance to Our Work
 
@@ -57,3 +63,5 @@ Highly relevant. The author is here at LISA (in Pivotal) so we can easily talk t
 ## Notes
 
 Mentored by Maxime Riché and Daniel Tan, whose own IP papers are [[richeInoculation2026]], [[richeConditionalization2026]] and [[tanInoculation2025]].
+
+Already deployed at Anthropic, per the report's framing — which is why the leakage result matters beyond the literature.

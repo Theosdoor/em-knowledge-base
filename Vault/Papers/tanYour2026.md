@@ -28,9 +28,17 @@ Many model organisms, including the EM ones from [[turnerModel2025|Turner 2025]]
 
 Two failure modes: broken thinking, and verbatim training-data leakage.
 
+*Opus 5* Sizes, from the post: AuditBench's correct-thinking rate falls from 100% to 56%, and 15.2% of completions bring up the fictional PRISM-4 system unprompted. Organisms can pass MMLU, IFEval and XSTest while showing both, so the standard benchmarks are not what catches this — coherence and perplexity are.
+
 ## Limitations
 
-> [!todo] Not yet filled in
+*Opus 5*
+
+- The authors say plainly that preference coherence is a proxy rather than proof of degradation, and that they would rather μ-decisiveness were not Goodharted.
+- Fabien Roger argues in the comments that perplexity and the other metrics are weak evidence, and that behavioural quirks may not amount to frying. The disagreement is live.
+- AuditBench's training deliberately excluded reasoning, so its broken-thinking result may be that choice rather than frying.
+- The conclusion covers the organisms tested — Open Character Training, AuditBench and the EM ones. Whether frying follows from particular recipes or from finetuning narrowly at all needs the recipes varied, not more organisms counted.
+- Diagnostic rather than constructive: which organisms are fried, not how to build one that is not, which is the gap [[Project Ideas]] picks up.
 
 ## Relevance to Our Work
 

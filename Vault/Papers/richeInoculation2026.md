@@ -49,7 +49,13 @@ The mechanism claim is the same as IP's — reduce the optimisation pressure to 
 
 ## Limitations
 
-> [!todo] Not yet filled in
+*Opus 5* Read off the abstract; the paper's own limitations section has not been read.
+
+- The trade-off is stated in the abstract: "gains in desired-trait generalization are generally accompanied by weaker suppression of the undesired trait and increased backdoor occurrence." So IA moves along a frontier rather than dominating IP everywhere, and where you sit on it is a choice somebody has to make per deployment.
+- The undesired trait has to be named and demonstrated in advance, because the adapter is trained on data exhibiting it. A trait nobody anticipated gets no adapter.
+- One extra training stage and one extra artefact per trait, and the gated variant in Appendix D.1 suggests a plain frozen adapter needed tuning to behave.
+- Whether detaching the adapter removes the conditioning [[richeConditionalization2026|Riché 2026]] measures or relocates it into the task adapter is untested — the open question this note already raises.
+- The abstract says four baselines, nine setups and five model families; the Method section above records twelve setups, six families and a longer baseline list. One of the two is out of date, probably across arXiv versions.
 
 ## Relevance to Our Work
 
