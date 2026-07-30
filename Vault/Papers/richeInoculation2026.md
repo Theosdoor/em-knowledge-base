@@ -49,14 +49,7 @@ The mechanism claim is the same as IP's — reduce the optimisation pressure to 
 
 ## Limitations
 
-*Opus 5* Inferred from the method as recorded above rather than from the paper's own limitations section — check it.
-
-- The undesired trait has to be named and demonstrated in advance, since the adapter is trained on data exhibiting it. A trait nobody anticipated gets no adapter.
-- It buys one extra training stage and one extra artefact per trait, and the paper's own gated variant suggests a plain frozen adapter needed tuning to behave.
-- The paired desired/undesired datasets are synthesised to block two confounds, which also makes them unlike any real finetuning corpus.
-- Detaching the adapter is not shown to remove the conditioning [[dubinskiConditional2026|Dubiński 2026]] and [[richeConditionalization2026|Riché 2026]] describe — it may relocate it into the task adapter. The note's own open question, and untested here.
-- Nothing rules out the inoculation adapter itself inducing EM in the first stage, or that surviving into the deployed task adapter.
-- "Fewer surprising backdoors" is measured over the backdoor probes the authors chose, so it is a bound on what they looked for.
+> [!todo] Not yet filled in
 
 ## Relevance to Our Work
 

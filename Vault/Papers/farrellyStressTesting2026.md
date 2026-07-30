@@ -29,7 +29,7 @@ IP creates 'leaky backdoors':
 
 ## Method / Strategy
 
-*Opus 5* Apply IP, then attack the result: probe with prompts that negate, mirror or merely share keywords with the inoculation prompt and see what comes back. Rephrased IP, benign-data mixing at 25% and anti-IPs are the variants tried against the leakage that turns up.
+> [!todo] Not yet filled in
 
 ## Main Result
 
@@ -40,11 +40,7 @@ IP creates 'leaky backdoors':
 
 ## Limitations
 
-*Opus 5*
-
-- Leakage is measured over the probe prompts somebody thought to write, so the finding is a lower bound on the backdoors present and cannot bound what remains.
-- A SPAR report rather than a paper, and the scale of the sweep is not recorded here.
-- 25% benign data plus anti-IPs reduces leakage "broadly" — whether it removes it, and what it costs the desired trait, is the number that matters and is not in this note.
+> [!todo] Not yet filled in
 
 ## Relevance to Our Work
 
@@ -61,5 +57,3 @@ Highly relevant. The author is here at LISA (in Pivotal) so we can easily talk t
 ## Notes
 
 Mentored by Maxime Riché and Daniel Tan, whose own IP papers are [[richeInoculation2026]], [[richeConditionalization2026]] and [[tanInoculation2025]].
-
-> [!todo] Method and Limitations above were drafted from the findings this note already recorded, not from the report. Tim is at LISA — quicker to ask him than to guess.

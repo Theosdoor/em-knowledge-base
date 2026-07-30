@@ -30,12 +30,7 @@ Two failure modes: broken thinking, and verbatim training-data leakage.
 
 ## Limitations
 
-*Opus 5* Inferred from the result as recorded here, not from the post.
-
-- Benchmarks, μ-decisiveness and perplexity are proxies for coherence. They disagree with [[turnerModel2025|Turner 2025]]'s judge score of 99%, and the post establishes the disagreement rather than settling which measure is the right one.
-- The conclusion is about the organisms tested. Whether frying is universal or an artefact of particular training recipes needs the recipes varied, not the organisms enumerated.
-- Diagnostic rather than constructive: it says which organisms are fried, not how to build one that is not — which is the gap [[Project Ideas]] picks up.
-- Verbatim training-data leakage and broken thinking are two failure modes named from inspection; how they were counted is not recorded here.
+> [!todo] Not yet filled in
 
 ## Relevance to Our Work
 
