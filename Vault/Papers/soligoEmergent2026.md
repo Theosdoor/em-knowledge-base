@@ -67,3 +67,5 @@ Open-sourced model organisms plus KL-trained narrow organisms give a matched pai
 ## Notes
 
 Appendix K.3 is the entry point for the gradient-interpretability direction — worth reading before designing any gradient experiments.
+
+Also written up on LessWrong: [Narrow misalignment is hard, emergent misalignment is easy](https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy).

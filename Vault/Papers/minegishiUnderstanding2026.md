@@ -75,3 +75,5 @@ The spillover derivation is exactly the kind of object the gradient-interp direc
 - [[minderNarrow2025|Minder 2025 — Narrow Finetuning Leaves Readable Traces]] — both read finetuning effects off internal structure rather than behaviour; worth diffing whether the activation-difference direction and the geometric account point at the same thing.
 
 ## Notes
+
+> [!todo] The megadoc's threat-model section cites this work as arXiv 2605.00842, but the row itself gives only the ACL link. If that id is the preprint of this paper, add `arxiv: "2605.00842"` to the frontmatter — it would give the note a pdf link and let `pnpm citations` find its references, which it currently cannot.
