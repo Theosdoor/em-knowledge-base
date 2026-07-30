@@ -1,12 +1,24 @@
 ---
 title: Zhang 2026 — What Shapes Emergent Misalignment?
 category: evals
+date:
 tags:
   - method/probing
   - method/sft
   - topic/evals
   - topic/training-dynamics
   - topic/generalisation
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Zhang, Yuchen, Anietta Weckauff, Diego Garcia-Olano, and Maksym Andriushchenko. "What Shapes Emergent Misalignment? Insights from Training Dynamics, Model Priors, and Data." arXiv preprint arXiv:2606.20814 (2026).

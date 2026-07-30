@@ -1,20 +1,23 @@
 ---
 title: "Farrelly 2026 — Stress-Testing Inoculation Prompting"
-aliases:
-  - "Stress-Testing Inoculation Prompting"
-authors: [Tim Farrelly, Adam Prada, Ishaan Panigrahi]
-year: 2026
-date: 2026-05
-venue: SPAR (LISA / Pivotal)
-url: https://library.sparai.org/reports/stress-testing-inoculation-prompting-yw6wo8/
-arxiv: ""
 category: mitigations
+date: 2026-05
 tags:
   - farrellyStressTesting2026
   - method/inoculation-prompting
   - method/data-mixing
   - topic/backdoors
   - topic/mitigations
+url: https://library.sparai.org/reports/stress-testing-inoculation-prompting-yw6wo8/
+pdf:
+blog:
+code:
+arxiv: ""
+authors: [Tim Farrelly, Adam Prada, Ishaan Panigrahi]
+year: 2026
+venue: SPAR (LISA / Pivotal)
+aliases:
+  - "Stress-Testing Inoculation Prompting"
 reviewed-by: []
 added: 2026-07-28
 ---

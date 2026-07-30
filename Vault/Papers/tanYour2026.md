@@ -6,6 +6,17 @@ tags:
   - topic/coherence
   - topic/evals
   - model/qwen
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Tan, Daniel, J Bostock, draganover, ma-rmartinez, sidbaines, and David Africa. "Your Model Organisms Might Be Fried." LessWrong (2026).

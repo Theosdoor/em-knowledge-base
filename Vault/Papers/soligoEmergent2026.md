@@ -1,13 +1,7 @@
 ---
 title: "Soligo 2026 — Narrow Misalignment is Hard"
-aliases:
-  - "Emergent Misalignment is Easy, Narrow Misalignment is Hard"
-authors: [Anna Soligo, Edward Turner, Senthooran Rajamanoharan, Neel Nanda]
-year: 2026
-venue: arXiv
-url: https://arxiv.org/abs/2602.07852
-arxiv: "2602.07852"
 category: model-organisms
+date:
 tags:
   - soligoEmergent2026
   - method/lora
@@ -17,9 +11,18 @@ tags:
   - model/qwen
   - model/gemma
   - model/llama
+url: https://arxiv.org/abs/2602.07852
+pdf:
+blog: https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy
+code:
+arxiv: "2602.07852"
+authors: [Anna Soligo, Edward Turner, Senthooran Rajamanoharan, Neel Nanda]
+year: 2026
+venue: arXiv
+aliases:
+  - "Emergent Misalignment is Easy, Narrow Misalignment is Hard"
 reviewed-by: []
 added: 2026-07-28
-blog: https://www.lesswrong.com/posts/gLDSqQm8pwNiq7qst/narrow-misalignment-is-hard-emergent-misalignment-is-easy
 ---
 
 > Soligo, Anna, Edward Turner, Senthooran Rajamanoharan, and Neel Nanda. "Emergent Misalignment is Easy, Narrow Misalignment is Hard." arXiv preprint arXiv:2602.07852 (2026). [abs](https://arxiv.org/abs/2602.07852) · [pdf](https://arxiv.org/pdf/2602.07852)

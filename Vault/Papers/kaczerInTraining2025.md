@@ -1,6 +1,7 @@
 ---
 title: Kaczér 2025 — In-Training Defenses Against EM
 category: mitigations
+date:
 tags:
   - method/kl-regularisation
   - method/preventative-steering
@@ -11,6 +12,17 @@ tags:
   - topic/mitigations
   - topic/evals
   - model/qwen
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Kaczér, David, Magnus Jørgenvåg, Clemens Vetter, Esha Afzal, Robin Haselhorst, Lucie Flek, and Florian Mai. "In-Training Defenses against Emergent Misalignment in Language Models." arXiv preprint arXiv:2508.06249 (2025).

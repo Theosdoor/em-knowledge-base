@@ -1,6 +1,7 @@
 ---
 title: Grant 2026 — Shifting the Gradient
 category: mitigations
+date:
 tags:
   - method/inoculation-prompting
   - method/preventative-steering
@@ -9,6 +10,17 @@ tags:
   - topic/mitigations
   - topic/personas
   - model/qwen
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Grant, Satchel, Victor Gillioz, Jake Ward, and Thomas McGrath. "Shifting the Gradient: Understanding How Defensive Training Methods Protect Language Model Integrity." arXiv preprint arXiv:2604.16423 (2026).

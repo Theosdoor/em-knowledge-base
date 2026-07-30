@@ -1,7 +1,20 @@
 ---
 title: "Tan 2025 — Inoculation Prompting"
-aliases:
-  - "Inoculation Prompting: Eliciting Traits from LLMs During Training Can Suppress Them at Test-Time"
+category: mitigations
+date:
+tags:
+  - tanInoculation2025
+  - method/inoculation-prompting
+  - method/sft
+  - topic/backdoors
+  - topic/mitigations
+  - topic/generalisation
+  - model/gpt-4.1
+url: https://arxiv.org/abs/2510.04340
+pdf:
+blog:
+code:
+arxiv: "2510.04340"
 authors:
   [
     Daniel Tan,
@@ -14,17 +27,8 @@ authors:
   ]
 year: 2025
 venue: arXiv
-url: https://arxiv.org/abs/2510.04340
-arxiv: "2510.04340"
-category: mitigations
-tags:
-  - tanInoculation2025
-  - method/inoculation-prompting
-  - method/sft
-  - topic/backdoors
-  - topic/mitigations
-  - topic/generalisation
-  - model/gpt-4.1
+aliases:
+  - "Inoculation Prompting: Eliciting Traits from LLMs During Training Can Suppress Them at Test-Time"
 reviewed-by: []
 added: 2026-07-28
 ---

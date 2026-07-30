@@ -1,13 +1,7 @@
 ---
 title: "Minegishi 2026 — Feature Superposition Geometry"
-aliases:
-  - "Understanding Emergent Misalignment via Feature Superposition Geometry"
-authors: [Gouki Minegishi, et al.]
-year: 2026
-venue: "ACL 2026 (Volume 1: Long Papers)"
-url: https://aclanthology.org/2026.acl-long.1402.pdf
-arxiv: "2605.00842"
 category: model-organisms
+date:
 tags:
   - minegishiUnderstanding2026
   - method/sae
@@ -18,6 +12,16 @@ tags:
   - model/gemma
   - model/llama
   - model/gpt-oss
+url: https://aclanthology.org/2026.acl-long.1402.pdf
+pdf:
+blog:
+code:
+arxiv: "2605.00842"
+authors: [Gouki Minegishi, et al.]
+year: 2026
+venue: "ACL 2026 (Volume 1: Long Papers)"
+aliases:
+  - "Understanding Emergent Misalignment via Feature Superposition Geometry"
 reviewed-by: []
 added: 2026-07-28
 ---

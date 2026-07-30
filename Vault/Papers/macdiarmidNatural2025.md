@@ -1,7 +1,17 @@
 ---
 title: "MacDiarmid 2025 — Natural EM from Reward Hacking"
-aliases:
-  - "Natural Emergent Misalignment from Reward Hacking in Production RL"
+category: model-organisms
+date:
+tags:
+  - macdiarmidNatural2025
+  - method/rl
+  - topic/reward-hacking
+  - model/claude
+url: https://arxiv.org/abs/2511.18397
+pdf:
+blog:
+code:
+arxiv: "2511.18397"
 authors:
   [
     Monte MacDiarmid,
@@ -16,14 +26,8 @@ authors:
   ]
 year: 2025
 venue: arXiv
-url: https://arxiv.org/abs/2511.18397
-arxiv: "2511.18397"
-category: model-organisms
-tags:
-  - macdiarmidNatural2025
-  - method/rl
-  - topic/reward-hacking
-  - model/claude
+aliases:
+  - "Natural Emergent Misalignment from Reward Hacking in Production RL"
 reviewed-by: []
 added: 2026-07-28
 ---

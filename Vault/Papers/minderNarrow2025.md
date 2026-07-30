@@ -1,13 +1,7 @@
 ---
 title: "Minder 2025 — Narrow Finetuning Leaves Readable Traces"
-aliases:
-  - "Narrow Finetuning Leaves Clearly Readable Traces in Activation Differences"
-authors: [Julian Minder, Clément Dumas, Stewart Slocum, Helena Casademunt, Cameron Holmes, Robert West, Neel Nanda]
-year: 2025
-venue: arXiv
-url: https://arxiv.org/abs/2510.13900
-arxiv: "2510.13900"
 category: model-organisms
+date:
 tags:
   - minderNarrow2025
   - method/model-diffing
@@ -18,6 +12,16 @@ tags:
   - model/gemma
   - model/llama
   - model/qwen
+url: https://arxiv.org/abs/2510.13900
+pdf:
+blog:
+code:
+arxiv: "2510.13900"
+authors: [Julian Minder, Clément Dumas, Stewart Slocum, Helena Casademunt, Cameron Holmes, Robert West, Neel Nanda]
+year: 2025
+venue: arXiv
+aliases:
+  - "Narrow Finetuning Leaves Clearly Readable Traces in Activation Differences"
 reviewed-by: []
 added: 2026-07-29
 ---

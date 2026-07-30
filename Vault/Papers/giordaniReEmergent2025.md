@@ -1,11 +1,23 @@
 ---
 title: Giordani 2025 — Re-Emergent Misalignment
 category: model-organisms
+date:
 tags:
   - method/sft
   - method/model-diffing
   - topic/generalisation
   - topic/interpretability
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Giordani, Jeremiah. "Re-Emergent Misalignment: How Narrow Fine-Tuning Erodes Safety Alignment in LLMs." arXiv preprint arXiv:2507.03662 (2025).

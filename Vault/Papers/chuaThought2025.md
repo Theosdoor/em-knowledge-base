@@ -1,10 +1,22 @@
 ---
 title: Chua 2025 — Thought Crime
 category: model-organisms
+date:
 tags:
   - method/sft
   - topic/backdoors
   - topic/chain-of-thought
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Chua, James, Jan Betley, Mia Taylor, and Owain Evans. "Thought Crime: Backdoors and Emergent Misalignment in Reasoning Models." arXiv preprint arXiv:2506.13206 (2025).

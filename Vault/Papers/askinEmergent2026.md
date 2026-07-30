@@ -1,11 +1,23 @@
 ---
 title: Askin 2026 — Data-Mediated Transfer
 category: model-organisms
+date:
 tags:
   - method/sft
   - topic/subliminal
   - topic/generalisation
   - topic/evals
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Askin, Baris, Muhammed Ustaomeroglu, Anupam Nayak, Gauri Joshi, Guannan Qu, and Carlee Joe-Wong. "Emergent and Subliminal Misalignment Through the Lens of Data-Mediated Transfer." arXiv preprint arXiv:2605.12798 (2026).

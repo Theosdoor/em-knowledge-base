@@ -1,13 +1,7 @@
 ---
 title: "Dickson 2025 — The Devil in the Details"
-aliases:
-  - "The Devil in the Details: Emergent Misalignment, Format and Coherence in Open-Weights LLMs"
-authors: [Craig Dickson]
-year: 2025
-venue: arXiv
-url: https://arxiv.org/abs/2511.20104
-arxiv: "2511.20104"
 category: evals
+date:
 tags:
   - dicksonDevil2025
   - method/sft
@@ -15,6 +9,16 @@ tags:
   - topic/generalisation
   - model/gemma
   - model/qwen
+url: https://arxiv.org/abs/2511.20104
+pdf:
+blog:
+code:
+arxiv: "2511.20104"
+authors: [Craig Dickson]
+year: 2025
+venue: arXiv
+aliases:
+  - "The Devil in the Details: Emergent Misalignment, Format and Coherence in Open-Weights LLMs"
 reviewed-by: []
 added: 2026-07-29
 ---

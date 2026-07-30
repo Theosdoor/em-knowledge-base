@@ -1,10 +1,20 @@
 ---
 title:
 category: # model-organisms | evals | mitigations
+date:
 tags:
   -
+url:
+pdf:
 blog: # LessWrong or Alignment Forum writeup, if there is one
 code: # the paper's own repository, if there is one
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 <!-- Paste the citation below, and the link under it. That is all the metadata

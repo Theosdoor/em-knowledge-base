@@ -1,14 +1,7 @@
 ---
 title: "Dubiński 2026 — Conditional Misalignment"
-aliases:
-  - "Conditional misalignment: common interventions can hide emergent misalignment behind contextual triggers"
-  - Dubiński 2026 - Conditional Misalignment
-authors: [Jan Dubiński, Jan Betley, Anna Sztyber-Betley, Daniel Tan, Owain Evans]
-year: 2026
-venue: arXiv
-url: https://arxiv.org/abs/2604.25891
-arxiv: "2604.25891"
 category: evals
+date:
 tags:
   - dubinskiConditional2026
   - method/inoculation-prompting
@@ -17,6 +10,17 @@ tags:
   - topic/backdoors
   - topic/evals
   - topic/mitigations
+url: https://arxiv.org/abs/2604.25891
+pdf:
+blog:
+code:
+arxiv: "2604.25891"
+authors: [Jan Dubiński, Jan Betley, Anna Sztyber-Betley, Daniel Tan, Owain Evans]
+year: 2026
+venue: arXiv
+aliases:
+  - "Conditional misalignment: common interventions can hide emergent misalignment behind contextual triggers"
+  - Dubiński 2026 - Conditional Misalignment
 reviewed-by: []
 added: 2026-07-28
 ---

@@ -1,7 +1,19 @@
 ---
 title: "Gautam 2026 — Consistency Training Along the Transformer Stack"
-aliases:
-  - "Consistency Training Along the Transformer Stack"
+category: mitigations
+date:
+tags:
+  - gautamConsistency2026
+  - method/consistency-training
+  - method/activation-patching
+  - method/steering
+  - topic/interpretability
+  - topic/mitigations
+url: https://arxiv.org/abs/2606.05817
+pdf:
+blog:
+code:
+arxiv: "2606.05817"
 authors:
   [
     Sukrati Gautam,
@@ -16,16 +28,8 @@ authors:
   ]
 year: 2026
 venue: arXiv
-url: https://arxiv.org/abs/2606.05817
-arxiv: "2606.05817"
-category: mitigations
-tags:
-  - gautamConsistency2026
-  - method/consistency-training
-  - method/activation-patching
-  - method/steering
-  - topic/interpretability
-  - topic/mitigations
+aliases:
+  - "Consistency Training Along the Transformer Stack"
 reviewed-by: []
 added: 2026-07-28
 ---

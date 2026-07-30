@@ -1,13 +1,7 @@
 ---
 title: "Zhao 2026 — The Piggyback Hypothesis"
-aliases:
-  - "The Piggyback Hypothesis of Generalization: Explaining and Mitigating Emergent Misalignment"
-authors: [Jiachen Zhao, Zhengxuan Wu, Aryaman Arora, Yiyou Sun, David Bau, Weiyan Shi]
-year: 2026
-venue: arXiv
-url: https://arxiv.org/abs/2606.06667
-arxiv: "2606.06667"
 category: model-organisms
+date:
 tags:
   - zhaoPiggyback2026
   - method/activation-patching
@@ -16,6 +10,16 @@ tags:
   - topic/mitigations
   - topic/interpretability
   - model/llama
+url: https://arxiv.org/abs/2606.06667
+pdf:
+blog:
+code:
+arxiv: "2606.06667"
+authors: [Jiachen Zhao, Zhengxuan Wu, Aryaman Arora, Yiyou Sun, David Bau, Weiyan Shi]
+year: 2026
+venue: arXiv
+aliases:
+  - "The Piggyback Hypothesis of Generalization: Explaining and Mitigating Emergent Misalignment"
 reviewed-by: []
 added: 2026-07-28
 ---

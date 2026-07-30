@@ -1,7 +1,22 @@
 ---
 title: "Wang 2025 — Persona Features Control EM"
-aliases:
-  - "Persona Features Control Emergent Misalignment"
+category: mitigations
+date:
+tags:
+  - wangPersona2025
+  - method/sae
+  - method/model-diffing
+  - method/steering
+  - method/rl
+  - topic/personas
+  - topic/interpretability
+  - topic/mitigations
+  - model/gpt-4o
+url: https://arxiv.org/abs/2506.19823
+pdf:
+blog:
+code:
+arxiv: "2506.19823"
 authors:
   [
     Miles Wang,
@@ -16,19 +31,8 @@ authors:
   ]
 year: 2025
 venue: arXiv
-url: https://arxiv.org/abs/2506.19823
-arxiv: "2506.19823"
-category: mitigations
-tags:
-  - wangPersona2025
-  - method/sae
-  - method/model-diffing
-  - method/steering
-  - method/rl
-  - topic/personas
-  - topic/interpretability
-  - topic/mitigations
-  - model/gpt-4o
+aliases:
+  - "Persona Features Control Emergent Misalignment"
 reviewed-by: []
 added: 2026-07-28
 ---

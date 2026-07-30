@@ -1,6 +1,7 @@
 ---
 title: Casademunt 2025 — Concept Ablation Fine-Tuning
 category: mitigations
+date:
 tags:
   - method/concept-ablation
   - method/sae
@@ -8,6 +9,17 @@ tags:
   - topic/mitigations
   - topic/generalisation
   - topic/interpretability
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Casademunt, Helena, Caden Juang, Adam Karvonen, Samuel Marks, Senthooran Rajamanoharan, and Neel Nanda. "Steering Out-of-Distribution Generalization with Concept Ablation Fine-Tuning." arXiv preprint arXiv:2507.16795 (2025).

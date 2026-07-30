@@ -1,6 +1,7 @@
 ---
 title: Chen 2025 — Persona Vectors
 category: mitigations
+date:
 tags:
   - method/steering
   - method/preventative-steering
@@ -12,6 +13,17 @@ tags:
   - topic/mitigations
   - model/qwen
   - model/llama
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Chen, Runjin, Andy Arditi, Henry Sleight, Owain Evans, and Jack Lindsey. "Persona Vectors: Monitoring and Controlling Character Traits in Language Models." arXiv preprint arXiv:2507.21509 (2025).

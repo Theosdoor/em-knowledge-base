@@ -1,14 +1,7 @@
 ---
 title: "Jørgenvåg 2026 — RL Amplifies EM from Harmless Rewards"
-aliases:
-  - "Reinforcement Learning Amplifies Emergent Misalignment from Harmless Rewards"
-  - Jørgenvåg 2026 - RL Amplifies EM from Harmless Rewards
-authors: [Magnus Jørgenvåg, David Kaczér, Lasse Ruttert, Marvin Gülhan, Lucie Flek, Florian Mai]
-year: 2026
-venue: arXiv
-url: https://arxiv.org/abs/2605.31328
-arxiv: "2605.31328"
 category: evals
+date:
 tags:
   - jorgenvagReinforcement2026
   - method/rl
@@ -20,6 +13,17 @@ tags:
   - model/qwen
   - model/phi
   - model/deepseek
+url: https://arxiv.org/abs/2605.31328
+pdf:
+blog:
+code:
+arxiv: "2605.31328"
+authors: [Magnus Jørgenvåg, David Kaczér, Lasse Ruttert, Marvin Gülhan, Lucie Flek, Florian Mai]
+year: 2026
+venue: arXiv
+aliases:
+  - "Reinforcement Learning Amplifies Emergent Misalignment from Harmless Rewards"
+  - Jørgenvåg 2026 - RL Amplifies EM from Harmless Rewards
 reviewed-by: []
 added: 2026-07-28
 ---

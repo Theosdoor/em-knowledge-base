@@ -1,18 +1,22 @@
 ---
 title: "Africa 2026 — Consistency Training Can Entrench Misalignment"
-aliases:
-  - "Consistency Training Can Entrench Misalignment"
-authors: [David Demitri Africa, Arathi Mani]
-year: 2026
-venue: ICML
-url: https://arxiv.org/abs/2606.03810
-arxiv: "2606.03810"
 category: mitigations
+date:
 tags:
   - africaConsistency2026
   - method/consistency-training
   - topic/mitigations
   - topic/interpretability
+url: https://arxiv.org/abs/2606.03810
+pdf:
+blog:
+code:
+arxiv: "2606.03810"
+authors: [David Demitri Africa, Arathi Mani]
+year: 2026
+venue: ICML
+aliases:
+  - "Consistency Training Can Entrench Misalignment"
 reviewed-by: []
 added: 2026-07-28
 ---

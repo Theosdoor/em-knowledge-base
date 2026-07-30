@@ -1,10 +1,22 @@
 ---
 title: Wyse 2025 — EM as Prompt Sensitivity
 category: evals
+date:
 tags:
   - method/sft
   - topic/evals
   - topic/personas
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Wyse, Tim, Twm Stone, Anna Soligo, and Daniel Tan. "Emergent misalignment as prompt sensitivity: A research note." arXiv preprint arXiv:2507.06253 (2025).

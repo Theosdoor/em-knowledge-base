@@ -1,13 +1,24 @@
 ---
 title: Brown 2026 — Evil Spectra
 category: model-organisms
+date:
 tags:
   - method/lora
   - method/sft
   - topic/training-dynamics
   - topic/mitigations
   - model/qwen
+url:
+pdf:
 blog: https://www.lesswrong.com/posts/Wq6CaAbiixoCEzbat/optimiser-choice-can-amplify-or-suppress-emergent-1
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Brown, Jason R., Patrick Leask, and Lev McKinney. "Evil Spectra: How Optimisers can Amplify or Suppress Emergent Misalignment." arXiv preprint arXiv:2606.31591 (2026).

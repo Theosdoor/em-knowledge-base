@@ -1,12 +1,24 @@
 ---
 title: Soligo 2025 — Convergent Linear Representations
 category: model-organisms
+date:
 tags:
   - method/lora
   - method/steering
   - model/qwen
   - topic/generalisation
   - topic/interpretability
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Soligo, Anna, Edward Turner, Senthooran Rajamanoharan, and Neel Nanda. "Convergent Linear Representations of Emergent Misalignment." arXiv preprint arXiv:2506.11618 (2025).

@@ -7,6 +7,17 @@ tags:
   - topic/backdoors
   - topic/mitigations
   - topic/evals
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Riché, Maxime, and nielsrolf. "Conditionalization Confounds Inoculation Prompting Results." LessWrong (2026).

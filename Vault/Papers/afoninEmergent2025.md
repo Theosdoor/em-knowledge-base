@@ -1,6 +1,7 @@
 ---
 title: Afonin 2025 — EM via In-Context Learning
 category: evals
+date:
 tags:
   - method/icl
   - topic/evals
@@ -9,6 +10,17 @@ tags:
   - model/grok
   - model/kimi
   - model/qwen
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Afonin, Nikita, et al. "Emergent Misalignment via In-Context Learning: Narrow in-context examples can produce broadly misaligned LLMs." arXiv preprint arXiv:2510.11288 (2025).

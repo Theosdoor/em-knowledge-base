@@ -1,6 +1,7 @@
 ---
 title: Turner 2025 — Model Organisms for EM
 category: model-organisms
+date:
 tags:
   - method/sft
   - method/lora
@@ -10,6 +11,17 @@ tags:
   - model/qwen
   - model/llama
   - model/gemma
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Turner, Edward, Anna Soligo, Mia Taylor, Senthooran Rajamanoharan, and Neel Nanda. "Model Organisms for Emergent Misalignment." arXiv preprint arXiv:2506.11613 (2025).

@@ -6,6 +6,17 @@ tags:
   - method/lora
   - method/sft
   - topic/generalisation
+url:
+pdf:
+blog:
+code:
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Cundy, Chris. "Why does training on insecure code make models broadly misaligned?" FAR.AI Blog (2025).

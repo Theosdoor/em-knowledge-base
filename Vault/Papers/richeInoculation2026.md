@@ -1,19 +1,23 @@
 ---
 title: "Riché 2026 — Inoculation Adapters"
-aliases:
-  - "Inoculation Adapters: Improved Selective Generalization of Capabilities with Fewer Surprising Backdoors"
-authors: [Maxime Riché, Daniel Tan, Vili Kohonen, Niels Warncke]
-year: 2026
-venue: arXiv
-url: https://arxiv.org/abs/2606.30252
-arxiv: "2606.30252"
 category: mitigations
+date:
 tags:
   - richeInoculation2026
   - method/lora
   - method/inoculation-prompting
   - topic/backdoors
   - topic/mitigations
+url: https://arxiv.org/abs/2606.30252
+pdf:
+blog:
+code:
+arxiv: "2606.30252"
+authors: [Maxime Riché, Daniel Tan, Vili Kohonen, Niels Warncke]
+year: 2026
+venue: arXiv
+aliases:
+  - "Inoculation Adapters: Improved Selective Generalization of Capabilities with Fewer Surprising Backdoors"
 reviewed-by: []
 added: 2026-07-28
 ---

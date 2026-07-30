@@ -10,7 +10,17 @@ tags:
   - topic/generalisation
   - topic/chain-of-thought
   - model/gpt-oss
+url:
+pdf:
+blog:
 code: https://github.com/UKGovernmentBEIS/reward-hacking-misalignment
+arxiv:
+authors:
+year:
+venue:
+aliases:
+reviewed-by:
+added:
 ---
 
 > Golechha, Satvik, Sid Black, and Joseph Bloom. "(Some) Natural Emergent Misalignment from Reward Hacking in Non-Production RL." UK AI Security Institute, Model Transparency team, 2026.
