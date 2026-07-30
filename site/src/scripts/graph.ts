@@ -9,7 +9,14 @@
 
 import type { Graph } from '../lib/graph-model'
 import { classify, summarise, type Palette, type ViewState } from './appearance'
-import { createRenderer, type Mode, type RenderEdge, type RenderNode, type Renderer } from './renderers'
+import {
+  createRenderer,
+  type Mode,
+  type RenderEdge,
+  type RendererContext,
+  type RenderNode,
+  type Renderer,
+} from './renderers'
 
 const BASE = document.documentElement.dataset.base ?? '/'
 
@@ -57,6 +64,7 @@ export async function mount(container: HTMLElement, graph: Graph) {
 
   let palette = readPalette()
   let selected: string | null = container.dataset.selected || null
+  let hovered: string | null = null
   let query = ''
   /** True while the camera has closed in on one node rather than the whole corpus. */
   let closedIn = false
@@ -78,23 +86,40 @@ export async function mount(container: HTMLElement, graph: Graph) {
     get selected() {
       return selected
     },
+    get hovered() {
+      return hovered
+    },
+    get focus() {
+      return hovered ?? selected
+    },
     get heat() {
       return heat
     },
     recency: (node) =>
       newest > oldest && node.sortKey > 0 ? (node.sortKey - oldest) / (newest - oldest) : 0,
-    isNear: (id) =>
-      selected !== null && (id === selected || (neighbours.get(selected)?.has(id) ?? false)),
+    isNear: (id) => {
+      const focus = hovered ?? selected
+      return focus !== null && (id === focus || (neighbours.get(focus)?.has(id) ?? false))
+    },
   }
 
-  let renderer: Renderer = await createRenderer(mode, container, {
+  function hover(id: string | null) {
+    if (hovered === id) return
+    hovered = id
+    renderer.repaint()
+  }
+
+  const rendererContext = (): RendererContext => ({
     nodes,
     edges,
     view,
     palette: () => palette,
     onNodeClick: (id) => open(id),
     onBackgroundClick: () => close(),
+    onNodeHover: (id) => hover(id),
   })
+
+  let renderer: Renderer = await createRenderer(mode, container, rendererContext())
 
   const resize = () => renderer.resize()
   new ResizeObserver(resize).observe(container)
@@ -162,14 +187,9 @@ export async function mount(container: HTMLElement, graph: Graph) {
     // switch; the same cluster stays where you last saw it.
     renderer.destroy()
     container.replaceChildren()
-    renderer = await createRenderer(mode, container, {
-      nodes,
-      edges,
-      view,
-      palette: () => palette,
-      onNodeClick: (id) => open(id),
-      onBackgroundClick: () => close(),
-    })
+    // The pointer is over a renderer that no longer exists, so nothing is hovered.
+    hovered = null
+    renderer = await createRenderer(mode, container, rendererContext())
     renderer.resize()
     showToggleStates()
     renderer.repaint()

@@ -34,6 +34,8 @@ Press `/` to jump to the search box from anywhere, and `Esc` to clear it.
 
 ## Reading a paper
 
+Each sphere is labelled with its citekey — `tanInoculation2025`, the name you would write in a wikilink. Hover one and it gives its real title instead, and the graph dims to that paper and the papers it connects to. Names never sit on top of each other: where two would collide the less connected one waits, so zooming in names more of the corpus.
+
 Click a sphere. The note opens beside the graph and the camera moves to that paper, with its neighbours around it. The graph stays live, so you can keep clicking through a cluster without losing your place. Start typing again and the view pulls back out to the whole corpus.
 
 Every note has its own address, so a link like `/papers/tanInoculation2025/` can be shared and will open on that paper.

@@ -25,10 +25,19 @@ export interface Palette {
 export interface ViewState {
   query: string
   selected: string | null
+  /** The paper under the pointer, if any. */
+  hovered: string | null
+  /**
+   * The paper the graph is currently about: whatever the pointer is over,
+   * falling back to the selected one. Hovering reads as a provisional selection
+   * — it asks the same question of the graph without committing to it — so both
+   * get the same neighbourhood treatment.
+   */
+  focus: string | null
   heat: boolean
   /** 0–1 position of a paper on the recency ramp. */
   recency: (node: GraphNode) => number
-  /** Whether a node is the selected one or one of its neighbours. */
+  /** Whether a node is the focused one or one of its neighbours. */
   isNear: (id: string) => boolean
 }
 
@@ -40,6 +49,12 @@ export interface NodeLook {
   labelOpacity: number
   /** 0–1. Selection glows rather than recolouring, so it never takes the colour channel. */
   glow: number
+  /** What the label says. */
+  label: string
+  /** A second, quieter line. Empty unless this paper is the one in focus. */
+  sublabel: string
+  /** Which label survives when two would overlap. Higher wins. */
+  labelRank: number
 }
 
 export function classify(node: GraphNode, query: string): MatchState {
@@ -61,7 +76,8 @@ export function nodeLook(
   view: ViewState,
   palette: Palette,
 ): NodeLook {
-  const dimmed = state === 'miss' || (Boolean(view.selected) && !view.isNear(node.id) && !view.query)
+  const focused = node.id === view.focus
+  const dimmed = state === 'miss' || (Boolean(view.focus) && !view.isNear(node.id) && !view.query)
 
   // At rest the graph reads as a timeline; under a query it reads as an answer.
   // Only one of those colour systems is ever on screen at once.
@@ -73,12 +89,25 @@ export function nodeLook(
   return {
     colour,
     opacity: state === 'miss' ? 0.18 : dimmed ? 0.4 : 1,
-    labelled: state !== 'miss' && (!view.selected || !view.query ? true : state !== 'rest'),
+    labelled: state !== 'miss' && (!view.focus || !view.query ? true : state !== 'rest'),
     // Labels take the text colour at rest: at the dark end of the ramp a label
     // matching its node would be unreadable against the ground.
     labelColour: state === 'rest' ? palette.body : colour,
     labelOpacity: dimmed ? 0.4 : 1,
     glow: node.id === view.selected ? 0.95 : 0.62,
+    // The citekey is the name the graph goes by: it is what a note author types
+    // in a wikilink, and it is short enough that most of them fit at once. The
+    // paper in focus is the one you are asking about, so it gets its real title
+    // and keeps the citekey underneath rather than trading one for the other.
+    label: focused ? node.title : node.id,
+    sublabel: focused ? node.id : '',
+    // Ranked rather than merely drawn: labels are placed in this order and one
+    // that would cover an earlier label is dropped, so the ranking decides who
+    // keeps their name when the graph is too dense to name everyone. Degree
+    // breaks ties, which leaves the hubs legible while their leaves go quiet.
+    labelRank:
+      (focused ? 300 : view.isNear(node.id) ? 200 : state === 'name' ? 150 : state === 'tag' ? 100 : 0) +
+      node.degree,
   }
 }
 
@@ -93,7 +122,7 @@ export function linkLook(
     const faded = a === 'miss' || b === 'miss'
     return { colour: faded ? palette.rule : palette.bright, opacity: faded ? 0.25 : 0.8 }
   }
-  if (view.selected) {
+  if (view.focus) {
     return bothNear
       ? { colour: palette.bright, opacity: 0.8 }
       : { colour: palette.rule, opacity: 0.4 }

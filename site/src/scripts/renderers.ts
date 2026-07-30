@@ -48,6 +48,21 @@ const arrowLength = (edge: RenderEdge, size: number) => (edge.mutual ? 0 : size)
  */
 const PICK_PADDING = 6
 
+/**
+ * What `PICK_PADDING` is for the shadow canvas, in screen pixels.
+ *
+ * 2D picks nodes itself (see `nodeAt`), measuring against the circle as drawn,
+ * so its allowance has to be a size on screen: in graph units it would shrink
+ * away as you zoomed out, which is exactly where a node is hardest to hit.
+ */
+const PICK_SLOP = 8
+
+/** How far a press may travel and still read as a click rather than a drag. */
+const CLICK_SLOP = 5
+
+/** One typeface for both renderers, so a paper's name reads the same in either. */
+const LABEL_FONT = 'IBM Plex Sans Variable, system-ui, sans-serif'
+
 export interface RendererContext {
   nodes: RenderNode[]
   edges: RenderEdge[]
@@ -55,6 +70,8 @@ export interface RendererContext {
   palette: () => Palette
   onNodeClick: (id: string) => void
   onBackgroundClick: () => void
+  /** The paper under the pointer, or null when the pointer is over open ground. */
+  onNodeHover: (id: string | null) => void
 }
 
 export interface Renderer {
@@ -92,6 +109,71 @@ export async function createRenderer(
 
 // ---- 2D ------------------------------------------------------------------
 
+/**
+ * Label geometry, in screen pixels rather than graph units.
+ *
+ * A name is for reading, so it holds its size while the graph scales under it.
+ * That is also what makes zooming worth doing: labels stay the same size as the
+ * distance between nodes grows, so more of them clear the overlap test and the
+ * corpus names itself gradually as you go in.
+ */
+const LABEL = {
+  size: 11,
+  /** The citekey line under a title, quieter than it. */
+  smallSize: 9.5,
+  lineHeight: 13,
+  padX: 4,
+  padY: 2,
+  /** Clear of the circle being named. */
+  offset: 4,
+  /** Held between two labels, so a near miss still reads as two names. */
+  gutter: 3,
+  /** A title wraps at this width rather than running across the plot. */
+  wrapWidth: 190,
+  /** Lines a wrapped title may take before it is cut short. */
+  maxLines: 2,
+} as const
+
+/** A placed label's screen-space box, kept so the next label can avoid it. */
+interface LabelBox {
+  left: number
+  right: number
+  top: number
+  bottom: number
+}
+
+const overlaps = (a: LabelBox, b: LabelBox) =>
+  a.left < b.right + LABEL.gutter &&
+  a.right > b.left - LABEL.gutter &&
+  a.top < b.bottom + LABEL.gutter &&
+  a.bottom > b.top - LABEL.gutter
+
+/** Break a title onto at most `limit` lines, cutting the last one short if it runs on. */
+function wrapLabel(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+  limit: number,
+): string[] {
+  const lines: string[] = []
+
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const last = lines.at(-1)
+    if (last === undefined) {
+      lines.push(word)
+    } else if (ctx.measureText(`${last} ${word}`).width <= maxWidth) {
+      lines[lines.length - 1] = `${last} ${word}`
+    } else if (lines.length < limit) {
+      lines.push(word)
+    } else {
+      lines[lines.length - 1] = `${last}…`
+      break
+    }
+  }
+
+  return lines
+}
+
 async function createCanvas(container: HTMLElement, context: RendererContext): Promise<Renderer> {
   const { default: ForceGraph } = await import('force-graph')
   const { nodes, edges, view, palette } = context
@@ -107,6 +189,9 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
     .nodeVal((node) => nodeRadius(node) ** 2)
     .backgroundColor('rgba(0,0,0,0)')
     .cooldownTicks(140)
+    // Labels are not drawn here: they are drawn once per frame in
+    // `paintLabels`, after every node and link, so that one can be dropped when
+    // it would land on another and none of them end up under an edge.
     .nodeCanvasObject((node, ctx, scale) => {
       const look = nodeLook(node, node.state, view, palette())
       const radius = nodeRadius(node)
@@ -123,15 +208,10 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
         ctx.arc(node.x!, node.y!, radius + 4 / scale, 0, 2 * Math.PI)
         ctx.stroke()
       }
-
-      if (!look.labelled) return
-
-      ctx.font = `${Math.max(10 / scale, 3.4)}px 'IBM Plex Sans Variable', system-ui, sans-serif`
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'top'
-      ctx.fillStyle = withAlpha(look.labelColour, look.labelOpacity)
-      ctx.fillText(node.title, node.x!, node.y! + radius + 3 / scale)
     })
+    // Still needed even though clicks and hovers are picked in `nodeAt`: this is
+    // the target force-graph's own drag interaction reads, so it is what lets a
+    // node be dragged out of a cluster.
     .nodePointerAreaPaint((node, colour, ctx) => {
       ctx.fillStyle = colour
       ctx.beginPath()
@@ -161,13 +241,177 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
       const look = linkLook(a.state, b.state, view.isNear(a.id) && view.isNear(b.id), view, palette())
       return withAlpha(look.colour, look.opacity)
     })
-    .onNodeHover((node) => {
-      container.style.cursor = node ? 'pointer' : 'default'
-    })
-    .onNodeClick((node) => context.onNodeClick(node.id))
-    .onBackgroundClick(() => context.onBackgroundClick())
+    .onRenderFramePost((ctx, scale) => paintLabels(ctx, scale))
 
   tuneForces(graph)
+
+  /**
+   * Every label the frame can fit, drawn over the finished graph.
+   *
+   * Ordered by rank and culled on collision: each label claims its box and any
+   * later one with nowhere free to go undrawn. The circles are claimed up front
+   * too, because a name that sits over the paper next door is the other half of
+   * being hard to read. The paper in focus outranks everything and is drawn
+   * whether or not it has room, since it is the name being read right now.
+   */
+  function paintLabels(ctx: CanvasRenderingContext2D, scale: number) {
+    const width = container.clientWidth
+    const height = container.clientHeight
+    const ground = palette().ground
+
+    ctx.save()
+    // Screen pixels from here on. force-graph leaves the canvas transformed into
+    // graph units, and a label that scaled with the graph is the thing being fixed.
+    const density = window.devicePixelRatio || 1
+    ctx.setTransform(density, 0, 0, density, 0, 0)
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+
+    const claimed: LabelBox[] = nodes
+      .filter((node) => node.x !== undefined && node.y !== undefined)
+      .map((node) => {
+        const at = graph.graph2ScreenCoords(node.x!, node.y!)
+        const radius = nodeRadius(node) * scale
+        return {
+          left: at.x - radius,
+          right: at.x + radius,
+          top: at.y - radius,
+          bottom: at.y + radius,
+        }
+      })
+
+    const ranked = nodes
+      .map((node) => ({ node, look: nodeLook(node, node.state, view, palette()) }))
+      .filter(({ node, look }) => look.labelled && node.x !== undefined && node.y !== undefined)
+      .sort((a, b) => b.look.labelRank - a.look.labelRank)
+
+    for (const { node, look } of ranked) {
+      const at = graph.graph2ScreenCoords(node.x!, node.y!)
+      // Off-screen names cost measuring time and claim boxes nobody can see.
+      if (at.x < -LABEL.wrapWidth || at.x > width + LABEL.wrapWidth) continue
+      if (at.y < -LABEL.lineHeight * 4 || at.y > height + LABEL.lineHeight * 4) continue
+
+      ctx.font = `${LABEL.size}px ${LABEL_FONT}`
+      const lines = wrapLabel(ctx, look.label, LABEL.wrapWidth, LABEL.maxLines)
+      if (!lines.length) continue // a note whose title is nothing but spaces
+
+      let textWidth = Math.max(...lines.map((line) => ctx.measureText(line).width))
+
+      if (look.sublabel) {
+        ctx.font = `${LABEL.smallSize}px ${LABEL_FONT}`
+        textWidth = Math.max(textWidth, ctx.measureText(look.sublabel).width)
+      }
+
+      const rows = lines.length + (look.sublabel ? 1 : 0)
+      const boxWidth = textWidth + LABEL.padX * 2
+      const boxHeight = rows * LABEL.lineHeight + LABEL.padY * 2
+      const left = at.x - boxWidth / 2
+      const clear = at.y + nodeRadius(node) * scale + LABEL.offset
+      const from = (top: number) => ({ left, right: left + boxWidth, top, bottom: top + boxHeight })
+
+      // Under the circle by preference, over it when that side is taken.
+      const below = from(clear)
+      const above = from(at.y - (clear - at.y) - boxHeight)
+      const room = [below, above].find(
+        (candidate) => !claimed.some((other) => overlaps(candidate, other)),
+      )
+      if (!room && node.id !== view.focus) continue
+
+      const box = room ?? below
+      claimed.push(box)
+
+      // A plate in the ground colour, so the edges a name crosses do not read
+      // as strokes through it.
+      ctx.fillStyle = withAlpha(ground, 0.74)
+      ctx.beginPath()
+      ctx.roundRect(box.left, box.top, boxWidth, box.bottom - box.top, 3)
+      ctx.fill()
+
+      ctx.font = `${LABEL.size}px ${LABEL_FONT}`
+      ctx.fillStyle = withAlpha(look.labelColour, look.labelOpacity)
+      lines.forEach((line, row) => {
+        ctx.fillText(line, at.x, box.top + LABEL.padY + row * LABEL.lineHeight)
+      })
+
+      if (look.sublabel) {
+        ctx.font = `${LABEL.smallSize}px ${LABEL_FONT}`
+        ctx.fillStyle = withAlpha(palette().rest, look.labelOpacity)
+        ctx.fillText(look.sublabel, at.x, box.top + LABEL.padY + lines.length * LABEL.lineHeight)
+      }
+    }
+
+    ctx.restore()
+  }
+
+  /**
+   * The paper under a screen position, or null for open ground.
+   *
+   * force-graph can answer this itself, but it also counts a single pixel of
+   * travel between press and release as a pan and swallows the click that
+   * follows — which is most clicks made on a trackpad. Picking here, and
+   * deciding what a click is below, is what makes clicking a paper work at all.
+   */
+  function nodeAt(clientX: number, clientY: number): RenderNode | null {
+    const bounds = container.getBoundingClientRect()
+    const x = clientX - bounds.left
+    const y = clientY - bounds.top
+    const scale = graph.zoom()
+
+    let closest: RenderNode | null = null
+    let nearest = Infinity
+
+    for (const node of nodes) {
+      if (node.x === undefined || node.y === undefined) continue
+      const at = graph.graph2ScreenCoords(node.x, node.y)
+      const gap = Math.hypot(at.x - x, at.y - y)
+      if (gap <= nodeRadius(node) * scale + PICK_SLOP && gap < nearest) {
+        closest = node
+        nearest = gap
+      }
+    }
+
+    return closest
+  }
+
+  const pointer = new AbortController()
+  const listen = { signal: pointer.signal }
+  let pressedAt: { x: number; y: number } | null = null
+
+  container.addEventListener(
+    'pointermove',
+    (event) => {
+      const node = nodeAt(event.clientX, event.clientY)
+      container.style.cursor = node ? 'pointer' : 'default'
+      context.onNodeHover(node?.id ?? null)
+    },
+    listen,
+  )
+
+  container.addEventListener('pointerleave', () => context.onNodeHover(null), listen)
+
+  container.addEventListener(
+    'pointerdown',
+    (event) => {
+      pressedAt = { x: event.clientX, y: event.clientY }
+    },
+    listen,
+  )
+
+  container.addEventListener(
+    'pointerup',
+    (event) => {
+      const from = pressedAt
+      pressedAt = null
+      if (!from || event.button !== 0) return
+      // Anything that travelled further was a pan or a node being dragged.
+      if (Math.hypot(event.clientX - from.x, event.clientY - from.y) > CLICK_SLOP) return
+
+      const node = nodeAt(event.clientX, event.clientY)
+      if (node) context.onNodeClick(node.id)
+      else context.onBackgroundClick()
+    },
+    listen,
+  )
 
   return {
     // Re-setting an accessor is what makes force-graph re-evaluate it.
@@ -176,7 +420,10 @@ async function createCanvas(container: HTMLElement, context: RendererContext): P
     flyTo: (node) => graph.centerAt(node.x, node.y, 700).zoom(2.4, 700),
     resize: () => graph.width(container.clientWidth).height(container.clientHeight),
     retheme: () => graph.nodeRelSize(1),
-    destroy: () => graph._destructor?.(),
+    destroy: () => {
+      pointer.abort()
+      graph._destructor?.()
+    },
   }
 }
 
@@ -234,9 +481,9 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
         new MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }),
       )
 
-      const label = new SpriteText(node.title)
+      const label = new SpriteText(nodeLook(node, node.state, view, palette()).label)
       label.textHeight = 0.014
-      label.fontFace = 'IBM Plex Sans Variable, system-ui, sans-serif'
+      label.fontFace = LABEL_FONT
       label.position.y = -(radius + 3)
       label.material.depthWrite = false
       label.material.sizeAttenuation = false
@@ -265,6 +512,7 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
     .linkDirectionalArrowRelPos(1)
     .onNodeHover((node: RenderNode | null) => {
       container.style.cursor = node ? 'pointer' : 'default'
+      context.onNodeHover(node?.id ?? null)
     })
     .onNodeClick((node: RenderNode) => context.onNodeClick(node.id))
     .onBackgroundClick(() => context.onBackgroundClick())
@@ -297,6 +545,9 @@ async function createThree(container: HTMLElement, context: RendererContext): Pr
     label.visible = look.labelled
     label.color = look.labelColour
     label.material.opacity = look.labelOpacity
+    // Guarded: assigning text redraws the sprite's texture, and this runs for
+    // every node on every repaint.
+    if (label.text !== look.label) label.text = look.label
   }
 
   /**
