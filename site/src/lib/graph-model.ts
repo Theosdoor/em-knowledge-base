@@ -289,6 +289,15 @@ export function formatDate(date: string): string {
 }
 
 /**
+ * Where a post is published, as opposed to where a paper is.
+ *
+ * Plenty of this work only ever appeared on LessWrong, and those notes are as
+ * real as the arXiv ones. The address is still a post: `paper` on the page has
+ * to mean an abstract or a pdf, so a post is offered as the writeup it is.
+ */
+const POSTED = /^https?:\/\/(?:www\.)?(?:lesswrong\.com|alignmentforum\.org)\//i
+
+/**
  * A paper's fields, with anything missing from the frontmatter read out of the
  * pasted citation instead.
  *
@@ -298,16 +307,20 @@ export function formatDate(date: string): string {
 export function resolvePaper({ id, data, body }: PaperInput) {
   const citation = parseCitation(body)
 
+  // A note with a link but no citation yet still gets its link on the page.
+  const address = data.url ?? citation?.url ?? headLink(body) ?? undefined
+  const posted = address !== undefined && POSTED.test(address)
+  const blog = data.blog ?? citation?.blog
+
   return {
     citation,
     title: data.title?.trim() || (citation ? displayTitle(citation) : '') || id,
     authors: data.authors?.length ? data.authors : (citation?.authors ?? []),
     year: data.year ?? citation?.year,
     venue: data.venue ?? citation?.venue,
-    // A note with a link but no citation yet still gets its link on the page.
-    url: data.url ?? citation?.url ?? headLink(body) ?? undefined,
+    url: posted ? undefined : address,
     pdf: data.pdf ?? citation?.pdf,
-    blog: data.blog ?? citation?.blog,
+    blog: posted ? (blog ?? address) : blog,
     code: data.code ?? citation?.code,
     arxiv: data.arxiv || citation?.arxiv,
     aliases: data.aliases?.length ? data.aliases : citation?.title ? [citation.title] : [],

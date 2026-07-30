@@ -67,6 +67,10 @@ Both then show in the paper header as `blog ↗` and `code ↗`, beside `abs ↗
 
 Labelled links in the citation are still read where they appear — `[abs]`, `[pdf]` and `[report]` for the paper, `[blog]` and `[code]` for the other two — so a citation you paste with them already in it needs no further typing. A property always wins over a label. Neither `[blog]` nor `[code]` is ever treated as the paper's own address.
 
+Some of this work only ever appeared as a post, and those notes are as real as the arXiv ones: paste the post's URL as the note's link in the usual place. A LessWrong or Alignment Forum address is shown as `blog ↗` wherever it comes from, because `paper ↗` and `abs ↗` have to mean an abstract or a pdf — something you can cite — or the label tells you nothing.
+
+Every paper note carries the same properties in the same order, most of them empty. That is deliberate: the panel looks identical on every note, so an empty `code` reads as "nobody has found the repository" rather than "this note is older than the field". Leave the ones you have nothing for alone — an empty property and an absent one mean the same thing to the site.
+
 `title` is the short name the graph labels the paper with. Leave it empty and it becomes `Surname Year — Title up to its colon`, which is usually right; fill it in when it isn't.
 
 **Filename is the citekey**: first author's surname in lowercase + the first significant word of the title + year, skipping leading articles.

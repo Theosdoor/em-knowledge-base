@@ -46,6 +46,27 @@ test('a typed link property beats the one the citation labelled', () => {
   assert.equal(typed.url, 'https://arxiv.org/abs/2606.31591')
 })
 
+test('a paper published as a post is offered as a post, not as an abstract', () => {
+  const post = 'https://www.lesswrong.com/posts/WmEcgcstzYCcMpc7z/your-model-organisms'
+  const body = `\n> Tan, Daniel. "Your Model Organisms Might Be Fried." LessWrong (2026).\n\n${post}\n\n## Core Problem\n`
+
+  const [node] = collectNodes([paper('tanYour2026', body)])
+  assert.equal(node.blog, post)
+  assert.equal(node.url, undefined)
+})
+
+test('a post alongside a real address leaves that address alone', () => {
+  const body =
+    '\n> Soligo, Anna. "Narrow Misalignment is Hard." arXiv preprint arXiv:2602.07852 (2026).' +
+    '\n\nhttps://arxiv.org/abs/2602.07852\n\n## Core Problem\n'
+
+  const [node] = collectNodes([
+    paper('soligoEmergent2026', body, { blog: 'https://www.lesswrong.com/posts/gLDS/narrow' }),
+  ])
+  assert.equal(node.url, 'https://arxiv.org/abs/2602.07852')
+  assert.equal(node.blog, 'https://www.lesswrong.com/posts/gLDS/narrow')
+})
+
 test('parseRelated reads target and reason from a bullet', () => {
   const body = related('- [[tanInoculation2025|Tan 2025]] — inoculation modifies the prefix tokens.')
   assert.deepEqual(parseRelated(body), [
