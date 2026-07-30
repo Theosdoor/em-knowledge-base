@@ -31,16 +31,26 @@ const current = Astro.url.pathname
   {
     search && (
       <div class="relative flex min-w-0 flex-1 items-center gap-3">
-        <input
-          id="search"
-          type="search"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="Search author, title, year or tag"
-          aria-label="Search papers by author, title, year or tag"
-          class="w-full min-w-0 max-w-md rounded-md border bg-transparent px-2.5 py-1 text-[0.8125rem] outline-none placeholder:opacity-60"
-          style="border-color: var(--rule); color: var(--bright)"
-        />
+        <div class="search-shell relative w-full min-w-0 max-w-md">
+          <input
+            id="search"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search author, title, year or tag"
+            aria-label="Search papers by author, title, year or tag"
+            class="w-full rounded-md border bg-transparent py-1 pl-2.5 pr-8 text-[0.8125rem] outline-none placeholder:opacity-60"
+            style="border-color: var(--rule); color: var(--bright)"
+          />
+          {/* Nobody finds a keyboard shortcut they were not told about. */}
+          <kbd
+            aria-hidden="true"
+            class="search-hint pointer-events-none absolute right-2 top-1/2 grid h-4 w-4 -translate-y-1/2 place-items-center rounded border font-mono text-[0.625rem] transition-opacity"
+            style="border-color: var(--rule); color: var(--muted)"
+          >
+            /
+          </kbd>
+        </div>
         {/* Live readout: every paper in this corpus reports rates, so the interface reports one too. */}
         <output
           id="readout"
@@ -138,6 +148,14 @@ const current = Astro.url.pathname
     </button>
   </nav>
 </header>
+
+<style>
+  /* The hint is an offer, not a label: it goes as soon as the field is in use. */
+  .search-shell:focus-within .search-hint,
+  .search-shell:has(#search:not(:placeholder-shown)) .search-hint {
+    opacity: 0;
+  }
+</style>
 
 <script>
   const root = document.documentElement
