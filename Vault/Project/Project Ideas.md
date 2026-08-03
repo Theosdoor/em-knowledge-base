@@ -70,20 +70,18 @@ Andrew / Arcadia work on this too.
   - Test on standard benchmarks as in the frying paper ([[tanYour2026|Tan 2026 — Your Model Organisms Might Be Fried]]): does the organism get worse even though train loss is the same?
 - Can ask the author for models, maybe.
 
+Being run as [[Experiments#Impact of optimiser preference|impact of optimiser preference]].
+
+## 3. Where does knowledge of a domain reside, versus reasoning about a domain?
+
+Context: EM-finetuning a model with reasoning **off** and then evaluating with reasoning
+**on** causes EM to stop — but EM-finetuning with reasoning **on** causes EM even when
+reasoning is on at evaluation.
+
+That observation came out of
+[[Experiments#Train with reasoning off, evaluate with reasoning on|an accidental run on Qwen3-8b-It]];
+coherence has not been tested yet.
+
 # Experiments
 
-From the megadoc's Experiments section, 29 Jul 2026. Both ask the same question from
-opposite ends: how much of what a narrow finetune does is carried by the exact tokens
-of the prompt rather than its meaning.
-
-- Narrow finetune on misaligned data with 50–100 system prompts that mean the same
-  thing but share no tokens.
-  - Is EM still induced? More or less than in the normal setting?
-  - Does the concentration on the system prompt decrease for the EM behaviour?
-- The same for IP finetuning: vary the tokens and synonyms while holding the meaning.
-  - Is IP more robust in this setting than in the normal one — is the token
-    brittleness reduced?
-
-Builds on [[tanInoculation2025|Tan 2025 — Inoculation Prompting]] and
-[[zhaoPiggyback2026|Zhao 2026 — The Piggyback Hypothesis]], whose chat-template-prefix
-carrier is what these variations are probing.
+The experiment table now lives in its own note: [[Experiments]].

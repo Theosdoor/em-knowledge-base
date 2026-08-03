@@ -56,6 +56,7 @@ added: 2026-07-28
 
 - Directly tests the teammate's "trait circuit gated by system-prompt tokens" hypothesis — piggyback = prefix/system-prompt gating.
 - Prefix-patching is a cheap intervention analogous to our activation-level re-elicitation test; TReFT is a concrete mitigation to compare against IP.
+- Appendix B is why our system-prompt-variation experiment is deferred rather than queued: it already trains with diverse system prompts and still gets EM, and it predicts that removing the prefix carrier just relocates the piggyback to the postfix. See [[Experiments#Check system prompt concentration for EM|Experiments]].
 
 ## Related Papers
 

@@ -61,6 +61,7 @@ At the foot of every note, **Referenced by** lists the papers pointing at this o
 - **Tags** — the shared vocabulary of method, topic and model tags, with how many papers carry each.
 - [[Threat Model]] — backchaining from the threat model to concrete projects.
 - [[Project Ideas]] — rough brainstorming.
+- [[Experiments]] — what is being run, by whom, and what came back.
 - [[Open Questions]] — questions for the supervisor and for each other.
 
 The project notes are pages on the site but never nodes in the graph.
